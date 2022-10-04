@@ -1,10 +1,5 @@
 import useSWR from "swr";
-import type {
-  Artist,
-  ShazamArtistPreview,
-  ShazamCharts,
-  Track,
-} from "@/utils/types.ts";
+import type { Artist, SearchResult, Track } from "@/utils/types.ts";
 
 async function fetchJson(endpoint: string) {
   const response = await fetch(endpoint);
@@ -12,7 +7,7 @@ async function fetchJson(endpoint: string) {
 }
 
 export function useCharts() {
-  return useSWR<ShazamCharts, Error>("/api/charts", fetchJson);
+  return useSWR<readonly Track[], Error>("/api/charts", fetchJson);
 }
 
 export function useCountryCharts(id: string) {
@@ -34,10 +29,7 @@ export function useRelatedSongs(id: string) {
 }
 
 export function useMusicSearch(query: string) {
-  return useSWR<{
-    readonly tracks: readonly Track[];
-    readonly artists: readonly ShazamArtistPreview[];
-  }, Error>(`/api/search/${query}`, fetchJson);
+  return useSWR<SearchResult, Error>(`/api/search/${query}`, fetchJson);
 }
 
 export function useSongDetails(id: string) {

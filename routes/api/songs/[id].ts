@@ -1,6 +1,6 @@
 import { type HandlerContext, Status } from "$fresh/server.ts";
 import requestShazam from "@/utils/shazam.ts";
-import { toTrack } from "@/utils/types.ts";
+import { toTrack } from "@/utils/conversions.ts";
 
 export const handler = async (_req: Request, ctx: HandlerContext) => {
   const { id } = ctx.params;

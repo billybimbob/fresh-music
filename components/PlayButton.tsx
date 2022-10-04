@@ -1,6 +1,6 @@
 interface PlayButtonProps {
   isActive: boolean;
-  onClick?: () => void;
+  onClick(): void;
 }
 
 export default function PlayButton({ isActive, onClick }: PlayButtonProps) {

@@ -1,5 +1,6 @@
 import { type HandlerContext, Status } from "$fresh/server.ts";
-import { type ShazamTrack, toTrack } from "@/utils/types.ts";
+import type { ShazamTrack } from "@/utils/types.ts";
+import { toTrack } from "@/utils/conversions.ts";
 import requestShazam from "@/utils/shazam.ts";
 
 export const handler = async (_req: Request, ctx: HandlerContext) => {
@@ -17,9 +18,9 @@ export const handler = async (_req: Request, ctx: HandlerContext) => {
     return new Response(null, { status: Status.BadRequest });
   }
 
-  const data: { tracks: readonly ShazamTrack[] } = await response.json();
+  const data: readonly ShazamTrack[] = await response.json();
 
-  const tracks = data.tracks.map(toTrack);
+  const tracks = data.map(toTrack);
 
   return Response.json(tracks);
 };

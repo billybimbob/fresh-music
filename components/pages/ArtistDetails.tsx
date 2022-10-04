@@ -1,11 +1,13 @@
 import { RoutableProps } from "preact-router";
-import classes from "classNames/index.ts";
 import { useComputed } from "@preact/signals";
+import classes from "classNames/index.ts";
 
-import { type ArtistSong, toSize } from "@/utils/types.ts";
+import type { ArtistSong } from "@/utils/types.ts";
+import { toSize } from "@/utils/conversions.ts";
 import { useArtistDetails } from "@/utils/client.ts";
 import queue from "@/utils/songQueue.ts";
 
+import PlayButton from "@/components/PlayButton.tsx";
 import Error from "@/components/Error.tsx";
 import Loader from "@/components/Loader.tsx";
 
@@ -19,6 +21,21 @@ export default function ArtistDetails({ id = "" }: ArtistDetailsProps) {
   const image = artist !== undefined
     ? toSize(artist.artwork.url, 500)
     : undefined;
+
+  const onSongClick = (song: ArtistSong, index: number) => {
+    if (artist === undefined) {
+      return;
+    }
+
+    if (queue.isPlaying && queue.current?.id === song.id) {
+      queue.toggle();
+      return;
+    }
+
+    const songSlice = artist.songs.slice(index);
+
+    queue.listenTo(...songSlice);
+  };
 
   if (error !== undefined) {
     return <Error />;
@@ -34,10 +51,10 @@ export default function ArtistDetails({ id = "" }: ArtistDetailsProps) {
         <div class="artist-header"></div>
 
         <div class="artist-banner">
-          <img alt={`${artist.name} Profile`} src={image} class="artist-img" />
+          <img class="artist-img" alt={`${artist.name} Profile`} src={image} />
           <div class="artist-title">
-            <h1 class="artist-name">{artist.name}</h1>
-            <p class="artist-genres">{artist.genres.join(" ")}</p>
+            <h1 class="artist-title-name">{artist.name}</h1>
+            <p class="artist-title-genres">{artist.genres.join(" ")}</p>
           </div>
         </div>
 
@@ -46,9 +63,15 @@ export default function ArtistDetails({ id = "" }: ArtistDetailsProps) {
 
       <div class="artist-songs">
         <h2 class="artist-songs-header">Related Songs:</h2>
+
         <ol class="artist-songs-list">
           {artist.songs.map((song, i) => (
-            <ArtistSongItem key={song.id} spot={i + 1} {...song} />
+            <ArtistSongItem
+              key={song.id}
+              spot={i + 1}
+              onClick={() => onSongClick(song, i)}
+              {...song}
+            />
           ))}
         </ol>
       </div>
@@ -58,9 +81,12 @@ export default function ArtistDetails({ id = "" }: ArtistDetailsProps) {
 
 interface ArtistSongProps extends ArtistSong {
   readonly spot: number;
+  onClick(): void;
 }
 
-function ArtistSongItem({ id, spot, name, album, artwork }: ArtistSongProps) {
+function ArtistSongItem(
+  { id, spot, name, album, artwork, onClick }: ArtistSongProps,
+) {
   const isActive = useComputed(() => queue.current?.id === id);
 
   const item = useComputed(() =>
@@ -84,6 +110,7 @@ function ArtistSongItem({ id, spot, name, album, artwork }: ArtistSongProps) {
           <p class="artist-song-album">{album}</p>
         </div>
       </div>
+      <PlayButton isActive={isActive.value} onClick={onClick} />
     </li>
   );
 }

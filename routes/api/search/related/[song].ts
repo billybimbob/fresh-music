@@ -1,5 +1,6 @@
 import { type HandlerContext, Status } from "$fresh/server.ts";
-import { type ShazamTrack, toTrack } from "@/utils/types.ts";
+import type { ShazamTrack } from "@/utils/types.ts";
+import { toTrack } from "@/utils/conversions.ts";
 import requestShazam from "@/utils/shazam.ts";
 
 export const handler = async (_req: Request, ctx: HandlerContext) => {

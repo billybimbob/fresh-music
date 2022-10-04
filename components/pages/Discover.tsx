@@ -18,7 +18,8 @@ interface DiscoverProps extends RoutableProps {
 export default function Discover({ genre = defaultGenre }: DiscoverProps) {
   const { data: tracks, error } = useGenreCharts(genre);
 
-  const title = genres.find((g) => g.value === genre)?.title ?? defaultTitle;
+  const genreTitle = genres
+    .find((g) => g.value === genre)?.title ?? defaultTitle;
 
   const onGenreChange = (event: Event) => {
     const value = (event.target as HTMLSelectElement)?.value;
@@ -55,9 +56,10 @@ export default function Discover({ genre = defaultGenre }: DiscoverProps) {
   return (
     <div class="discover">
       <div class="discover-genres">
-        <h2 class="discover-genres-title">Discover {title}</h2>
+        <h2 class="discover-genres-title">Discover {genreTitle}</h2>
         <select
           value={genre}
+          name="genre"
           class="discover-genres-options"
           onChange={onGenreChange}
         >

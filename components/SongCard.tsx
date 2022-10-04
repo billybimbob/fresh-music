@@ -1,5 +1,6 @@
 import { useComputed } from "@preact/signals";
 import classes from "classNames/index.ts";
+
 import type { Track } from "@/utils/types.ts";
 import queue from "@/utils/songQueue.ts";
 import PlayButton from "@/components/PlayButton.tsx";

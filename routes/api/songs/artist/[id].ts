@@ -1,5 +1,5 @@
 import { type HandlerContext, Status } from "$fresh/server.ts";
-import { toArtist } from "@/utils/types.ts";
+import { toArtist } from "@/utils/conversions.ts";
 import requestShazam from "@/utils/shazam.ts";
 
 export const handler = async (_req: Request, ctx: HandlerContext) => {

@@ -13,8 +13,8 @@ export default function MusicRoutes() {
         <Discover path="/" />
         <Discover path="/discover/:genre" />
         <Search path="/search/:query" />
-        <ArtistDetails path="/artists/:id" />
         <SongDetails path="/songs/:id" />
+        <ArtistDetails path="/artists/:id" />
       </Router>
     </div>
   );

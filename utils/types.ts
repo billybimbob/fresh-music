@@ -1,26 +1,4 @@
-export interface ShazamCity {
-  readonly name: string;
-  readonly listid: string;
-}
-
-export interface ShazamCountry {
-  readonly name: string;
-  readonly listid: string;
-  readonly cities: readonly ShazamCity[];
-}
-
-export interface ShazamGenre {
-  readonly name: string;
-  readonly listid: string;
-  readonly count: number;
-}
-
-export interface ShazamCharts {
-  readonly countries: readonly ShazamCountry[];
-  readonly global: {
-    readonly genres: readonly ShazamGenre[];
-  };
-}
+// remote endpoint types
 
 export interface ShazamTrack {
   readonly key: string;
@@ -43,7 +21,7 @@ export interface ShazamTrack {
 
 export interface ShazamArtistPreview {
   readonly avatar: string;
-  readonly id: string;
+  readonly name: string;
   readonly verified: boolean;
   readonly adamid: string;
 }
@@ -57,7 +35,7 @@ export interface ShazamSearch {
   };
 }
 
-interface ShazamArtwork {
+export interface ShazamArtwork {
   readonly url: string;
   readonly textColor1: string;
   readonly textColor2: string;
@@ -82,7 +60,6 @@ export interface ShazamArtist {
       };
     };
   };
-  // TODO: include albums def
   readonly songs: {
     readonly [id: string]: {
       readonly id: string;
@@ -99,19 +76,14 @@ export interface ShazamArtist {
       };
     };
   };
+  // TODO: include albums def
 }
 
-export interface Track {
-  readonly id: string;
-  readonly name: string;
-  readonly artist: string;
-  readonly genres: readonly string[];
-  readonly images: {
-    readonly background: string;
-    readonly cover: string;
-  };
-  readonly data?: string;
-  readonly lyrics?: string;
+// local types
+
+export interface SearchResult {
+  readonly tracks: readonly Track[];
+  readonly artists: readonly ArtistPreview[];
 }
 
 export interface Artist {
@@ -121,6 +93,20 @@ export interface Artist {
   readonly artwork: Artwork;
   readonly topSongs: readonly ArtistSong[];
   readonly songs: readonly ArtistSong[];
+}
+
+export interface ArtistPreview {
+  readonly id: string;
+  readonly name: string;
+  readonly image: string;
+}
+
+export interface Artwork {
+  readonly url: string;
+  readonly colors: {
+    readonly text: readonly string[];
+    readonly background: string;
+  };
 }
 
 export interface ArtistSong {
@@ -136,88 +122,17 @@ export interface ArtistSong {
   readonly data?: string;
 }
 
-export interface Artwork {
-  readonly url: string;
-  readonly colors: {
-    readonly text: readonly string[];
+export interface Track {
+  readonly id: string;
+  readonly name: string;
+  readonly artist: string;
+  readonly genres: readonly string[];
+  readonly images: {
     readonly background: string;
+    readonly cover: string;
   };
+  readonly data?: string;
+  readonly lyrics?: string;
 }
 
 export type Song = Track | ArtistSong;
-
-export function toTrack(source: ShazamTrack): Track {
-  return {
-    id: source.key,
-    name: source.title,
-    artist: source.subtitle,
-    genres: Object.values(source.genres),
-    images: {
-      background: source.images.background,
-      cover: source.images.coverart,
-    },
-    data: source.hub.actions.find((a) => a.type === "uri")?.uri,
-    lyrics: source.sections?.find(({ text }) => Boolean(text))?.text?.join(""),
-  };
-}
-
-export function toArtist(source: ShazamArtist): Artist {
-  const [artist] = Object.values(source.artists);
-
-  const songs = Object
-    .values(source.songs)
-    .reduce(
-      (ss, song) => ss.set(song.id, toArtistSong(song)),
-      new Map<string, ArtistSong>(),
-    );
-
-  const topSongs = artist.views["top-songs"].data
-    .map(({ id }) => id)
-    .filter(songs.has)
-    .map((id) => songs.get(id)!);
-
-  return {
-    id: artist.id,
-    genres: artist.attributes.genreNames,
-    name: artist.attributes.name,
-    artwork: toArtwork(artist.attributes.artwork),
-    topSongs,
-    songs: [...songs.values()],
-  };
-}
-
-function toArtwork(source: ShazamArtwork): Artwork {
-  return {
-    url: source.url,
-    colors: {
-      text: [
-        source.textColor1,
-        source.textColor2,
-        source.textColor3,
-        source.textColor4,
-      ],
-      background: source.bgColor,
-    },
-  };
-}
-
-function toArtistSong(source: ShazamArtist["songs"]["id"]): ArtistSong {
-  const { id, attributes } = source;
-  const { previews: [pre = undefined] } = attributes;
-  return {
-    id,
-    album: attributes.albumName,
-    genres: attributes.genreNames,
-    releaseDate: attributes.releaseDate,
-    duration: attributes.durationInMillis,
-    artwork: toArtwork(attributes.artwork),
-    composer: attributes.composerName,
-    artist: attributes.artistName,
-    name: attributes.name,
-    data: pre?.url,
-  };
-}
-
-export function toSize(src: string, size: number) {
-  return src.replace(/({w})|({h})/, size.toString());
-}

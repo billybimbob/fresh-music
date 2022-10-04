@@ -1,5 +1,6 @@
 import { type HandlerContext, Status } from "$fresh/server.ts";
-import { type ShazamSearch, toTrack } from "@/utils/types.ts";
+import type { ShazamSearch } from "@/utils/types.ts";
+import { toArtistPreview, toTrack } from "@/utils/conversions.ts";
 import requestShazam from "@/utils/shazam.ts";
 
 export const handler = async (_req: Request, ctx: HandlerContext) => {
@@ -20,10 +21,10 @@ export const handler = async (_req: Request, ctx: HandlerContext) => {
 
   const search: ShazamSearch = await response.json();
 
-  const hits = {
+  const result = {
     tracks: search.tracks.hits.map(({ track }) => toTrack(track)),
-    artists: search.artists.hits.map(({ artist }) => artist),
-  } as const;
+    artists: search.artists.hits.map(({ artist }) => toArtistPreview(artist)),
+  };
 
-  return Response.json(hits);
+  return Response.json(result);
 };
