@@ -13,8 +13,8 @@ interface SearchProps extends RoutableProps {
 }
 
 export default function Search({ query = "" }: SearchProps) {
-  const response = useMusicSearch(query);
-  const tracks = response.data?.tracks;
+  const { data: result, error } = useMusicSearch(query);
+  const tracks = result?.tracks;
 
   const onSongClick = (song: Track) => {
     if (tracks === undefined) {
@@ -32,7 +32,7 @@ export default function Search({ query = "" }: SearchProps) {
     queue.listenTo(...songSlice);
   };
 
-  if (response.error !== undefined) {
+  if (error !== undefined) {
     return <Error />;
   }
 
@@ -45,7 +45,7 @@ export default function Search({ query = "" }: SearchProps) {
       <h2 class="search-title">
         Showing results for <span class="search-query">{query}</span>
       </h2>
-      <div class="search-songs">
+      <ol class="search-songs">
         {tracks.map((track) => (
           <SongCard
             key={track.id}
@@ -53,7 +53,7 @@ export default function Search({ query = "" }: SearchProps) {
             {...track}
           />
         ))}
-      </div>
+      </ol>
     </div>
   );
 }

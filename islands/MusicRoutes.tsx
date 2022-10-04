@@ -1,5 +1,10 @@
 import Router from "preact-router";
-import { Discover, Search } from "@/components/pages/mod.ts";
+import {
+  ArtistDetails,
+  Discover,
+  Search,
+  SongDetails,
+} from "@/components/pages/mod.ts";
 
 export default function MusicRoutes() {
   return (
@@ -8,6 +13,8 @@ export default function MusicRoutes() {
         <Discover path="/" />
         <Discover path="/discover/:genre" />
         <Search path="/search/:query" />
+        <ArtistDetails path="/artists/:id" />
+        <SongDetails path="/songs/:id" />
       </Router>
     </div>
   );

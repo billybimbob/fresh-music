@@ -123,7 +123,7 @@ export interface Artist {
   readonly songs: readonly ArtistSong[];
 }
 
-interface ArtistSong {
+export interface ArtistSong {
   readonly id: string;
   readonly name: string;
   readonly artist: string;
@@ -136,7 +136,7 @@ interface ArtistSong {
   readonly data?: string;
 }
 
-interface Artwork {
+export interface Artwork {
   readonly url: string;
   readonly colors: {
     readonly text: readonly string[];
@@ -218,6 +218,6 @@ function toArtistSong(source: ShazamArtist["songs"]["id"]): ArtistSong {
   };
 }
 
-export function addSize(src: string, size: number) {
+export function toSize(src: string, size: number) {
   return src.replace(/({w})|({h})/, size.toString());
 }

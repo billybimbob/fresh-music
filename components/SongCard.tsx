@@ -23,7 +23,7 @@ export default function SongCard(
   );
 
   return (
-    <div class="song-card">
+    <li class="song-card">
       <div class="song-card-left">
         <div class={btn.value}>
           <PlayButton isActive={isActive.value} onClick={onClick} />
@@ -40,6 +40,6 @@ export default function SongCard(
         </p>
         <p class="song-card-artist">{artist}</p>
       </div>
-    </div>
+    </li>
   );
 }

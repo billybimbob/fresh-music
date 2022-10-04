@@ -67,7 +67,7 @@ export default function Discover({ genre = defaultGenre }: DiscoverProps) {
         </select>
       </div>
 
-      <div class="discover-songs">
+      <ol class="discover-songs">
         {tracks.map((track) => (
           <SongCard
             key={track.id}
@@ -75,7 +75,7 @@ export default function Discover({ genre = defaultGenre }: DiscoverProps) {
             {...track}
           />
         ))}
-      </div>
+      </ol>
     </div>
   );
 }
