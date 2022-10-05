@@ -452,7 +452,7 @@ body {
 }
 
 .artist-song-item,
-.song-related-item {
+.song-row-item {
     width: 100%;
     display: flex;
     flex-direction: row;
@@ -465,17 +465,17 @@ body {
 }
 
 .artist-song-item:hover,
-.song-related-item:hover {
+.song-row-item:hover {
     background-color: #4c426e;
 }
 
 .artist-song-active,
-.song-related-active {
+.song-row-active {
     background-color: #4c426e;
 }
 
 .artist-song-spot,
-.song-related-spot {
+.song-row-spot {
     font-weight: 700;
     font-size: 1rem;
     line-height: 1.5rem;
@@ -484,7 +484,7 @@ body {
 }
 
 .artist-song-body,
-.song-related-body {
+.song-row-body {
     display: flex;
     flex: 1 1 0%;
     flex-direction: row;
@@ -493,14 +493,14 @@ body {
 }
 
 .artist-song-img,
-.song-related-img {
+.song-row-img {
     width: 5rem;
     height: 5rem;
     border-radius: 0.5rem;
 }
 
 .artist-song-title,
-.song-related-title {
+.song-row-title {
     display: flex;
     flex: 1 1 0%;
     flex-direction: column;
@@ -510,7 +510,7 @@ body {
 }
 
 .artist-song-name,
-.song-related-name {
+.song-row-name {
     font-weight: 700;
     font-size: 1.25rem;
     line-height: 1.75rem;
@@ -518,7 +518,7 @@ body {
 }
 
 .artist-song-album,
-.song-related-artist {
+.song-row-artist {
     font-size: 1rem;
     line-height: 1.5rem;
     color: rgb(209 213 219);

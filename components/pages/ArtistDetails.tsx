@@ -63,10 +63,9 @@ export default function ArtistDetails({ id = "" }: ArtistDetailsProps) {
 
       <div class="artist-songs">
         <h2 class="artist-songs-header">Related Songs:</h2>
-
         <ol class="artist-songs-list">
           {artist.songs.map((song, i) => (
-            <ArtistSongItem
+            <ArtistSongRow
               key={song.id}
               spot={i + 1}
               onClick={() => onSongClick(song, i)}
@@ -84,7 +83,7 @@ interface ArtistSongProps extends ArtistSong {
   onClick(): void;
 }
 
-function ArtistSongItem(
+function ArtistSongRow(
   { id, spot, name, album, artwork, onClick }: ArtistSongProps,
 ) {
   const isActive = useComputed(() => queue.current?.id === id);

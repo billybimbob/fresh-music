@@ -14,7 +14,10 @@ export function toTrack(source: ShazamTrack): Track {
   return {
     id: source.key,
     name: source.title,
-    artist: source.subtitle,
+    artist: {
+      name: source.subtitle,
+      ids: source.artists.map(({ adamid }) => adamid),
+    },
     genres: Object.values(source.genres),
     images: {
       background: source.images.background,

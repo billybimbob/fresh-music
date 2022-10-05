@@ -12,6 +12,8 @@ interface SongCardProps extends Track {
 export default function SongCard(
   { id, name, images, artist, onClick }: SongCardProps,
 ) {
+  const [artistId] = artist.ids; // todo: account for > 1 ids
+
   const isActive = useComputed(() =>
     queue.isPlaying && queue.current?.id === id
   );
@@ -30,16 +32,18 @@ export default function SongCard(
           <PlayButton isActive={isActive.value} onClick={onClick} />
         </div>
         <img
+          class="song-card-img"
           alt={`${name} Image`}
           src={images.cover}
-          class="song-card-img"
         />
       </div>
       <div class="song-card-right">
         <p class="song-card-name">
           <a href={`/songs/${id}`}>{name}</a>
         </p>
-        <p class="song-card-artist">{artist}</p>
+        <p class="song-card-artist">
+          <a href={`/artists/${artistId}`}>{artist.name}</a>
+        </p>
       </div>
     </li>
   );

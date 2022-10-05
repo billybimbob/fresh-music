@@ -1,8 +1,6 @@
 import { batch, computed, signal } from "@preact/signals";
 import type { Song } from "@/utils/types.ts";
 
-// singleton state intentionally
-
 const current = signal<Song | null>(null);
 const finished = signal<readonly Song[]>([]);
 const upcoming = signal<readonly Song[]>([]);

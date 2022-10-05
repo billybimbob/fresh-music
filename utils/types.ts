@@ -16,6 +16,7 @@ export interface ShazamTrack {
     readonly coverart: string;
   };
   readonly genres: { [key: string]: string };
+  readonly artists: readonly { readonly adamid: string }[];
   readonly sections?: readonly { readonly text?: readonly string[] }[];
 }
 
@@ -125,7 +126,10 @@ export interface ArtistSong {
 export interface Track {
   readonly id: string;
   readonly name: string;
-  readonly artist: string;
+  readonly artist: {
+    readonly name: string;
+    readonly ids: readonly string[];
+  };
   readonly genres: readonly string[];
   readonly images: {
     readonly background: string;

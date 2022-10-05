@@ -1,12 +1,9 @@
 import { RoutableProps } from "preact-router";
-import { useComputed } from "@preact/signals";
-import classes from "classNames/index.ts";
-
 import type { Track } from "@/utils/types.ts";
 import { useRelatedSongs, useSongDetails } from "@/utils/client.ts";
 import queue from "@/utils/songQueue.ts";
 
-import PlayButton from "@/components/PlayButton.tsx";
+import SongRow from "@/components/SongRow.tsx";
 import Error from "@/components/Error.tsx";
 import Loader from "@/components/Loader.tsx";
 
@@ -54,7 +51,7 @@ export default function SongDetails({ id = "" }: SongDetailsProps) {
           />
           <div class="song-title">
             <h1 class="song-title-name">{track.name}</h1>
-            <p class="song-title-artist">{track.artist}</p>
+            <p class="song-title-artist">{track.artist.name}</p>
             <p class="song-title-genres">{track.genres.join(" ")}</p>
           </div>
         </div>
@@ -71,10 +68,9 @@ export default function SongDetails({ id = "" }: SongDetailsProps) {
 
       <div class="song-related">
         <h2 class="song-related-header">Related Songs:</h2>
-
         <ol class="song-related-list">
           {related.map((song, i) => (
-            <ArtistSongItem
+            <SongRow
               key={song.id}
               spot={i + 1}
               onClick={() => onSongClick(song, i)}
@@ -84,43 +80,5 @@ export default function SongDetails({ id = "" }: SongDetailsProps) {
         </ol>
       </div>
     </div>
-  );
-}
-
-interface RelatedSongProps extends Track {
-  readonly spot: number;
-  onClick(): void;
-}
-
-function ArtistSongItem(
-  { id, spot, name, artist, images, onClick }: RelatedSongProps,
-) {
-  const isActive = useComputed(() => queue.current?.id === id);
-
-  const item = useComputed(() =>
-    classes({
-      "song-related-item": true,
-      "song-related-active": isActive.value,
-    })
-  );
-
-  return (
-    <li class={item.value}>
-      <h3 class="song-related-spot">{spot}</h3>
-      <div class="song-related-body">
-        <img
-          class="song-related-img"
-          alt={`${name} Artwork`}
-          src={images.cover}
-        />
-        <div class="song-related-title">
-          <a href={`/songs/${id}`}>
-            <p class="song-related-name">{name}</p>
-          </a>
-          <p class="song-related-artist">{artist}</p>
-        </div>
-      </div>
-      <PlayButton isActive={isActive.value} onClick={onClick} />
-    </li>
   );
 }

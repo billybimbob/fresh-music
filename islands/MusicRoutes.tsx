@@ -4,6 +4,8 @@ import {
   Discover,
   Search,
   SongDetails,
+  TopArtists,
+  TopSongs,
 } from "@/components/pages/mod.ts";
 
 export default function MusicRoutes() {
@@ -15,6 +17,8 @@ export default function MusicRoutes() {
         <Search path="/search/:query" />
         <SongDetails path="/songs/:id" />
         <ArtistDetails path="/artists/:id" />
+        <TopArtists path="/top/artists" />
+        <TopSongs path="/top/songs" />
       </Router>
     </div>
   );
