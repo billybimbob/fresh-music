@@ -2,6 +2,7 @@ import type { Track } from "@/utils/types.ts";
 import { useCharts } from "@/utils/client.ts";
 import queue from "@/utils/songQueue.ts";
 
+import ArtistCard from "@/components/ArtistCard.tsx";
 import SongRow from "@/components/SongRow.tsx";
 import Error from "@/components/Error.tsx";
 import Loader from "@/components/Loader.tsx";
@@ -44,7 +45,7 @@ export default function TopPreview() {
               <a href="/top/songs">See more</a>
             </p>
           </div>
-          <div class="top-preview-songs-body">
+          <ol class="top-preview-songs-list">
             {topSongs.map((track, i) => (
               <SongRow
                 key={track.id}
@@ -53,7 +54,7 @@ export default function TopPreview() {
                 {...track}
               />
             ))}
-          </div>
+          </ol>
         </div>
         <div className="top-preview-artists">
           <div className="top-preview-artists-header">
@@ -62,6 +63,9 @@ export default function TopPreview() {
               <a href="/top/artists">See more</a>
             </p>
           </div>
+          <ol class="top-preview-songs-list">
+            {topSongs.map((track) => <ArtistCard key={track.id} {...track} />)}
+          </ol>
         </div>
       </div>
     </div>

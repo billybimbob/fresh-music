@@ -139,12 +139,19 @@ body {
     }
 }
 
-.search {
+.discover,
+.search,
+.top-artists,
+.top-songs,
+.artist-page,
+.song-page {
     display: flex;
     flex-direction: column;
 }
 
-.search-title {
+.search-title,
+.top-artists-title,
+.top-songs-title {
     font-weight: 700;
     font-size: 1.875rem;
     line-height: 2.25rem;
@@ -152,6 +159,26 @@ body {
     text-align: left;
     margin-top: 1rem;
     margin-bottom: 2.5rem;
+}
+
+.search-songs,
+.discover-songs,
+.top-artists-list,
+.top-songs-list {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 2rem;
+}
+
+@media (min-width: 650px) {
+
+    .search-songs,
+    .discover-songs,
+    .top-artists-list,
+    .top-songs-list {
+        justify-content: flex-start;
+    }
 }
 
 .search-query {
@@ -199,22 +226,7 @@ body {
     color: rgb(107 114 128);
 }
 
-.search-songs,
-.discover-songs {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    gap: 2rem;
-}
-
-@media (min-width: 650px) {
-
-    .search-songs,
-    .discover-songs {
-        justify-content: flex-start;
-    }
-}
-
+.artist-card,
 .song-card {
     list-style-type: none;
     display: flex;
@@ -226,6 +238,23 @@ body {
     cursor: pointer;
     animation: slide-up 1s ease-in-out;
     /* backdrop-filter: blur(4px) ; */
+}
+
+.artist-card-img {
+    width: 100%;
+    height: 14rem;
+    border-radius: 0.5rem;
+}
+
+.artist-card-name {
+    margin-top: 1rem;
+    font-weight: 600;
+    font-size: 1.125rem;
+    line-height: 1.75rem;
+    color: #fff;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
 }
 
 .song-card-left {
@@ -288,11 +317,6 @@ body {
     white-space: nowrap;
 }
 
-.discover {
-    display: flex;
-    flex-direction: column;
-}
-
 .discover-genres {
     width: 100%;
     display: flex;
@@ -331,12 +355,6 @@ body {
     .discover-genres-option {
         margin-top: 0px;
     }
-}
-
-.artist-page,
-.song-page {
-    display: flex;
-    flex-direction: column;
 }
 
 .artist-details,
@@ -465,11 +483,8 @@ body {
 }
 
 .artist-song-item:hover,
-.song-row-item:hover {
-    background-color: #4c426e;
-}
-
 .artist-song-active,
+.song-row-item:hover,
 .song-row-active {
     background-color: #4c426e;
 }
@@ -546,4 +561,77 @@ body {
     line-height: 1.5rem;
     margin-top: 0.25rem;
     margin-bottom: 0.25rem;
+}
+
+.top-preview {
+    position: relative;
+    top: 0;
+    height: fit-content;
+}
+
+.top-preview-inner {
+    margin-left: 0;
+    margin-bottom: 1.5rem;;
+    display: flex;
+    flex-direction: column;
+    flex: 1 1 0%;
+    max-width: 100%;
+}
+
+@media (min-width: 1280px) {
+    .top-preview {
+        position: sticky;
+    }
+
+    .top-preview-inner {
+        margin-left: 1.5rem;
+        margin-bottom: 0;
+        max-width: 500px;
+    }
+}
+
+.top-preview-songs {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+}
+
+.top-preview-songs-header,
+.top-preview-artists-header {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.top-preview-songs-title,
+.top-preview-artists-title {
+    color: #fff;
+    font-weight: 700;
+    font-size: 1.5rem;
+    line-height: 2rem;
+}
+
+.top-preview-songs-link,
+.top-preview-artists-link {
+    color: rgb(209 213 219);
+    font-size: 1rem;
+    line-height: 1.5rem;
+    cursor: pointer;
+}
+
+.top-preview-songs-list,
+.top-preview-artists-list {
+    list-style-type: none;
+    margin-top: 1rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+}
+
+.top-preview-artists {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    margin-top: 2rem;
 }

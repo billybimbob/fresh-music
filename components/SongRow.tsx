@@ -25,11 +25,7 @@ export default function SongRow(
     <li class={row.value}>
       <h3 class="song-row-spot">{spot}</h3>
       <div class="song-row-body">
-        <img
-          class="song-row-img"
-          alt={`${name} Artwork`}
-          src={images.cover}
-        />
+        <img class="song-row-img" alt={`${name} Cover`} src={images.cover} />
         <div class="song-row-title">
           <a href={`/songs/${id}`}>
             <p class="song-row-name">{name}</p>

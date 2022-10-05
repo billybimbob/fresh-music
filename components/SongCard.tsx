@@ -31,11 +31,7 @@ export default function SongCard(
         <div class={btn.value}>
           <PlayButton isActive={isActive.value} onClick={onClick} />
         </div>
-        <img
-          class="song-card-img"
-          alt={`${name} Image`}
-          src={images.cover}
-        />
+        <img class="song-card-img" alt={`${name} Image`} src={images.cover} />
       </div>
       <div class="song-card-right">
         <p class="song-card-name">
