@@ -139,4 +139,4 @@ export interface Track {
   readonly lyrics?: string;
 }
 
-export type Song = Track | ArtistSong;
+export type Song = ArtistSong | Track;

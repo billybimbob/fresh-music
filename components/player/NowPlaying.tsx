@@ -11,7 +11,7 @@ export default function NowPlaying() {
   );
 
   const imageAlt = useComputed(() =>
-    queue.current === undefined ? undefined : `${queue.current?.name} Cover`
+    queue.current === null ? undefined : `${queue.current.name} Cover`
   );
 
   return (

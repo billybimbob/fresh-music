@@ -1,8 +1,10 @@
+import { useComputed } from "@preact/signals";
 import { RoutableProps, route } from "preact-router";
 import genres from "@/static/genres.json" assert { type: "json" };
 
 import type { Track } from "@/utils/types.ts";
 import { useGenreCharts } from "@/utils/client.ts";
+import preload from "@/utils/preload.ts";
 import queue from "@/utils/songQueue.ts";
 
 import SongCard from "@/components/SongCard.tsx";
@@ -16,10 +18,18 @@ interface DiscoverProps extends RoutableProps {
 }
 
 export default function Discover({ genre = defaultGenre }: DiscoverProps) {
-  const { data: tracks, error } = useGenreCharts(genre);
+  const { data: tracks, error } = useGenreCharts(
+    genre,
+    preload.genre !== undefined,
+  );
 
-  const genreTitle = genres
-    .find((g) => g.value === genre)?.title ?? defaultTitle;
+  const genreTitle = useComputed(() =>
+    genres
+      .find((g) => g.value === genre)
+      ?.title ?? defaultTitle
+  );
+
+  const songs = useComputed(() => preload.genre ?? tracks);
 
   const onGenreChange = (event: Event) => {
     const { value = undefined } = event.target as HTMLSelectElement;
@@ -29,8 +39,8 @@ export default function Discover({ genre = defaultGenre }: DiscoverProps) {
     }
   };
 
-  const onSongClick = (song: Track) => {
-    if (tracks === undefined) {
+  const onSongClick = (song: Track, index: number) => {
+    if (songs.value === undefined) {
       return;
     }
 
@@ -39,8 +49,7 @@ export default function Discover({ genre = defaultGenre }: DiscoverProps) {
       return;
     }
 
-    const songIndex = tracks.indexOf(song);
-    const songSlice = tracks.slice(songIndex);
+    const songSlice = songs.value.slice(index);
 
     queue.listenTo(...songSlice);
   };
@@ -49,7 +58,7 @@ export default function Discover({ genre = defaultGenre }: DiscoverProps) {
     return <Error />;
   }
 
-  if (tracks === undefined) {
+  if (songs.value === undefined) {
     return <Loader>Loading songs...</Loader>;
   }
 
@@ -70,10 +79,10 @@ export default function Discover({ genre = defaultGenre }: DiscoverProps) {
       </section>
 
       <ol class="discover-songs">
-        {tracks.map((track) => (
+        {songs.value.map((track, i) => (
           <SongCard
             key={track.id}
-            onClick={() => onSongClick(track)}
+            onClick={() => onSongClick(track, i)}
             {...track}
           />
         ))}

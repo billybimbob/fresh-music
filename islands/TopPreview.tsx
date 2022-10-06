@@ -1,6 +1,7 @@
 import { useComputed } from "@preact/signals";
 import type { Track } from "@/utils/types.ts";
 import { useCharts } from "@/utils/client.ts";
+import preload from "@/utils/preload.ts";
 import queue from "@/utils/songQueue.ts";
 
 import ArtistCard from "@/components/ArtistCard.tsx";
@@ -9,12 +10,13 @@ import Error from "@/components/Error.tsx";
 import Loader from "@/components/Loader.tsx";
 
 export default function TopPreview() {
-  const { data: tracks, error } = useCharts();
+  const { data: tracks, error } = useCharts(preload.charts !== undefined);
 
-  const topSongs = useComputed(() => tracks?.slice(0, 5));
+  const songs = useComputed(() => preload.charts ?? tracks);
+  const topSongs = useComputed(() => songs.value?.slice(0, 5));
 
   const onSongClick = (track: Track, index: number) => {
-    if (tracks === undefined) {
+    if (songs.value === undefined) {
       return;
     }
 
@@ -23,7 +25,7 @@ export default function TopPreview() {
       return;
     }
 
-    const songSlice = tracks.slice(index);
+    const songSlice = songs.value.slice(index);
 
     queue.listenTo(...songSlice);
   };

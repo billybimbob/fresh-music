@@ -6,8 +6,11 @@ async function fetchJson(endpoint: string) {
   return response.json();
 }
 
-export function useCharts() {
-  return useSWR<readonly Track[], Error>("/api/charts", fetchJson);
+export function useCharts(hasInitial = false) {
+  return useSWR<readonly Track[], Error>(
+    hasInitial ? null : "/api/charts",
+    fetchJson,
+  );
 }
 
 export function useCountryCharts(id: string) {
@@ -17,8 +20,11 @@ export function useCountryCharts(id: string) {
   );
 }
 
-export function useGenreCharts(id: string) {
-  return useSWR<readonly Track[], Error>(`/api/charts/genre/${id}`, fetchJson);
+export function useGenreCharts(id: string, hasInitial = false) {
+  return useSWR<readonly Track[], Error>(
+    hasInitial ? null : `/api/charts/genre/${id}`,
+    fetchJson,
+  );
 }
 
 export function useRelatedSongs(id: string) {

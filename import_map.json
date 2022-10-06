@@ -1,9 +1,9 @@
 {
   "imports": {
     "@/": "./",
+    "$dotenv/": "https://deno.land/std@0.159.0/dotenv/",
     "$fresh/": "https://deno.land/x/fresh@1.1.1/",
     "classNames/": "https://deno.land/x/classnames@0.1.1/",
-    "dotenv/": "https://deno.land/x/dotenv@v3.2.0/",
     "preact": "https://esm.sh/preact@10.11.0",
     "preact/": "https://esm.sh/preact@10.11.0/",
     "preact-render-to-string": "https://esm.sh/*preact-render-to-string@5.2.4",

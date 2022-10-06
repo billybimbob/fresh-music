@@ -1,15 +1,11 @@
 import { type HandlerContext, Status } from "$fresh/server.ts";
-import requestShazam from "@/utils/shazam.ts";
+import fetchShazam from "@/utils/shazam.ts";
 import { toTrack } from "@/utils/conversions.ts";
 
 export const handler = async (_req: Request, ctx: HandlerContext) => {
   const { id } = ctx.params;
 
-  const params = new URLSearchParams({ track_id: id });
-
-  const shazam = requestShazam("/tracks/details", params);
-
-  const response = await fetch(shazam);
+  const response = await fetchShazam("/tracks/details", { track_id: id });
 
   if (!response.ok) {
     return new Response(null, { status: Status.BadRequest });

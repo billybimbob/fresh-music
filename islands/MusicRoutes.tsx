@@ -1,4 +1,6 @@
 import Router from "preact-router";
+import type { Track } from "@/utils/types.ts";
+import { useInitialPreload } from "@/utils/preload.ts";
 import {
   ArtistDetails,
   Discover,
@@ -8,10 +10,16 @@ import {
   TopSongs,
 } from "@/components/pages/mod.ts";
 
-export default function MusicRoutes() {
+interface MusicRoutesProps {
+  readonly charts?: readonly Track[];
+  readonly genre?: readonly Track[];
+}
+
+export default function MusicRoutes({ charts, genre }: MusicRoutesProps) {
+  const clear = useInitialPreload(charts, genre);
   return (
     <div class="routes">
-      <Router>
+      <Router onChange={clear}>
         <Discover path="/" />
         <Discover path="/discover/:genre" />
         <Search path="/search/:query" />
