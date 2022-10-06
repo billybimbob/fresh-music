@@ -22,7 +22,7 @@ export default function Discover({ genre = defaultGenre }: DiscoverProps) {
     .find((g) => g.value === genre)?.title ?? defaultTitle;
 
   const onGenreChange = (event: Event) => {
-    const value = (event.target as HTMLSelectElement)?.value;
+    const { value = undefined } = event.target as HTMLSelectElement;
 
     if (genres.some((g) => g.value === value)) {
       route(`/discover/${value}`);

@@ -10,7 +10,7 @@ export default function SearchBar() {
   };
 
   const onInput = (event: Event) => {
-    const value = (event.target as HTMLInputElement).value;
+    const { value = undefined } = event.target as HTMLInputElement;
     if (value !== undefined) {
       search.value = value;
     }
@@ -24,6 +24,7 @@ export default function SearchBar() {
         </label>
         <div class="search-bar-field">
           <svg class="search-bar-icon">
+            <title>Search Icon</title>
             <use href="/search.svg#search" />
           </svg>
           <input

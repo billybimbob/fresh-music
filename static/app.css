@@ -114,19 +114,6 @@ body {
     color: rgb(34 211 238);
 }
 
-.song-player {
-    display: flex;
-    position: absolute;
-    height: 7rem;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    animation: slide-up 1s ease-in-out;
-    z-index: 10;
-    border-radius: 0 1.5rem;
-    /* background-image: linear-gradient() */
-}
-
 @keyframes slide-up {
     from {
         opacity: 0;
@@ -647,4 +634,25 @@ body {
     flex-direction: column;
     width: 100%;
     margin-top: 2rem;
+}
+
+.song-player {
+    display: flex;
+    position: absolute;
+    height: 7rem;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    animation: slide-up 1s ease-in-out;
+    z-index: 10;
+    border-radius: 0 1.5rem;
+    /* background-image: linear-gradient() */
+}
+
+.playback {
+    display: flex;
+    flex-direction: column;
+    flex: 1 1 0%;
+    align-items: center;
+    justify-content: center;
 }
