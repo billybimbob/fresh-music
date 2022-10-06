@@ -3,7 +3,11 @@
   "deno.lint": true,
   "editor.defaultFormatter": "denoland.vscode-deno",
   "cSpell.words": [
+    "adamid",
     "Routable",
     "shazam"
-  ]
+  ],
+  "[svg]": {
+    "editor.defaultFormatter": "jock.svg"
+  }
 }

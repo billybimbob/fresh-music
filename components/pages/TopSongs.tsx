@@ -34,7 +34,7 @@ export default function TopSongs(_props: RoutableProps) {
   }
 
   return (
-    <div class="top-songs">
+    <article class="top-songs">
       <h2 class="top-songs-title">Discover Top Songs</h2>
       <ol class="top-songs-list">
         {tracks.map((track, i) => (
@@ -45,6 +45,6 @@ export default function TopSongs(_props: RoutableProps) {
           />
         ))}
       </ol>
-    </div>
+    </article>
   );
 }

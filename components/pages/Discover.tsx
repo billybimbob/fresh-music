@@ -54,8 +54,8 @@ export default function Discover({ genre = defaultGenre }: DiscoverProps) {
   }
 
   return (
-    <div class="discover">
-      <div class="discover-genres">
+    <article class="discover">
+      <section class="discover-genres">
         <h2 class="discover-genres-title">Discover {genreTitle}</h2>
         <select
           value={genre}
@@ -67,7 +67,7 @@ export default function Discover({ genre = defaultGenre }: DiscoverProps) {
             <option key={value} value={value}>{title}</option>
           ))}
         </select>
-      </div>
+      </section>
 
       <ol class="discover-songs">
         {tracks.map((track) => (
@@ -78,6 +78,6 @@ export default function Discover({ genre = defaultGenre }: DiscoverProps) {
           />
         ))}
       </ol>
-    </div>
+    </article>
   );
 }

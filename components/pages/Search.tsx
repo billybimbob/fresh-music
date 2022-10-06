@@ -41,7 +41,7 @@ export default function Search({ query = "" }: SearchProps) {
   }
 
   return (
-    <div class="search">
+    <article class="search">
       <h2 class="search-title">
         Showing results for <span class="search-query">{query}</span>
       </h2>
@@ -54,6 +54,6 @@ export default function Search({ query = "" }: SearchProps) {
           />
         ))}
       </ol>
-    </div>
+    </article>
   );
 }

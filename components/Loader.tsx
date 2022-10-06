@@ -6,9 +6,12 @@ interface LoaderProps {
 
 export default function Loader({ children }: LoaderProps) {
   return (
-    <div class="loader">
-      <img src="/loader.svg" class="loader-img" />
+    <article class="loader">
+      <svg class="loader-icon">
+        <title>Loading Animation</title>
+        <use href="/loader.svg#loader" />
+      </svg>
       <h1 class="loader-title">{children ?? "Loading"}</h1>
-    </div>
+    </article>
   );
 }

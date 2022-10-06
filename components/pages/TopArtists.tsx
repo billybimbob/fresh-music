@@ -17,11 +17,11 @@ export default function TopArtists(_props: RoutableProps) {
   }
 
   return (
-    <div class="top-artists">
+    <article class="top-artists">
       <h2 class="top-artists-title">Top Artists:</h2>
       <ol class="top-artists-list">
         {tracks.map((track) => <ArtistCard key={track.id} {...track} />)}
       </ol>
-    </div>
+    </article>
   );
 }

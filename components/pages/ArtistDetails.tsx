@@ -18,9 +18,9 @@ interface ArtistDetailsProps extends RoutableProps {
 export default function ArtistDetails({ id = "" }: ArtistDetailsProps) {
   const { data: artist, error } = useArtistDetails(id);
 
-  const image = artist !== undefined
-    ? toSize(artist.artwork.url, 500)
-    : undefined;
+  const image = useComputed(() =>
+    artist === undefined ? undefined : toSize(artist.artwork.url, 500)
+  );
 
   const onSongClick = (song: ArtistSong, index: number) => {
     if (artist === undefined) {
@@ -46,12 +46,16 @@ export default function ArtistDetails({ id = "" }: ArtistDetailsProps) {
   }
 
   return (
-    <div class="artist-page">
-      <div class="artist-details">
+    <article class="artist-page">
+      <section class="artist-details">
         <div class="artist-header"></div>
 
         <div class="artist-banner">
-          <img class="artist-img" alt={`${artist.name} Profile`} src={image} />
+          <img
+            class="artist-img"
+            alt={`${artist.name} Profile`}
+            src={image.value}
+          />
           <div class="artist-title">
             <h1 class="artist-title-name">{artist.name}</h1>
             <p class="artist-title-genres">{artist.genres.join(" ")}</p>
@@ -59,9 +63,9 @@ export default function ArtistDetails({ id = "" }: ArtistDetailsProps) {
         </div>
 
         <div class="artist-footer"></div>
-      </div>
+      </section>
 
-      <div class="artist-songs">
+      <section class="artist-songs">
         <h2 class="artist-songs-header">Related Songs:</h2>
         <ol class="artist-songs-list">
           {artist.songs.map((song, i) => (
@@ -73,8 +77,8 @@ export default function ArtistDetails({ id = "" }: ArtistDetailsProps) {
             />
           ))}
         </ol>
-      </div>
-    </div>
+      </section>
+    </article>
   );
 }
 

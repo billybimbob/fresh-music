@@ -39,8 +39,8 @@ export default function SongDetails({ id = "" }: SongDetailsProps) {
   }
 
   return (
-    <div class="song-page">
-      <div class="song-details">
+    <article class="song-page">
+      <section class="song-details">
         <div class="song-header"></div>
 
         <div class="song-banner">
@@ -57,16 +57,16 @@ export default function SongDetails({ id = "" }: SongDetailsProps) {
         </div>
 
         <div class="song-footer"></div>
-      </div>
+      </section>
 
-      <div class="song-lyrics">
+      <section class="song-lyrics">
         <h2 class="song-lyrics-title">Lyrics:</h2>
         <div class="song-lyrics-body">
           <p class="song-lyrics-text">{track.lyrics ?? "No lyrics found!"}</p>
         </div>
-      </div>
+      </section>
 
-      <div class="song-related">
+      <section class="song-related">
         <h2 class="song-related-header">Related Songs:</h2>
         <ol class="song-related-list">
           {related.map((song, i) => (
@@ -78,7 +78,7 @@ export default function SongDetails({ id = "" }: SongDetailsProps) {
             />
           ))}
         </ol>
-      </div>
-    </div>
+      </section>
+    </article>
   );
 }

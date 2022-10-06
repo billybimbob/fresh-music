@@ -12,7 +12,7 @@ interface SongCardProps extends Track {
 export default function SongCard(
   { id, name, images, artist, onClick }: SongCardProps,
 ) {
-  const [artistId] = artist.ids; // todo: account for > 1 ids
+  const artistId = useComputed(() => artist.ids[0]);
 
   const isActive = useComputed(() =>
     queue.isPlaying && queue.current?.id === id

@@ -1,6 +1,6 @@
 export default function SongPlayer() {
   return (
-    <div class="song-player">
-    </div>
+    <aside class="song-player">
+    </aside>
   );
 }

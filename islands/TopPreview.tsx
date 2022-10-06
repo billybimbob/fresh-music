@@ -1,3 +1,4 @@
+import { useComputed } from "@preact/signals";
 import type { Track } from "@/utils/types.ts";
 import { useCharts } from "@/utils/client.ts";
 import queue from "@/utils/songQueue.ts";
@@ -10,7 +11,7 @@ import Loader from "@/components/Loader.tsx";
 export default function TopPreview() {
   const { data: tracks, error } = useCharts();
 
-  const topSongs = tracks?.slice(0, 5);
+  const topSongs = useComputed(() => tracks?.slice(0, 5));
 
   const onSongClick = (track: Track, index: number) => {
     if (tracks === undefined) {
@@ -31,22 +32,22 @@ export default function TopPreview() {
     return <Error />;
   }
 
-  if (topSongs === undefined) {
+  if (topSongs.value === undefined) {
     return <Loader>Loading Top Songs...</Loader>;
   }
 
   return (
-    <div class="top-preview">
+    <article class="top-preview">
       <div class="top-preview-inner">
-        <div class="top-preview-songs">
-          <div class="top-preview-songs-header">
+        <section class="top-preview-songs">
+          <header class="top-preview-songs-header">
             <h2 class="top-preview-songs-title">Top Charts</h2>
             <p class="top-preview-songs-link">
               <a href="/top/songs">See more</a>
             </p>
-          </div>
+          </header>
           <ol class="top-preview-songs-list">
-            {topSongs.map((track, i) => (
+            {topSongs.value.map((track, i) => (
               <SongRow
                 key={track.id}
                 spot={i}
@@ -55,19 +56,21 @@ export default function TopPreview() {
               />
             ))}
           </ol>
-        </div>
-        <div className="top-preview-artists">
-          <div className="top-preview-artists-header">
-            <h2 className="top-preview-artists-title">Top Artists</h2>
-            <p className="top-preview-artists-link">
+        </section>
+        <section class="top-preview-artists">
+          <header class="top-preview-artists-header">
+            <h2 class="top-preview-artists-title">Top Artists</h2>
+            <p class="top-preview-artists-link">
               <a href="/top/artists">See more</a>
             </p>
-          </div>
+          </header>
           <ol class="top-preview-songs-list">
-            {topSongs.map((track) => <ArtistCard key={track.id} {...track} />)}
+            {topSongs.value.map((track) => (
+              <ArtistCard key={track.id} {...track} />
+            ))}
           </ol>
-        </div>
+        </section>
       </div>
-    </div>
+    </article>
   );
 }
