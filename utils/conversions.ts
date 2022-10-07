@@ -16,14 +16,16 @@ export function toTrack(source: ShazamTrack): Track {
     name: source.title,
     artist: {
       name: source.subtitle,
-      ids: source.artists.map(({ adamid }) => adamid),
+      ids: source.artists?.map(({ adamid }) => adamid) ?? [],
     },
-    genres: Object.values(source.genres),
-    images: {
+    genres: source.genres === undefined
+      ? undefined
+      : Object.values(source.genres),
+    images: source.images === undefined ? undefined : {
       background: source.images.background,
       cover: source.images.coverart,
     },
-    data: source.hub.actions.find((a) => a.type === "uri")?.uri,
+    data: source.hub.actions?.find((a) => a.type === "uri")?.uri,
     lyrics: source.sections?.find(({ text }) => Boolean(text))?.text?.join(""),
   };
 }
@@ -48,7 +50,7 @@ export function toArtist(source: ShazamArtist): Artist {
 
   const topSongs = artist.views["top-songs"].data
     .map(({ id }) => id)
-    .filter(songs.has)
+    .filter((id) => songs.has(id))
     .map((id) => songs.get(id)!);
 
   return {
@@ -94,5 +96,5 @@ function toArtistSong(source: ShazamArtist["songs"]["id"]): ArtistSong {
 }
 
 export function toSize(src: string, size: number) {
-  return src.replace(/({w})|({h})/, size.toString());
+  return src.replace(/({w})|({h})/g, size.toString());
 }

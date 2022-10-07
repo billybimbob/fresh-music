@@ -1,7 +1,8 @@
 import { useComputed } from "@preact/signals";
 import classes from "classNames/index.ts";
+
 import type { Track } from "@/utils/types.ts";
-import queue from "@/utils/songQueue.ts";
+import { useSongQueue } from "@/utils/songQueue.ts";
 import PlayButton from "@/components/PlayButton.tsx";
 
 interface SongRowProps extends Track {
@@ -12,6 +13,7 @@ interface SongRowProps extends Track {
 export default function SongRow(
   { id, spot, name, artist, images, onClick }: SongRowProps,
 ) {
+  const queue = useSongQueue();
   const isActive = useComputed(() => queue.current?.id === id);
 
   const row = useComputed(() =>
@@ -25,7 +27,7 @@ export default function SongRow(
     <li class={row.value}>
       <h3 class="song-row-spot">{spot}</h3>
       <div class="song-row-body">
-        <img class="song-row-img" alt={`${name} Cover`} src={images.cover} />
+        <img class="song-row-img" alt={`${name} Cover`} src={images?.cover} />
         <div class="song-row-title">
           <a href={`/songs/${id}`}>
             <p class="song-row-name">{name}</p>

@@ -4,7 +4,7 @@ import {
   useSignalEffect,
 } from "@preact/signals";
 import { useRef } from "preact/hooks";
-import queue from "@/utils/songQueue.ts";
+import { useSongQueue } from "@/utils/songQueue.ts";
 
 interface AudioProps {
   readonly seek: ReadonlySignal<number>;
@@ -19,6 +19,7 @@ export default function Audio(
 ) {
   const audio = useRef<HTMLAudioElement>(null);
   const isPaused = useSignal(audio.current?.paused ?? true);
+  const queue = useSongQueue();
 
   useSignalEffect(() => {
     if (audio.current === null) return;

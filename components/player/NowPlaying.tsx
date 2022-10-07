@@ -1,8 +1,10 @@
 import { useComputed } from "@preact/signals";
 import classes from "classNames/index.ts";
-import queue from "@/utils/songQueue.ts";
+import { useSongQueue } from "@/utils/songQueue.ts";
 
 export default function NowPlaying() {
+  const queue = useSongQueue();
+
   const poster = useComputed(() =>
     classes({
       "now-playing-poster": true,
@@ -18,6 +20,7 @@ export default function NowPlaying() {
     <figure class="now-playing">
       <div class={poster.value}>
         <img
+          title="Now Playing Art"
           class="now-playing-img"
           src={queue.current?.data}
           alt={imageAlt.value}

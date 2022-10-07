@@ -2,7 +2,7 @@ import { useComputed } from "@preact/signals";
 import classes from "classNames/index.ts";
 
 import type { Track } from "@/utils/types.ts";
-import queue from "@/utils/songQueue.ts";
+import { useSongQueue } from "@/utils/songQueue.ts";
 import PlayButton from "@/components/PlayButton.tsx";
 
 interface SongCardProps extends Track {
@@ -12,6 +12,8 @@ interface SongCardProps extends Track {
 export default function SongCard(
   { id, name, images, artist, onClick }: SongCardProps,
 ) {
+  const queue = useSongQueue();
+
   const artistId = useComputed(() => artist.ids[0]);
 
   const isActive = useComputed(() =>
@@ -31,7 +33,7 @@ export default function SongCard(
         <div class={btn.value}>
           <PlayButton isActive={isActive.value} onClick={onClick} />
         </div>
-        <img class="song-card-img" alt={`${name} Image`} src={images.cover} />
+        <img class="song-card-img" alt={`${name} Image`} src={images?.cover} />
       </div>
       <div class="song-card-right">
         <p class="song-card-name">

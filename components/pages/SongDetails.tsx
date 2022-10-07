@@ -1,7 +1,7 @@
 import { RoutableProps } from "preact-router";
 import type { Track } from "@/utils/types.ts";
 import { useRelatedSongs, useSongDetails } from "@/utils/client.ts";
-import queue from "@/utils/songQueue.ts";
+import { useSongQueue } from "@/utils/songQueue.ts";
 
 import SongRow from "@/components/SongRow.tsx";
 import Error from "@/components/Error.tsx";
@@ -14,6 +14,8 @@ interface SongDetailsProps extends RoutableProps {
 export default function SongDetails({ id = "" }: SongDetailsProps) {
   const { data: track, error: songError } = useSongDetails(id);
   const { data: related, error: relatedError } = useRelatedSongs(id);
+
+  const queue = useSongQueue();
 
   const onSongClick = (song: Track, index: number) => {
     if (related === undefined) {
@@ -47,12 +49,12 @@ export default function SongDetails({ id = "" }: SongDetailsProps) {
           <img
             class="song-img"
             alt={`${track.name} Cover`}
-            src={track.images.cover}
+            src={track.images?.cover}
           />
           <div class="song-title">
             <h1 class="song-title-name">{track.name}</h1>
             <p class="song-title-artist">{track.artist.name}</p>
-            <p class="song-title-genres">{track.genres.join(" ")}</p>
+            <p class="song-title-genres">{track.genres?.join(" ") ?? ""}</p>
           </div>
         </div>
 

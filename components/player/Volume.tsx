@@ -16,6 +16,8 @@ export default function Volume({ volume }: VolumeProps) {
     <div class="volume-bar">
       <VolumeButton volume={volume} />
       <input
+        title="Volume Slider"
+        name="volume-field"
         class="volume-field"
         type="range"
         step="any"

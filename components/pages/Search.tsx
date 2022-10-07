@@ -1,8 +1,9 @@
 import { RoutableProps } from "preact-router";
+import { useComputed } from "@preact/signals";
 
 import type { Track } from "@/utils/types.ts";
 import { useMusicSearch } from "@/utils/client.ts";
-import queue from "@/utils/songQueue.ts";
+import { useSongQueue } from "@/utils/songQueue.ts";
 
 import SongCard from "@/components/SongCard.tsx";
 import Error from "@/components/Error.tsx";
@@ -13,11 +14,14 @@ interface SearchProps extends RoutableProps {
 }
 
 export default function Search({ query = "" }: SearchProps) {
-  const { data: result, error } = useMusicSearch(query);
-  const tracks = result?.tracks;
+  const queue = useSongQueue();
 
-  const onSongClick = (song: Track) => {
-    if (tracks === undefined) {
+  const { data: result, error } = useMusicSearch(query);
+
+  const tracks = useComputed(() => result?.tracks);
+
+  const onSongClick = (song: Track, index: number) => {
+    if (tracks.value === undefined) {
       return;
     }
 
@@ -26,8 +30,7 @@ export default function Search({ query = "" }: SearchProps) {
       return;
     }
 
-    const songIndex = tracks.indexOf(song);
-    const songSlice = tracks.slice(songIndex);
+    const songSlice = tracks.value.slice(index);
 
     queue.listenTo(...songSlice);
   };
@@ -36,7 +39,7 @@ export default function Search({ query = "" }: SearchProps) {
     return <Error />;
   }
 
-  if (tracks === undefined) {
+  if (tracks.value === undefined) {
     return <Loader>Searching {query}</Loader>;
   }
 
@@ -46,10 +49,10 @@ export default function Search({ query = "" }: SearchProps) {
         Showing results for <span class="search-query">{query}</span>
       </h2>
       <ol class="search-songs">
-        {tracks.map((track) => (
+        {tracks.value.map((track, i) => (
           <SongCard
             key={track.id}
-            onClick={() => onSongClick(track)}
+            onClick={() => onSongClick(track, i)}
             {...track}
           />
         ))}

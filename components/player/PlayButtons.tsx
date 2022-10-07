@@ -1,6 +1,6 @@
 import { type Signal, useComputed, useSignal } from "@preact/signals";
 import classes from "classNames/index.ts";
-import queue from "@/utils/songQueue.ts";
+import { useSongQueue } from "@/utils/songQueue.ts";
 
 interface PlayButtonsProps {
   readonly loop: Signal<boolean>;
@@ -8,6 +8,8 @@ interface PlayButtonsProps {
 
 export default function PlayButtons({ loop }: PlayButtonsProps) {
   const isShuffled = useSignal(false);
+
+  const queue = useSongQueue();
 
   const loopIcon = useComputed(() =>
     classes({

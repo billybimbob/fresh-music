@@ -5,7 +5,7 @@ import classes from "classNames/index.ts";
 import type { ArtistSong } from "@/utils/types.ts";
 import { toSize } from "@/utils/conversions.ts";
 import { useArtistDetails } from "@/utils/client.ts";
-import queue from "@/utils/songQueue.ts";
+import { useSongQueue } from "@/utils/songQueue.ts";
 
 import PlayButton from "@/components/PlayButton.tsx";
 import Error from "@/components/Error.tsx";
@@ -16,6 +16,8 @@ interface ArtistDetailsProps extends RoutableProps {
 }
 
 export default function ArtistDetails({ id = "" }: ArtistDetailsProps) {
+  const queue = useSongQueue();
+
   const { data: artist, error } = useArtistDetails(id);
 
   const image = useComputed(() =>
@@ -90,6 +92,8 @@ interface ArtistSongProps extends ArtistSong {
 function ArtistSongRow(
   { id, spot, name, album, artwork, onClick }: ArtistSongProps,
 ) {
+  const queue = useSongQueue();
+
   const isActive = useComputed(() => queue.current?.id === id);
 
   const item = useComputed(() =>

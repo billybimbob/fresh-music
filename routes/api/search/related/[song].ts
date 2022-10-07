@@ -12,9 +12,9 @@ export const handler = async (_req: Request, ctx: HandlerContext) => {
     return new Response(null, { status: Status.BadRequest });
   }
 
-  const data: { tracks: readonly ShazamTrack[] } = await response.json();
+  const source: readonly ShazamTrack[] = await response.json();
 
-  const tracks = data.tracks.map(toTrack);
+  const tracks = source.map(toTrack);
 
   return Response.json(tracks);
 };

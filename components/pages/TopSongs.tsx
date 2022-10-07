@@ -2,14 +2,17 @@ import { RoutableProps } from "preact-router";
 import { useComputed } from "@preact/signals";
 import type { Track } from "@/utils/types.ts";
 import { useCharts } from "@/utils/client.ts";
-import preload from "@/utils/preload.ts";
-import queue from "@/utils/songQueue.ts";
+import { usePreload } from "@/utils/preload.ts";
+import { useSongQueue } from "@/utils/songQueue.ts";
 
 import SongCard from "@/components/SongCard.tsx";
 import Error from "@/components/Error.tsx";
 import Loader from "@/components/Loader.tsx";
 
 export default function TopSongs(_props: RoutableProps) {
+  const preload = usePreload();
+  const queue = useSongQueue();
+
   const { data: tracks, error } = useCharts(preload.charts !== undefined);
 
   const songs = useComputed(() => preload.charts ?? tracks);

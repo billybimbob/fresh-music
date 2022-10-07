@@ -1,3 +1,5 @@
+import { Link } from "preact-router/match";
+
 export default function Navigation() {
   return (
     <aside class="nav-menu">
@@ -6,10 +8,14 @@ export default function Navigation() {
         <use href="/logo.svg#logo" />
       </svg>
       <nav class="nav-links">
-        <a href="/" class="nav-item">Discover</a>
-        {/* <a href="/around-you" class="nav-item">Around You</a> */}
-        <a href="/top/artists" class="nav-item">Top Artists</a>
-        <a href="/top/songs" class="nav-item">Top Charts</a>
+        <Link href="/" class="nav-item" activeClassName="active">Discover</Link>
+        {/* <Link href="/around-you" class="nav-item">Around You</Link> */}
+        <Link href="/top/artists" class="nav-item" activeClassName="active">
+          Top Artists
+        </Link>
+        <Link href="/top/songs" class="nav-item" activeClassName="active">
+          Top Charts
+        </Link>
       </nav>
     </aside>
   );

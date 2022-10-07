@@ -1,66 +1,43 @@
-import { batch, signal } from "@preact/signals";
-import { useEffect } from "preact/hooks";
-
-import genres from "@/static/genres.json" assert { type: "json" };
+import { batch, useSignal } from "@preact/signals";
+import { createContext } from "preact";
+import { useContext, useMemo } from "preact/hooks";
 import type { Track } from "@/utils/types.ts";
-import fetchShazam from "@/utils/shazam.ts";
 
-const charts = signal(undefined as readonly Track[] | undefined);
-const genreCharts = signal(undefined as readonly Track[] | undefined);
+export interface PreloadState {
+  readonly charts: readonly Track[] | undefined;
+  readonly genreCharts: readonly Track[] | undefined;
+}
 
-export default {
-  get charts() {
-    return charts.value;
-  },
+export const Preload = createContext<PreloadState>({
+  charts: undefined,
+  genreCharts: undefined,
+});
 
-  get genre() {
-    return genreCharts.value;
-  },
-};
-
-export function useInitialPreload(
+export function usePreloadSource(
   initialCharts?: readonly Track[],
   initialGenre?: readonly Track[],
 ) {
-  useEffect(() => {
-    batch(() => {
-      charts.value = initialCharts;
-      genreCharts.value = initialGenre;
-    });
-  }, [initialCharts, initialGenre]);
+  const charts = useSignal(initialCharts);
+  const genreCharts = useSignal(initialGenre);
 
-  return clear;
+  return useMemo(() => ({
+    get charts() {
+      return charts.value;
+    },
+
+    get genreCharts() {
+      return genreCharts.value;
+    },
+
+    clear() {
+      batch(() => {
+        charts.value = undefined;
+        genreCharts.value = undefined;
+      });
+    },
+  }), [charts, genreCharts]);
 }
 
-function clear() {
-  batch(() => {
-    charts.value = undefined;
-    genreCharts.value = undefined;
-  });
-}
-
-export interface PreloadResult {
-  charts?: readonly Track[];
-  genre?: readonly Track[];
-}
-
-const [{ value: defaultGenre }] = genres;
-
-export async function fetchPreload(): Promise<PreloadResult> {
-  const fetchChart = fetchShazam("/charts/world");
-
-  const fetchGenre = fetchShazam("/charts/genre-world", {
-    genre_code: defaultGenre,
-  });
-
-  const [charts, genre] = await Promise.all([
-    fetchChart.then(tryJson),
-    fetchGenre.then(tryJson),
-  ]);
-
-  return { charts, genre };
-}
-
-function tryJson(response: Response): Promise<readonly Track[]> | undefined {
-  return response.ok ? response.json() : undefined;
+export function usePreload(): PreloadState {
+  return useContext(Preload);
 }

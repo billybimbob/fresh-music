@@ -1,13 +1,15 @@
 import { useComputed } from "@preact/signals";
 import { RoutableProps } from "preact-router";
 import { useCharts } from "@/utils/client.ts";
-import preload from "@/utils/preload.ts";
+import { usePreload } from "@/utils/preload.ts";
 
 import ArtistCard from "@/components/ArtistCard.tsx";
 import Error from "@/components/Error.tsx";
 import Loader from "@/components/Loader.tsx";
 
 export default function TopArtists(_props: RoutableProps) {
+  const preload = usePreload();
+
   const { data: tracks, error } = useCharts(preload.charts !== undefined);
 
   const songs = useComputed(() => preload.charts ?? tracks);

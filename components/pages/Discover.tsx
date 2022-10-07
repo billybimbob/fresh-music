@@ -4,8 +4,8 @@ import genres from "@/static/genres.json" assert { type: "json" };
 
 import type { Track } from "@/utils/types.ts";
 import { useGenreCharts } from "@/utils/client.ts";
-import preload from "@/utils/preload.ts";
-import queue from "@/utils/songQueue.ts";
+import { usePreload } from "@/utils/preload.ts";
+import { useSongQueue } from "@/utils/songQueue.ts";
 
 import SongCard from "@/components/SongCard.tsx";
 import Error from "@/components/Error.tsx";
@@ -18,9 +18,12 @@ interface DiscoverProps extends RoutableProps {
 }
 
 export default function Discover({ genre = defaultGenre }: DiscoverProps) {
+  const preload = usePreload();
+  const queue = useSongQueue();
+
   const { data: tracks, error } = useGenreCharts(
     genre,
-    preload.genre !== undefined,
+    preload.genreCharts !== undefined,
   );
 
   const genreTitle = useComputed(() =>
@@ -29,7 +32,7 @@ export default function Discover({ genre = defaultGenre }: DiscoverProps) {
       ?.title ?? defaultTitle
   );
 
-  const songs = useComputed(() => preload.genre ?? tracks);
+  const songs = useComputed(() => preload.genreCharts ?? tracks);
 
   const onGenreChange = (event: Event) => {
     const { value = undefined } = event.target as HTMLSelectElement;
@@ -67,6 +70,7 @@ export default function Discover({ genre = defaultGenre }: DiscoverProps) {
       <section class="discover-genres">
         <h2 class="discover-genres-title">Discover {genreTitle}</h2>
         <select
+          title="Discover Genre"
           value={genre}
           name="genre"
           class="discover-genres-options"

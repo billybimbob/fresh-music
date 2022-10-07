@@ -5,18 +5,18 @@ export interface ShazamTrack {
   readonly title: string;
   readonly subtitle: string;
   readonly hub: {
-    readonly actions: readonly {
+    readonly actions?: readonly {
       readonly type: string;
       readonly id?: string;
       readonly uri?: string;
     }[];
   };
-  readonly images: {
+  readonly images?: {
     readonly background: string;
     readonly coverart: string;
   };
-  readonly genres: { [key: string]: string };
-  readonly artists: readonly { readonly adamid: string }[];
+  readonly artists?: readonly { readonly adamid: string }[];
+  readonly genres?: { [key: string]: string };
   readonly sections?: readonly { readonly text?: readonly string[] }[];
 }
 
@@ -130,8 +130,8 @@ export interface Track {
     readonly name: string;
     readonly ids: readonly string[];
   };
-  readonly genres: readonly string[];
-  readonly images: {
+  readonly genres?: readonly string[];
+  readonly images?: {
     readonly background: string;
     readonly cover: string;
   };

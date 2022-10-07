@@ -34,6 +34,8 @@ export default function SeekBar(
       </button>
       <p class="playback-time">{passed}</p>
       <input
+        title="Playback Slider"
+        name="playback-slider"
         class="playback-slider"
         type="range"
         step="any"
