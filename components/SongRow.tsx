@@ -3,6 +3,8 @@ import classes from "classNames/index.ts";
 
 import type { Track } from "@/utils/types.ts";
 import { useSongQueue } from "@/utils/songQueue.ts";
+
+import ArtistLink from "@/components/ArtistLink.tsx";
 import PlayButton from "@/components/PlayButton.tsx";
 
 interface SongRowProps extends Track {
@@ -14,7 +16,9 @@ export default function SongRow(
   { id, spot, name, artist, images, onClick }: SongRowProps,
 ) {
   const queue = useSongQueue();
-  const isActive = useComputed(() => queue.current?.id === id);
+  const isActive = useComputed(() =>
+    queue.isPlaying && queue.current?.id === id
+  );
 
   const row = useComputed(() =>
     classes({
@@ -32,10 +36,12 @@ export default function SongRow(
           <a href={`/songs/${id}`}>
             <p class="song-row-name">{name}</p>
           </a>
-          <p class="song-row-artist">{artist.name}</p>
+          <p class="song-row-artist">
+            <ArtistLink {...artist} />
+          </p>
         </div>
       </div>
-      <PlayButton isActive={isActive.value} onClick={onClick} />
+      <PlayButton isActive={isActive} onClick={onClick} />
     </li>
   );
 }

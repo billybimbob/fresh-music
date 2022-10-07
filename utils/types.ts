@@ -102,6 +102,11 @@ export interface ArtistPreview {
   readonly image: string;
 }
 
+export interface ArtistDescription {
+  readonly name: string;
+  readonly ids: readonly string[];
+}
+
 export interface Artwork {
   readonly url: string;
   readonly colors: {
@@ -113,7 +118,7 @@ export interface Artwork {
 export interface ArtistSong {
   readonly id: string;
   readonly name: string;
-  readonly artist: string;
+  readonly artist: ArtistDescription;
   readonly genres: readonly string[];
   readonly album: string;
   readonly releaseDate: string;
@@ -126,10 +131,7 @@ export interface ArtistSong {
 export interface Track {
   readonly id: string;
   readonly name: string;
-  readonly artist: {
-    readonly name: string;
-    readonly ids: readonly string[];
-  };
+  readonly artist: ArtistDescription;
   readonly genres?: readonly string[];
   readonly images?: {
     readonly background: string;

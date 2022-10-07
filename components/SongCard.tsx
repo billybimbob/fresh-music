@@ -3,6 +3,8 @@ import classes from "classNames/index.ts";
 
 import type { Track } from "@/utils/types.ts";
 import { useSongQueue } from "@/utils/songQueue.ts";
+
+import ArtistLink from "@/components/ArtistLink.tsx";
 import PlayButton from "@/components/PlayButton.tsx";
 
 interface SongCardProps extends Track {
@@ -13,8 +15,6 @@ export default function SongCard(
   { id, name, images, artist, onClick }: SongCardProps,
 ) {
   const queue = useSongQueue();
-
-  const artistId = useComputed(() => artist.ids[0]);
 
   const isActive = useComputed(() =>
     queue.isPlaying && queue.current?.id === id
@@ -31,7 +31,7 @@ export default function SongCard(
     <li class="song-card">
       <div class="song-card-left">
         <div class={btn.value}>
-          <PlayButton isActive={isActive.value} onClick={onClick} />
+          <PlayButton isActive={isActive} onClick={onClick} />
         </div>
         <img class="song-card-img" alt={`${name} Image`} src={images?.cover} />
       </div>
@@ -40,7 +40,7 @@ export default function SongCard(
           <a href={`/songs/${id}`}>{name}</a>
         </p>
         <p class="song-card-artist">
-          <a href={`/artists/${artistId}`}>{artist.name}</a>
+          <ArtistLink {...artist} />
         </p>
       </div>
     </li>

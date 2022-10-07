@@ -3,6 +3,7 @@ import type { Track } from "@/utils/types.ts";
 import { useRelatedSongs, useSongDetails } from "@/utils/client.ts";
 import { useSongQueue } from "@/utils/songQueue.ts";
 
+import ArtistLink from "@/components/ArtistLink.tsx";
 import SongRow from "@/components/SongRow.tsx";
 import Error from "@/components/Error.tsx";
 import Loader from "@/components/Loader.tsx";
@@ -14,7 +15,6 @@ interface SongDetailsProps extends RoutableProps {
 export default function SongDetails({ id = "" }: SongDetailsProps) {
   const { data: track, error: songError } = useSongDetails(id);
   const { data: related, error: relatedError } = useRelatedSongs(id);
-
   const queue = useSongQueue();
 
   const onSongClick = (song: Track, index: number) => {
@@ -53,7 +53,9 @@ export default function SongDetails({ id = "" }: SongDetailsProps) {
           />
           <div class="song-title">
             <h1 class="song-title-name">{track.name}</h1>
-            <p class="song-title-artist">{track.artist.name}</p>
+            <p class="song-title-artist">
+              <ArtistLink {...track.artist} />
+            </p>
             <p class="song-title-genres">{track.genres?.join(" ") ?? ""}</p>
           </div>
         </div>

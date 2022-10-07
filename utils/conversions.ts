@@ -44,7 +44,7 @@ export function toArtist(source: ShazamArtist): Artist {
   const songs = Object
     .values(source.songs)
     .reduce(
-      (ss, song) => ss.set(song.id, toArtistSong(song)),
+      (ss, song) => ss.set(song.id, toArtistSong(song, artist)),
       new Map<string, ArtistSong>(),
     );
 
@@ -78,7 +78,10 @@ function toArtwork(source: ShazamArtwork): Artwork {
   };
 }
 
-function toArtistSong(source: ShazamArtist["songs"]["id"]): ArtistSong {
+function toArtistSong(
+  source: ShazamArtist["songs"]["id"],
+  artist: ShazamArtist["artists"]["id"],
+): ArtistSong {
   const { id, attributes: attrs } = source;
   const { previews: [pre = undefined] } = attrs;
   return {
@@ -89,7 +92,10 @@ function toArtistSong(source: ShazamArtist["songs"]["id"]): ArtistSong {
     duration: attrs.durationInMillis,
     artwork: toArtwork(attrs.artwork),
     composer: attrs.composerName,
-    artist: attrs.artistName,
+    artist: {
+      name: artist.attributes.name,
+      ids: [artist.id],
+    },
     name: attrs.name,
     data: pre?.url,
   };

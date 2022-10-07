@@ -4,8 +4,8 @@ import type { Track } from "@/utils/types.ts";
 import { Preload, usePreloadSource } from "@/utils/preload.ts";
 import { SongState, useSongQueueSource } from "@/utils/songQueue.ts";
 
-import MusicRoutes from "@/components/MusicRoutes.tsx";
-import SongPlayer from "@/components/SongPlayer.tsx";
+import MusicRoutes from "@/components/pages/mod.ts";
+import SongPlayer from "@/components/player/mod.ts";
 import TopPreview from "@/components/TopPreview.tsx";
 
 interface MusicBrowserProps {

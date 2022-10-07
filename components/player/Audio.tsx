@@ -17,13 +17,13 @@ interface AudioProps {
 export default function Audio(
   { seek, volume, loop, onProgress, onDurationFound }: AudioProps,
 ) {
+  const queue = useSongQueue();
   const audio = useRef<HTMLAudioElement>(null);
   const isPaused = useSignal(audio.current?.paused ?? true);
-  const queue = useSongQueue();
 
   useSignalEffect(() => {
-    if (audio.current === null) return;
     if (isPaused.value !== queue.isPlaying) return;
+    if (audio.current === null) return;
 
     if (!queue.isPlaying) {
       audio.current.pause();
@@ -39,8 +39,9 @@ export default function Audio(
   });
 
   useSignalEffect(() => {
+    if (seek.value <= 0) return;
     if (audio.current === null) return;
-    if (seek.value <= 0 || seek.value > audio.current.duration) return;
+    if (seek.value > audio.current.duration) return;
 
     audio.current.currentTime = seek.value;
   });
@@ -53,12 +54,12 @@ export default function Audio(
   };
 
   const onEnded = () => {
-    if (audio.current === null) return;
     if (loop) return;
 
     queue.seekNext();
 
     if (!queue.isPlaying) return;
+    if (audio.current === null) return;
 
     audio.current.play()
       .catch(() => {

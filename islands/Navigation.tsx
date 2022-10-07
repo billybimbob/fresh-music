@@ -3,7 +3,7 @@ import { Link } from "preact-router/match";
 export default function Navigation() {
   return (
     <aside class="nav-menu">
-      <svg class="nav-icon">
+      <svg class="nav-icon" viewBox="0 0 220 75">
         <title>Logo</title>
         <use href="/logo.svg#logo" />
       </svg>

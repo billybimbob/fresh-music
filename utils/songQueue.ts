@@ -99,7 +99,14 @@ export function useSongQueueSource(): SongQueue {
     },
 
     toggle() {
-      isPlaying.value = !isPlaying.value;
+      if (isPlaying.value) {
+        isPlaying.value = false;
+        return;
+      }
+
+      if (current.value !== null) {
+        isPlaying.value = true;
+      }
     },
 
     add(...songs: readonly Song[]) {

@@ -6,14 +6,12 @@ import { useSongQueue } from "@/utils/songQueue.ts";
 
 import ArtistCard from "@/components/ArtistCard.tsx";
 import SongRow from "@/components/SongRow.tsx";
-import Error from "@/components/Error.tsx";
-import Loader from "@/components/Loader.tsx";
 
 export default function TopPreview() {
   const preload = usePreload();
   const queue = useSongQueue();
 
-  const { data: tracks, error } = useCharts(preload.charts !== undefined);
+  const { data: tracks } = useCharts(preload.charts !== undefined);
 
   const songs = useComputed(() => preload.charts ?? tracks);
   const topSongs = useComputed(() => songs.value?.slice(0, 5));
@@ -33,14 +31,6 @@ export default function TopPreview() {
     queue.listenTo(...songSlice);
   };
 
-  if (error !== undefined) {
-    return <Error />;
-  }
-
-  if (topSongs.value === undefined) {
-    return <Loader>Loading Top Songs...</Loader>;
-  }
-
   return (
     <article class="top-preview">
       <div class="top-preview-inner">
@@ -52,7 +42,7 @@ export default function TopPreview() {
             </p>
           </header>
           <ol class="top-preview-songs-list">
-            {topSongs.value.map((track, i) => (
+            {topSongs.value?.map((track, i) => (
               <SongRow
                 key={track.id}
                 spot={i}
@@ -70,7 +60,7 @@ export default function TopPreview() {
             </p>
           </header>
           <ol class="top-preview-songs-list">
-            {topSongs.value.map((track) => (
+            {topSongs.value?.map((track) => (
               <ArtistCard key={track.id} {...track} />
             ))}
           </ol>
