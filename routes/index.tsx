@@ -2,8 +2,6 @@ import type { HandlerContext, PageProps } from "$fresh/server.ts";
 
 import genres from "@/static/genres.json" assert { type: "json" };
 import type { ShazamTrack, Track } from "@/utils/types.ts";
-import { toTrack } from "@/utils/conversions.ts";
-import fetchShazam from "@/utils/shazam.ts";
 
 import MusicBrowser from "@/islands/MusicBrowser.tsx";
 import Navigation from "@/islands/Navigation.tsx";
@@ -17,14 +15,12 @@ interface PreloadResult {
 const [{ value: defaultGenre }] = genres;
 
 export const handler = async (
-  _req: Request,
+  req: Request,
   ctx: HandlerContext<PreloadResult>,
 ) => {
-  const fetchChart = fetchShazam("/charts/world");
-
-  const fetchGenre = fetchShazam("/charts/genre-world", {
-    genre_code: defaultGenre,
-  });
+  const { origin } = new URL(req.url);
+  const fetchChart = fetch(`${origin}/api/charts`);
+  const fetchGenre = fetch(`${origin}/api/charts/genre/${defaultGenre}`);
 
   const [charts, genre] = await Promise.all([
     fetchChart.then(getTracks),
@@ -35,13 +31,11 @@ export const handler = async (
 };
 
 async function getTracks(response: Response) {
-  if (!response.ok) {
+  if (response.ok) {
+    return await response.json() as readonly Track[];
+  } else {
     return undefined;
   }
-
-  const tracks: readonly ShazamTrack[] = await response.json();
-
-  return tracks.map(toTrack);
 }
 
 export default function Home(props: PageProps<PreloadResult>) {

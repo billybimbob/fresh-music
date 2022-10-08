@@ -1,6 +1,4 @@
-import { useComputed } from "@preact/signals";
 import classes from "classNames/index.ts";
-
 import type { Track } from "@/utils/types.ts";
 import { useSongQueue } from "@/utils/songQueue.ts";
 
@@ -16,21 +14,17 @@ export default function SongCard(
 ) {
   const queue = useSongQueue();
 
-  const isActive = useComputed(() =>
-    queue.isPlaying && queue.current?.id === id
-  );
+  const isActive = queue.isPlaying && queue.current?.id === id;
 
-  const btn = useComputed(() =>
-    classes({
-      "song-card-btn": true,
-      "song-card-btn-active": isActive.value,
-    })
-  );
+  const btn = classes({
+    "song-card-btn": true,
+    "song-card-btn-active": isActive,
+  });
 
   return (
     <li class="song-card">
       <div class="song-card-left">
-        <div class={btn.value}>
+        <div class={btn}>
           <PlayButton isActive={isActive} onClick={onClick} />
         </div>
         <img class="song-card-img" alt={`${name} Image`} src={images?.cover} />

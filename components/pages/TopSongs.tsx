@@ -1,5 +1,6 @@
 import { RoutableProps } from "preact-router";
 import { useComputed } from "@preact/signals";
+
 import type { Track } from "@/utils/types.ts";
 import { useCharts } from "@/utils/client.ts";
 import { usePreload } from "@/utils/preload.ts";
@@ -13,9 +14,8 @@ export default function TopSongs(_props: RoutableProps) {
   const preload = usePreload();
   const queue = useSongQueue();
 
-  const { data: tracks, error } = useCharts(preload.charts !== undefined);
-
-  const songs = useComputed(() => preload.charts ?? tracks);
+  const response = useCharts(preload.charts !== undefined);
+  const songs = useComputed(() => preload.charts ?? response.data);
 
   const onSongClick = (track: Track, index: number) => {
     if (songs.value === undefined) {
@@ -32,7 +32,7 @@ export default function TopSongs(_props: RoutableProps) {
     queue.listenTo(...songSlice);
   };
 
-  if (error !== undefined) {
+  if (response.error !== undefined) {
     return <Error />;
   }
 

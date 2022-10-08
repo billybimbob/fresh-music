@@ -1,47 +1,77 @@
+import { useSignal } from "@preact/signals";
+import { useMemo } from "preact/hooks";
 import useSWR from "swr";
 import type { Artist, SearchResult, Track } from "@/utils/types.ts";
 
-async function fetchJson(endpoint: string) {
-  const response = await fetch(endpoint);
-  return response.json();
+export interface ResponseSignal<T> {
+  readonly data: T | undefined;
+  readonly error: Error | undefined;
 }
 
 export function useCharts(hasInitial = false) {
-  return useSWR<readonly Track[], Error>(
-    hasInitial ? null : "/api/charts",
-    fetchJson,
-  );
+  const key = hasInitial ? null : "/api/charts";
+  return useSWRSignal<readonly Track[]>(key);
 }
 
 export function useCountryCharts(id: string) {
-  return useSWR<readonly Track[], Error>(
-    `/api/charts/country/${id}`,
-    fetchJson,
-  );
+  return useSWRSignal<readonly Track[]>(`/api/charts/country/${id}`);
 }
 
 export function useGenreCharts(id: string, hasInitial = false) {
-  return useSWR<readonly Track[], Error>(
-    hasInitial ? null : `/api/charts/genre/${id}`,
-    fetchJson,
-  );
+  const key = hasInitial ? null : `/api/charts/genre/${id}`;
+  return useSWRSignal<readonly Track[]>(key);
 }
 
 export function useRelatedSongs(id: string) {
-  return useSWR<readonly Track[], Error>(
-    `/api/search/related/${id}`,
-    fetchJson,
-  );
+  return useSWRSignal<readonly Track[]>(`/api/search/related/${id}`);
 }
 
 export function useMusicSearch(query: string) {
-  return useSWR<SearchResult, Error>(`/api/search/${query}`, fetchJson);
+  return useSWRSignal<SearchResult>(`/api/search/${query}`);
 }
 
 export function useSongDetails(id: string) {
-  return useSWR<Track, Error>(`/api/songs/${id}`, fetchJson);
+  return useSWRSignal<Track>(`/api/songs/${id}`);
 }
 
 export function useArtistDetails(id: string) {
-  return useSWR<Artist, Error>(`/api/songs/artist/${id}`, fetchJson);
+  return useSWRSignal<Artist>(`/api/songs/artist/${id}`);
+}
+
+function useSWRSignal<T>(key: string | null): ResponseSignal<T> {
+  const data = useSignal<T | undefined>(undefined);
+  const error = useSignal<Error | undefined>(undefined);
+
+  useSWR(key, null, {
+    async fetcher(endpoint: string) {
+      // console.log(`running fetch on ${endpoint}`);
+      const response = await fetch(endpoint);
+      return await response.json() as T;
+    },
+    use: [
+      (next) => (...args) => {
+        data.value = undefined;
+        error.value = undefined;
+
+        const result = next(...args);
+
+        // console.log(`setting response on ${key}`);
+        // keep eye on type assumptions here
+
+        data.value = result.data as typeof data.value;
+        error.value = result.error as typeof error.value;
+
+        return result;
+      },
+    ],
+  });
+
+  return useMemo(() => ({
+    get data() {
+      return data.value;
+    },
+    get error() {
+      return error.value;
+    },
+  }), [data, error]);
 }

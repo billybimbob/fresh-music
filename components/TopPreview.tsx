@@ -11,9 +11,8 @@ export default function TopPreview() {
   const preload = usePreload();
   const queue = useSongQueue();
 
-  const { data: tracks } = useCharts(preload.charts !== undefined);
-
-  const songs = useComputed(() => preload.charts ?? tracks);
+  const response = useCharts(preload.charts !== undefined);
+  const songs = useComputed(() => preload.charts ?? response.data);
   const topSongs = useComputed(() => songs.value?.slice(0, 5));
 
   const onSongClick = (track: Track, index: number) => {

@@ -21,18 +21,11 @@ export default function Discover({ genre = defaultGenre }: DiscoverProps) {
   const preload = usePreload();
   const queue = useSongQueue();
 
-  const { data: tracks, error } = useGenreCharts(
-    genre,
-    preload.genreCharts !== undefined,
-  );
+  const response = useGenreCharts(genre, preload.genreCharts !== undefined);
+  const songs = useComputed(() => preload.genreCharts ?? response.data);
 
-  const genreTitle = useComputed(() =>
-    genres
-      .find((g) => g.value === genre)
-      ?.title ?? defaultTitle
-  );
-
-  const songs = useComputed(() => preload.genreCharts ?? tracks);
+  const genreTitle = genres
+    .find((g) => g.value === genre)?.title ?? defaultTitle;
 
   const onGenreChange = (event: Event) => {
     const { value = undefined } = event.target as HTMLSelectElement;
@@ -57,7 +50,7 @@ export default function Discover({ genre = defaultGenre }: DiscoverProps) {
     queue.listenTo(...songSlice);
   };
 
-  if (error !== undefined) {
+  if (response.error !== undefined) {
     return <Error />;
   }
 

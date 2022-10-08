@@ -2,7 +2,7 @@ import { type RouterOnChangeArgs } from "preact-router";
 
 import type { Track } from "@/utils/types.ts";
 import { Preload, usePreloadSource } from "@/utils/preload.ts";
-import { SongState, useSongQueueSource } from "@/utils/songQueue.ts";
+import { SongQueue, useSongQueueSource } from "@/utils/songQueue.ts";
 
 import MusicRoutes from "@/components/pages/mod.ts";
 import SongPlayer from "@/components/player/mod.ts";
@@ -24,7 +24,7 @@ export default function MusicBrowser({ charts, genre }: MusicBrowserProps) {
   };
 
   return (
-    <SongState.Provider value={queue}>
+    <SongQueue.Provider value={queue}>
       <Preload.Provider value={preload}>
         <div class="browser-inner">
           <MusicRoutes onRouteChange={onRouteChange} />
@@ -32,6 +32,6 @@ export default function MusicBrowser({ charts, genre }: MusicBrowserProps) {
         </div>
       </Preload.Provider>
       <SongPlayer />
-    </SongState.Provider>
+    </SongQueue.Provider>
   );
 }

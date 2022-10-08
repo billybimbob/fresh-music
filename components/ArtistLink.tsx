@@ -1,10 +1,9 @@
-import { useComputed } from "@preact/signals";
 import type { ArtistDescription } from "@/utils/types.ts";
 
 export default function ArtistLink({ name, ids }: ArtistDescription) {
-  const artistId = useComputed(() => ids.at(0));
+  const [artistId = undefined] = ids;
 
-  if (artistId.value === undefined) {
+  if (artistId === undefined) {
     return <>{name}</>;
   }
 

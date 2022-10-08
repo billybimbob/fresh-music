@@ -14,11 +14,10 @@ interface SearchProps extends RoutableProps {
 }
 
 export default function Search({ query = "" }: SearchProps) {
+  const response = useMusicSearch(query);
   const queue = useSongQueue();
 
-  const { data: result, error } = useMusicSearch(query);
-
-  const tracks = useComputed(() => result?.tracks);
+  const tracks = useComputed(() => response.data?.tracks);
 
   const onSongClick = (song: Track, index: number) => {
     if (tracks.value === undefined) {
@@ -35,7 +34,7 @@ export default function Search({ query = "" }: SearchProps) {
     queue.listenTo(...songSlice);
   };
 
-  if (error !== undefined) {
+  if (response.error !== undefined) {
     return <Error />;
   }
 

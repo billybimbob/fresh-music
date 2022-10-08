@@ -1,4 +1,5 @@
 import { RoutableProps } from "preact-router";
+import { useComputed } from "@preact/signals";
 import type { Track } from "@/utils/types.ts";
 import { useRelatedSongs, useSongDetails } from "@/utils/client.ts";
 import { useSongQueue } from "@/utils/songQueue.ts";
@@ -13,12 +14,15 @@ interface SongDetailsProps extends RoutableProps {
 }
 
 export default function SongDetails({ id = "" }: SongDetailsProps) {
-  const { data: track, error: songError } = useSongDetails(id);
-  const { data: related, error: relatedError } = useRelatedSongs(id);
+  const details = useSongDetails(id);
+  const related = useRelatedSongs(id);
   const queue = useSongQueue();
 
+  const track = useComputed(() => details.data);
+  const songs = useComputed(() => related.data);
+
   const onSongClick = (song: Track, index: number) => {
-    if (related === undefined) {
+    if (songs.value === undefined) {
       return;
     }
 
@@ -27,16 +31,16 @@ export default function SongDetails({ id = "" }: SongDetailsProps) {
       return;
     }
 
-    const songSlice = related.slice(index);
+    const songSlice = songs.value.slice(index);
 
     queue.listenTo(...songSlice);
   };
 
-  if (songError || relatedError) {
+  if (details.error || related.error) {
     return <Error />;
   }
 
-  if (track === undefined || related === undefined) {
+  if (track.value === undefined || songs.value === undefined) {
     return <Loader>Searching song details...</Loader>;
   }
 
@@ -48,15 +52,17 @@ export default function SongDetails({ id = "" }: SongDetailsProps) {
         <div class="song-banner">
           <img
             class="song-img"
-            alt={`${track.name} Cover`}
-            src={track.images?.cover}
+            alt={`${track.value.name} Cover`}
+            src={track.value.images?.cover}
           />
           <div class="song-title">
-            <h1 class="song-title-name">{track.name}</h1>
+            <h1 class="song-title-name">{track.value.name}</h1>
             <p class="song-title-artist">
-              <ArtistLink {...track.artist} />
+              <ArtistLink {...track.value.artist} />
             </p>
-            <p class="song-title-genres">{track.genres?.join(" ") ?? ""}</p>
+            <p class="song-title-genres">
+              {track.value.genres?.join(" ") ?? ""}
+            </p>
           </div>
         </div>
 
@@ -66,14 +72,16 @@ export default function SongDetails({ id = "" }: SongDetailsProps) {
       <section class="song-lyrics">
         <h2 class="song-lyrics-title">Lyrics:</h2>
         <div class="song-lyrics-body">
-          <p class="song-lyrics-text">{track.lyrics ?? "No lyrics found!"}</p>
+          <p class="song-lyrics-text">
+            {track.value.lyrics ?? "No lyrics found!"}
+          </p>
         </div>
       </section>
 
       <section class="song-related">
         <h2 class="song-related-header">Related Songs:</h2>
         <ol class="song-related-list">
-          {related.map((song, i) => (
+          {songs.value.map((song, i) => (
             <SongRow
               key={song.id}
               spot={i + 1}

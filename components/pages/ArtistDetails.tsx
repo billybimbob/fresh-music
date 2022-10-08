@@ -18,14 +18,18 @@ interface ArtistDetailsProps extends RoutableProps {
 export default function ArtistDetails({ id = "" }: ArtistDetailsProps) {
   const queue = useSongQueue();
 
-  const { data: artist, error } = useArtistDetails(id);
+  const response = useArtistDetails(id);
+
+  const artist = useComputed(() => response.data);
 
   const image = useComputed(() =>
-    artist === undefined ? undefined : toSize(artist.artwork.url, 500)
+    artist.value === undefined
+      ? undefined
+      : toSize(artist.value.artwork.url, 500)
   );
 
   const onSongClick = (song: ArtistSong, index: number) => {
-    if (artist === undefined) {
+    if (artist.value === undefined) {
       return;
     }
 
@@ -34,16 +38,16 @@ export default function ArtistDetails({ id = "" }: ArtistDetailsProps) {
       return;
     }
 
-    const songSlice = artist.songs.slice(index);
+    const songSlice = artist.value.songs.slice(index);
 
     queue.listenTo(...songSlice);
   };
 
-  if (error !== undefined) {
+  if (response.error !== undefined) {
     return <Error />;
   }
 
-  if (artist === undefined) {
+  if (artist.value === undefined) {
     return <Loader>Loading artist details...</Loader>;
   }
 
@@ -55,12 +59,12 @@ export default function ArtistDetails({ id = "" }: ArtistDetailsProps) {
         <div class="artist-banner">
           <img
             class="artist-img"
-            alt={`${artist.name} Profile`}
+            alt={`${artist.value.name} Profile`}
             src={image.value}
           />
           <div class="artist-title">
-            <h1 class="artist-title-name">{artist.name}</h1>
-            <p class="artist-title-genres">{artist.genres.join(" ")}</p>
+            <h1 class="artist-title-name">{artist.value.name}</h1>
+            <p class="artist-title-genres">{artist.value.genres.join(" ")}</p>
           </div>
         </div>
 
@@ -70,7 +74,7 @@ export default function ArtistDetails({ id = "" }: ArtistDetailsProps) {
       <section class="artist-songs">
         <h2 class="artist-songs-header">Related Songs:</h2>
         <ol class="artist-songs-list">
-          {artist.songs.map((song, i) => (
+          {artist.value.songs.map((song, i) => (
             <ArtistSongRow
               key={song.id}
               spot={i + 1}
@@ -94,19 +98,17 @@ function ArtistSongRow(
 ) {
   const queue = useSongQueue();
 
-  const isActive = useComputed(() => queue.current?.id === id);
+  const isActive = queue.isPlaying && queue.current?.id === id;
 
-  const item = useComputed(() =>
-    classes({
-      "artist-song-item": true,
-      "artist-song-active": isActive.value,
-    })
-  );
+  const item = classes({
+    "artist-song-item": true,
+    "artist-song-active": isActive,
+  });
 
   const image = toSize(artwork.url, 125);
 
   return (
-    <li class={item.value}>
+    <li class={item}>
       <h3 class="artist-song-spot">{spot}</h3>
       <div class="artist-song-body">
         <img class="artist-song-img" alt={`${name} Artwork`} src={image} />
@@ -117,7 +119,7 @@ function ArtistSongRow(
           <p class="artist-song-album">{album}</p>
         </div>
       </div>
-      <PlayButton isActive={isActive.value} onClick={onClick} />
+      <PlayButton isActive={isActive} onClick={onClick} />
     </li>
   );
 }

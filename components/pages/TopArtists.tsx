@@ -9,12 +9,10 @@ import Loader from "@/components/Loader.tsx";
 
 export default function TopArtists(_props: RoutableProps) {
   const preload = usePreload();
+  const response = useCharts(preload.charts !== undefined);
+  const songs = useComputed(() => preload.charts ?? response.data);
 
-  const { data: tracks, error } = useCharts(preload.charts !== undefined);
-
-  const songs = useComputed(() => preload.charts ?? tracks);
-
-  if (error !== undefined) {
+  if (response.error !== undefined) {
     return <Error />;
   }
 

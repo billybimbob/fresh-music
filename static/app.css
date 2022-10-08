@@ -92,8 +92,9 @@ a {
 }
 
 .loader-icon {
-    height: 8rem;
-    width: 8rem;
+    height: 20rem;
+    width: 20rem;
+    object-fit: contain;
 }
 
 .play-icon-browse {
@@ -604,7 +605,7 @@ a {
 }
 
 .top-preview {
-    position: relative;
+    position: static;
     top: 0;
     height: -moz-fit-content;
     height: fit-content;

@@ -3,7 +3,7 @@ import { createContext } from "preact";
 import { useContext, useMemo } from "preact/hooks";
 import type { Song } from "@/utils/types.ts";
 
-export interface SongQueue {
+export interface SongQueueSignal {
   readonly current: Song | null;
   readonly upcoming: readonly Song[];
 
@@ -22,7 +22,7 @@ export interface SongQueue {
   shuffle(): void;
 }
 
-export const SongState = createContext<SongQueue>({
+export const SongQueue = createContext<SongQueueSignal>({
   current: null,
   upcoming: [],
   isPlaying: false,
@@ -40,7 +40,7 @@ export const SongState = createContext<SongQueue>({
   shuffle() {},
 });
 
-export function useSongQueueSource(): SongQueue {
+export function useSongQueueSource(): SongQueueSignal {
   const current = useSignal<Song | null>(null);
   const finished = useSignal<readonly Song[]>([]);
   const upcoming = useSignal<readonly Song[]>([]);
@@ -157,6 +157,6 @@ export function useSongQueueSource(): SongQueue {
   }), [current, finished, upcoming, isPlaying, hasPrevious, hasNext]);
 }
 
-export function useSongQueue(): SongQueue {
-  return useContext(SongState);
+export function useSongQueue(): SongQueueSignal {
+  return useContext(SongQueue);
 }

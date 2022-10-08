@@ -3,12 +3,12 @@ import { createContext } from "preact";
 import { useContext, useMemo } from "preact/hooks";
 import type { Track } from "@/utils/types.ts";
 
-export interface PreloadState {
+export interface PreloadSignal {
   readonly charts: readonly Track[] | undefined;
   readonly genreCharts: readonly Track[] | undefined;
 }
 
-export const Preload = createContext<PreloadState>({
+export const Preload = createContext<PreloadSignal>({
   charts: undefined,
   genreCharts: undefined,
 });
@@ -38,6 +38,6 @@ export function usePreloadSource(
   }), [charts, genreCharts]);
 }
 
-export function usePreload(): PreloadState {
+export function usePreload(): PreloadSignal {
   return useContext(Preload);
 }

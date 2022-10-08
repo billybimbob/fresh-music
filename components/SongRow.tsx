@@ -16,19 +16,16 @@ export default function SongRow(
   { id, spot, name, artist, images, onClick }: SongRowProps,
 ) {
   const queue = useSongQueue();
-  const isActive = useComputed(() =>
-    queue.isPlaying && queue.current?.id === id
-  );
 
-  const row = useComputed(() =>
-    classes({
-      "song-row-item": true,
-      "song-row-active": isActive.value,
-    })
-  );
+  const isActive = queue.isPlaying && queue.current?.id === id;
+
+  const row = classes({
+    "song-row-item": true,
+    "song-row-active": isActive,
+  });
 
   return (
-    <li class={row.value}>
+    <li class={row}>
       <h3 class="song-row-spot">{spot}</h3>
       <div class="song-row-body">
         <img class="song-row-img" alt={`${name} Cover`} src={images?.cover} />
