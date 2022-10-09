@@ -11,18 +11,16 @@ import { Status } from "$fresh/server.ts";
 // ) {
 //   if (IS_BROWSER) {
 //     return Promise.resolve(
-//       new Response(null, {
+//       new Response("Cannot request from the browser", {
 //         status: Status.Unauthorized,
-//         statusText: "Cannot request from the browser",
 //       }),
 //     );
 //   }
 
 //   if (shazamKey === undefined) {
 //     return Promise.resolve(
-//       new Response(null, {
+//       new Response("Api key cannot be found", {
 //         status: Status.BadRequest,
-//         statusText: "Api key cannot be found",
 //       }),
 //     );
 //   }

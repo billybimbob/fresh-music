@@ -16,7 +16,6 @@ interface SearchProps extends RoutableProps {
 export default function Search({ query = "" }: SearchProps) {
   const response = useMusicSearch(query);
   const queue = useSongQueue();
-
   const tracks = useComputed(() => response.data?.tracks);
 
   const onSongClick = (song: Track, index: number) => {

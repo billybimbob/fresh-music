@@ -24,11 +24,12 @@ function NowPlayingImage() {
     }
 
     const { images = undefined } = queue.current as Track;
-    const { artwork = undefined } = queue.current as ArtistSong;
 
     if (images !== undefined) {
       return images.cover;
     }
+
+    const { artwork = undefined } = queue.current as ArtistSong;
 
     if (artwork !== undefined) {
       return toSize(artwork.url, 400);

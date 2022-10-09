@@ -1,5 +1,6 @@
 import { RoutableProps } from "preact-router";
 import { useComputed } from "@preact/signals";
+
 import type { Track } from "@/utils/types.ts";
 import { useRelatedSongs, useSongDetails } from "@/utils/client.ts";
 import { useSongQueue } from "@/utils/songQueue.ts";

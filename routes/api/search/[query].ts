@@ -3,7 +3,7 @@ import type { ShazamSearch } from "@/utils/types.ts";
 import { toArtistPreview, toTrack } from "@/utils/conversions.ts";
 import fetchShazam from "@/utils/shazam.ts";
 
-export const handler = async (_req: Request, ctx: HandlerContext) => {
+export const handler = async (_req: Request, ctx: HandlerContext<never>) => {
   const { query } = ctx.params;
 
   const response = await fetchShazam("/search/multi", {
@@ -12,7 +12,7 @@ export const handler = async (_req: Request, ctx: HandlerContext) => {
   });
 
   if (!response.ok) {
-    return new Response(null, { status: Status.BadRequest });
+    return new Response(null, { status: Status.InternalServerError });
   }
 
   const search: ShazamSearch = await response.json();

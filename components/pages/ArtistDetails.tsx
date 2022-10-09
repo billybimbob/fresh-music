@@ -16,9 +16,9 @@ interface ArtistDetailsProps extends RoutableProps {
 }
 
 export default function ArtistDetails({ id = "" }: ArtistDetailsProps) {
-  const queue = useSongQueue();
-
   const response = useArtistDetails(id);
+
+  const queue = useSongQueue();
 
   const artist = useComputed(() => response.data);
 

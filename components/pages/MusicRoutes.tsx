@@ -1,4 +1,4 @@
-import Router, { type RouterOnChangeArgs } from "preact-router";
+import Router from "preact-router";
 import ArtistDetails from "@/components/pages/ArtistDetails.tsx";
 import Discover from "@/components/pages/Discover.tsx";
 import Search from "@/components/pages/Search.tsx";
@@ -6,14 +6,10 @@ import SongDetails from "@/components/pages/SongDetails.tsx";
 import TopArtists from "@/components/pages/TopArtists.tsx";
 import TopSongs from "@/components/pages/TopSongs.tsx";
 
-interface MusicRoutesProps {
-  onRouteChange(args: RouterOnChangeArgs): void;
-}
-
-export default function MusicRoutes({ onRouteChange }: MusicRoutesProps) {
+export default function MusicRoutes() {
   return (
     <div class="routes">
-      <Router onChange={onRouteChange}>
+      <Router>
         <Discover path="/" />
         <Discover path="/discover/:genre" />
         <Search path="/search/:query" />

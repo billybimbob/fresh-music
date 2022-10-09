@@ -4,7 +4,6 @@ import genres from "@/static/genres.json" assert { type: "json" };
 
 import type { Track } from "@/utils/types.ts";
 import { useGenreCharts } from "@/utils/client.ts";
-import { usePreload } from "@/utils/preload.ts";
 import { useSongQueue } from "@/utils/songQueue.ts";
 
 import SongCard from "@/components/SongCard.tsx";
@@ -18,11 +17,9 @@ interface DiscoverProps extends RoutableProps {
 }
 
 export default function Discover({ genre = defaultGenre }: DiscoverProps) {
-  const preload = usePreload();
   const queue = useSongQueue();
-
-  const response = useGenreCharts(genre, preload.genreCharts !== undefined);
-  const songs = useComputed(() => preload.genreCharts ?? response.data);
+  const response = useGenreCharts(genre);
+  const tracks = useComputed(() => response.data);
 
   const genreTitle = genres
     .find((g) => g.value === genre)?.title ?? defaultTitle;
@@ -36,7 +33,7 @@ export default function Discover({ genre = defaultGenre }: DiscoverProps) {
   };
 
   const onSongClick = (song: Track, index: number) => {
-    if (songs.value === undefined) {
+    if (tracks.value === undefined) {
       return;
     }
 
@@ -45,7 +42,7 @@ export default function Discover({ genre = defaultGenre }: DiscoverProps) {
       return;
     }
 
-    const songSlice = songs.value.slice(index);
+    const songSlice = tracks.value.slice(index);
 
     queue.listenTo(...songSlice);
   };
@@ -54,7 +51,7 @@ export default function Discover({ genre = defaultGenre }: DiscoverProps) {
     return <Error />;
   }
 
-  if (songs.value === undefined) {
+  if (tracks.value === undefined) {
     return <Loader>Loading songs...</Loader>;
   }
 
@@ -76,7 +73,7 @@ export default function Discover({ genre = defaultGenre }: DiscoverProps) {
       </section>
 
       <ol class="discover-songs">
-        {songs.value.map((track, i) => (
+        {tracks.value.map((track, i) => (
           <SongCard
             key={track.id}
             onClick={() => onSongClick(track, i)}

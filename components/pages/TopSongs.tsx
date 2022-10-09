@@ -3,7 +3,6 @@ import { useComputed } from "@preact/signals";
 
 import type { Track } from "@/utils/types.ts";
 import { useCharts } from "@/utils/client.ts";
-import { usePreload } from "@/utils/preload.ts";
 import { useSongQueue } from "@/utils/songQueue.ts";
 
 import SongCard from "@/components/SongCard.tsx";
@@ -11,14 +10,12 @@ import Error from "@/components/Error.tsx";
 import Loader from "@/components/Loader.tsx";
 
 export default function TopSongs(_props: RoutableProps) {
-  const preload = usePreload();
+  const response = useCharts();
   const queue = useSongQueue();
-
-  const response = useCharts(preload.charts !== undefined);
-  const songs = useComputed(() => preload.charts ?? response.data);
+  const tracks = useComputed(() => response.data);
 
   const onSongClick = (track: Track, index: number) => {
-    if (songs.value === undefined) {
+    if (tracks.value === undefined) {
       return;
     }
 
@@ -27,7 +24,7 @@ export default function TopSongs(_props: RoutableProps) {
       return;
     }
 
-    const songSlice = songs.value.slice(index);
+    const songSlice = tracks.value.slice(index);
 
     queue.listenTo(...songSlice);
   };
@@ -36,7 +33,7 @@ export default function TopSongs(_props: RoutableProps) {
     return <Error />;
   }
 
-  if (songs.value === undefined) {
+  if (tracks.value === undefined) {
     return <Loader>Loading Top Songs...</Loader>;
   }
 
@@ -44,7 +41,7 @@ export default function TopSongs(_props: RoutableProps) {
     <article class="top-songs">
       <h2 class="top-songs-title">Discover Top Songs</h2>
       <ol class="top-songs-list">
-        {songs.value.map((track, i) => (
+        {tracks.value.map((track, i) => (
           <SongCard
             key={track.id}
             onClick={() => onSongClick(track, i)}

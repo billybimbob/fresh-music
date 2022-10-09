@@ -5,17 +5,20 @@
     --secondary-color: #d1d6db;
 }
 
+* {
+    margin: 0;
+    padding: 0;
+    border: 0;
+    font-size: 100%;
+    font: inherit;
+    vertical-align: baseline;
+}
+
 html,
 body {
     height: 100%;
     overflow: hidden;
-    margin: 0;
-    padding: 0;
-    border: 0;
-    vertical-align: baseline;
     font-family: ui-sans-serif, system-ui, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
-    font-size: 1rem;
-    font-weight: 500;
     line-height: 1.25rem;
 }
 
@@ -672,6 +675,7 @@ a {
 
 .top-preview-songs-list,
 .top-preview-artists-list {
+    align-items: center;
     list-style-type: none;
     margin-top: 1rem;
     display: flex;

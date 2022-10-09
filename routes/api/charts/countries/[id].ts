@@ -6,12 +6,12 @@ import fetchShazam from "@/utils/shazam.ts";
 export const handler = async (_req: Request, ctx: HandlerContext) => {
   const { id } = ctx.params;
 
-  const response = await fetchShazam("/charts/genre-world", {
-    genre_code: id,
+  const response = await fetchShazam("/charts/country", {
+    country_code: id,
   });
 
   if (!response.ok) {
-    return new Response(null, { status: Status.BadRequest });
+    return new Response(null, { status: Status.InternalServerError });
   }
 
   const data: readonly ShazamTrack[] = await response.json();
