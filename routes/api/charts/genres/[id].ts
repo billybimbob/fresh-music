@@ -1,22 +1,13 @@
-import { type HandlerContext, Status } from "$fresh/server.ts";
-import type { ShazamTrack } from "@/utils/types.ts";
-import { toTrack } from "@/utils/conversions.ts";
-import fetchShazam from "@/utils/shazam.ts";
+import { type Handler, Status } from "$fresh/server.ts";
+import { fetchGenreCharts } from "@/utils/shazam/mod.ts";
 
-export const handler = async (_req: Request, ctx: HandlerContext<never>) => {
+export const handler: Handler<never> = async (_req, ctx) => {
   const { id } = ctx.params;
+  const charts = await fetchGenreCharts(id);
 
-  const response = await fetchShazam("/charts/genre-world", {
-    genre_code: id,
-  });
-
-  if (!response.ok) {
+  if (charts === null) {
     return new Response(null, { status: Status.InternalServerError });
   }
 
-  const data: readonly ShazamTrack[] = await response.json();
-
-  const tracks = data.map(toTrack);
-
-  return Response.json(tracks);
+  return Response.json(charts);
 };

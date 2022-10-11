@@ -31,7 +31,7 @@ export default function SongCard(
       </div>
       <div class="song-card-right">
         <p class="song-card-name">
-          <a href={`/songs/${id}`}>{name}</a>
+          <a href={`/songs/${id}`} title={name}>{name}</a>
         </p>
         <p class="song-card-artist">
           <ArtistLink {...artist} />

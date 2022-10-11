@@ -1,6 +1,6 @@
-import { batch, useComputed, useSignal } from "@preact/signals";
 import { createContext } from "preact";
 import { useContext, useMemo } from "preact/hooks";
+import { batch, useComputed, useSignal } from "@preact/signals";
 import type { Song } from "@/utils/types.ts";
 
 export interface SongQueueSignal {

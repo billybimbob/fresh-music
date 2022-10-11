@@ -1,25 +1,23 @@
-import type { HandlerContext, PageProps } from "$fresh/server.ts";
+import type { Handler, PageProps } from "$fresh/server.ts";
 import type { Track } from "@/utils/types.ts";
-import endpoints, { fetchCharts, fetchGenreCharts } from "@/utils/api.ts";
+import * as endpoints from "@/utils/api.ts";
+import { fetchGenreCharts, fetchWorldCharts } from "@/utils/shazam/mod.ts";
 import MusicBrowser from "@/components/MusicBrowser.tsx";
 
 interface DiscoverData {
   [key: string]: readonly Track[] | undefined;
 }
-export const handler = async (
-  req: Request,
-  ctx: HandlerContext<DiscoverData>,
-) => {
+export const handler: Handler<DiscoverData> = async (_req, ctx) => {
   const { genre } = ctx.params;
 
   const [genreCharts, charts] = await Promise.all([
-    fetchGenreCharts(req, ctx, genre),
-    fetchCharts(req, ctx),
+    fetchGenreCharts(genre),
+    fetchWorldCharts(),
   ]);
 
   return ctx.render({
-    [endpoints.genreCharts(genre)]: genreCharts,
-    [endpoints.charts]: charts,
+    [endpoints.genreCharts(genre)]: genreCharts ?? undefined,
+    [endpoints.charts]: charts ?? undefined,
   });
 };
 

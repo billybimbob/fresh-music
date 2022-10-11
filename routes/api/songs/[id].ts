@@ -1,17 +1,13 @@
-import { type HandlerContext, Status } from "$fresh/server.ts";
-import fetchShazam from "@/utils/shazam.ts";
-import { toTrack } from "@/utils/conversions.ts";
+import { type Handler, Status } from "$fresh/server.ts";
+import { fetchSong } from "@/utils/shazam/mod.ts";
 
-export const handler = async (_req: Request, ctx: HandlerContext<never>) => {
+export const handler: Handler<never> = async (_req, ctx) => {
   const { id } = ctx.params;
+  const song = await fetchSong(id);
 
-  const response = await fetchShazam("/tracks/details", { track_id: id });
-
-  if (!response.ok) {
+  if (song === null) {
     return new Response(null, { status: Status.InternalServerError });
   }
-
-  const song = await response.json().then(toTrack);
 
   return Response.json(song);
 };

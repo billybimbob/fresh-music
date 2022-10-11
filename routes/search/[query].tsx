@@ -1,26 +1,24 @@
-import type { HandlerContext, PageProps } from "$fresh/server.ts";
+import type { Handler, PageProps } from "$fresh/server.ts";
 import type { SearchResult, Track } from "@/utils/types.ts";
-import endpoints, { fetchCharts, fetchSearch } from "@/utils/api.ts";
+import * as endpoints from "@/utils/api.ts";
+import { fetchSearch, fetchWorldCharts } from "@/utils/shazam/mod.ts";
 import MusicBrowser from "@/components/MusicBrowser.tsx";
 
 interface SearchData {
   [key: string]: SearchResult | readonly Track[] | undefined;
 }
 
-export const handler = async (
-  req: Request,
-  ctx: HandlerContext<SearchData>,
-) => {
+export const handler: Handler<SearchData> = async (_req, ctx) => {
   const { query } = ctx.params;
 
   const [search, charts] = await Promise.all([
-    fetchSearch(req, ctx, query),
-    fetchCharts(req, ctx),
+    fetchSearch(query),
+    fetchWorldCharts(),
   ]);
 
   return ctx.render({
-    [endpoints.search(query)]: search,
-    [endpoints.charts]: charts,
+    [endpoints.search(query)]: search ?? undefined,
+    [endpoints.charts]: charts ?? undefined,
   });
 };
 

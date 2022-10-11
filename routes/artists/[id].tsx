@@ -1,26 +1,24 @@
-import type { HandlerContext, PageProps } from "$fresh/server.ts";
+import type { Handler, PageProps } from "$fresh/server.ts";
 import type { Artist, Track } from "@/utils/types.ts";
-import endpoints, { fetchArtist, fetchCharts } from "@/utils/api.ts";
+import * as endpoints from "@/utils/api.ts";
+import { fetchArtist, fetchWorldCharts } from "@/utils/shazam/mod.ts";
 import MusicBrowser from "@/components/MusicBrowser.tsx";
 
 interface ArtistData {
   [key: string]: Artist | readonly Track[] | undefined;
 }
 
-export const handler = async (
-  req: Request,
-  ctx: HandlerContext<ArtistData>,
-) => {
+export const handler: Handler<ArtistData> = async (_req, ctx) => {
   const { id } = ctx.params;
 
   const [artist, charts] = await Promise.all([
-    fetchArtist(req, ctx, id),
-    fetchCharts(req, ctx),
+    fetchArtist(id),
+    fetchWorldCharts(),
   ]);
 
   return ctx.render({
-    [endpoints.artist(id)]: artist,
-    [endpoints.charts]: charts,
+    [endpoints.artist(id)]: artist ?? undefined,
+    [endpoints.charts]: charts ?? undefined,
   });
 };
 

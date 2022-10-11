@@ -1,6 +1,4 @@
-import { useComputed } from "@preact/signals";
 import classes from "classNames/index.ts";
-
 import type { Track } from "@/utils/types.ts";
 import { useSongQueue } from "@/utils/songQueue.ts";
 
@@ -31,7 +29,7 @@ export default function SongRow(
         <img class="song-row-img" alt={`${name} Cover`} src={images?.cover} />
         <div class="song-row-title">
           <a href={`/songs/${id}`}>
-            <p class="song-row-name">{name}</p>
+            <p class="song-row-name" title={name}>{name}</p>
           </a>
           <p class="song-row-artist">
             <ArtistLink {...artist} />

@@ -1,9 +1,5 @@
-import {
-  batch,
-  type Signal,
-  useSignal,
-  useSignalEffect,
-} from "@preact/signals";
+import { useEffect } from "preact/hooks";
+import { type Signal } from "@preact/signals";
 
 interface VolumeProps {
   readonly volume: Signal<number>;
@@ -12,28 +8,23 @@ interface VolumeProps {
 const VOLUME_PREF = "volume_preference";
 
 export default function Volume({ volume }: VolumeProps) {
-  const isLoaded = useSignal(false);
+  useEffect(() => {
+    const perf = parseFloat(localStorage.getItem(VOLUME_PREF) ?? "");
 
-  useSignalEffect(() => {
-    if (isLoaded.value) return;
+    if (isFinite(perf)) {
+      volume.value = perf;
+    }
 
-    batch(() => {
-      isLoaded.value = true;
+    const saveVolume = () => {
+      localStorage.setItem(VOLUME_PREF, volume.value.toString());
+    };
 
-      const prefString = localStorage.getItem(VOLUME_PREF);
-      if (prefString === null) return;
+    addEventListener("beforeunload", saveVolume);
 
-      const pref = parseInt(prefString);
-      if (isNaN(pref)) return;
-
-      volume.value = pref;
-    });
-  });
-
-  useSignalEffect(() => {
-    // keep eye on performance, possibly debounce
-    localStorage.setItem(VOLUME_PREF, volume.value.toString());
-  });
+    return () => {
+      removeEventListener("beforeunload", saveVolume);
+    };
+  }, []);
 
   const onChange = (event: Event) => {
     const { valueAsNumber = undefined } = event.target as HTMLInputElement;

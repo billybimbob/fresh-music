@@ -1,26 +1,13 @@
-import { type HandlerContext, Status } from "$fresh/server.ts";
-import type { ShazamSearch } from "@/utils/types.ts";
-import { toArtistPreview, toTrack } from "@/utils/conversions.ts";
-import fetchShazam from "@/utils/shazam.ts";
+import { type Handler, Status } from "$fresh/server.ts";
+import { fetchSearch } from "@/utils/shazam/mod.ts";
 
-export const handler = async (_req: Request, ctx: HandlerContext<never>) => {
+export const handler: Handler<never> = async (_req, ctx) => {
   const { query } = ctx.params;
+  const result = await fetchSearch(query);
 
-  const response = await fetchShazam("/search/multi", {
-    search_type: "SONGS_ARTISTS",
-    query,
-  });
-
-  if (!response.ok) {
+  if (result === null) {
     return new Response(null, { status: Status.InternalServerError });
   }
-
-  const search: ShazamSearch = await response.json();
-
-  const result = {
-    tracks: search.tracks.hits.map(({ track }) => toTrack(track)),
-    artists: search.artists.hits.map(({ artist }) => toArtistPreview(artist)),
-  };
 
   return Response.json(result);
 };

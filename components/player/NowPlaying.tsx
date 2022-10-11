@@ -1,8 +1,7 @@
 import { useComputed } from "@preact/signals";
 import classes from "classNames/index.ts";
 
-import type { ArtistSong, Track } from "@/utils/types.ts";
-import { toSize } from "@/utils/conversions.ts";
+import { type ArtistSong, toSize, type Track } from "@/utils/types.ts";
 import { useSongQueue } from "@/utils/songQueue.ts";
 import ArtistLink from "@/components/ArtistLink.tsx";
 
@@ -32,7 +31,7 @@ function NowPlayingImage() {
     const { artwork = undefined } = queue.current as ArtistSong;
 
     if (artwork !== undefined) {
-      return toSize(artwork.url, 400);
+      return toSize(artwork.url, 200);
     }
 
     return undefined;
@@ -83,7 +82,9 @@ function NowPlayingText() {
   return (
     <figcaption class="now-playing-text">
       <p class="now-playing-name">
-        <a href={`/songs/${queue.current.id}`}>{queue.current.name}</a>
+        <a href={`/songs/${queue.current.id}`} title={queue.current.name}>
+          {queue.current.name}
+        </a>
       </p>
       <p class="now-playing-artist">
         <ArtistLink {...queue.current.artist} />

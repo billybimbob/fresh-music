@@ -1,9 +1,9 @@
-import { useSignal } from "@preact/signals";
 import { useMemo } from "preact/hooks";
+import { useSignal } from "@preact/signals";
 import useSWR from "swr";
 
 import type { Artist, SearchResult, Track } from "@/utils/types.ts";
-import endpoints from "@/utils/api.ts";
+import * as endpoints from "@/utils/api.ts";
 import { usePreload } from "@/utils/preload.ts";
 
 export interface ResponseSignal<T> {
@@ -45,11 +45,11 @@ function useSWRSignal<T>(key: string): ResponseSignal<T> {
   const preload = usePreload();
 
   useSWR(key, null, {
-    fallback: preload,
     revalidateIfStale: false,
     revalidateOnMount: true,
     revalidateOnFocus: false,
     revalidateOnReconnect: false,
+    fallback: preload,
 
     use: [
       (next) => (...args) => {
@@ -58,8 +58,8 @@ function useSWRSignal<T>(key: string): ResponseSignal<T> {
 
         const result = next(...args);
 
-        console.log("setting", args[0], "to", result.data, result.error);
-        console.log("fallback is", args[2].fallback);
+        // console.log("setting", args[0], "to", result.data, result.error);
+        // console.log("fallback is", args[2].fallback);
 
         // keep eye on type assumptions here
 

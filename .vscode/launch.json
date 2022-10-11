@@ -7,10 +7,10 @@
     {
       "request": "launch",
       "name": "Launch Program",
-      "type": "pwa-node",
-      "program": "${workspaceFolder}/main.ts",
+      "type": "node",
+      "program": "${workspaceFolder}/dev.ts",
       "cwd": "${workspaceFolder}",
-      "runtimeExecutable": "/home/billy/.deno/bin/deno",
+      "runtimeExecutable": "deno",
       "runtimeArgs": [
         "run",
         "--inspect",

@@ -1,9 +1,9 @@
+import { useRef } from "preact/hooks";
 import {
   type ReadonlySignal,
   useSignal,
   useSignalEffect,
 } from "@preact/signals";
-import { useRef } from "preact/hooks";
 import { useSongQueue } from "@/utils/songQueue.ts";
 
 interface AudioProps {
@@ -17,56 +17,43 @@ interface AudioProps {
 export default function Audio(
   { seek, volume, loop, onProgress, onDurationFound }: AudioProps,
 ) {
-  const queue = useSongQueue();
   const audio = useRef<HTMLAudioElement>(null);
-  const isPaused = useSignal(audio.current?.paused ?? true);
+  const queue = useSongQueue();
+  const isLoading = useSignal(true);
 
   useSignalEffect(() => {
-    if (isPaused.value !== queue.isPlaying) return;
-    if (audio.current === null) return;
+    if (isLoading.value) return;
 
-    if (!queue.isPlaying) {
-      audio.current.pause();
-      return;
+    if (queue.isPlaying) {
+      audio.current?.play().catch(console.error);
+    } else {
+      audio.current?.pause();
     }
-
-    audio.current.play()
-      .catch(() => {
-        if (queue.isPlaying) {
-          queue.toggle();
-        }
-      });
   });
 
   useSignalEffect(() => {
     if (seek.value <= 0) return;
     if (audio.current === null) return;
+    if (seek.value === audio.current.currentTime) return;
     if (seek.value > audio.current.duration) return;
 
     audio.current.currentTime = seek.value;
   });
 
-  const onPausedUpdate = (event: Event) => {
-    const { paused = undefined } = event.target as HTMLAudioElement;
-    if (paused !== undefined) {
-      isPaused.value = paused;
+  const onLoadUpdate = (event: Event) => {
+    const { readyState = undefined } = event.target as HTMLAudioElement;
+
+    if (readyState !== undefined) {
+      isLoading.value = readyState < 3;
     }
   };
 
-  const onEnded = () => {
-    if (loop) return;
+  const onDurationChange = (event: Event) => {
+    const { duration = undefined } = event.target as HTMLAudioElement;
 
-    queue.seekNext();
-
-    if (!queue.isPlaying) return;
-    if (audio.current === null) return;
-
-    audio.current.play()
-      .catch(() => {
-        if (queue.isPlaying) {
-          queue.toggle();
-        }
-      });
+    if (duration !== undefined) {
+      onDurationFound(duration);
+    }
   };
 
   const onTimeUpdate = (event: Event) => {
@@ -77,10 +64,12 @@ export default function Audio(
     }
   };
 
-  const onDurationChange = (event: Event) => {
-    const { duration = undefined } = event.target as HTMLAudioElement;
-    if (duration !== undefined) {
-      onDurationFound(duration);
+  const onEnded = () => {
+    if (!loop.value) {
+      queue.seekNext();
+    }
+    if (audio.current !== null) {
+      audio.current.currentTime = 0;
     }
   };
 
@@ -90,11 +79,12 @@ export default function Audio(
       src={queue.current?.data}
       volume={volume.value}
       loop={loop.value}
-      onPause={onPausedUpdate}
-      onPlay={onPausedUpdate}
-      onEnded={onEnded}
-      onTimeUpdate={onTimeUpdate}
+      onLoadStart={onLoadUpdate}
+      onCanPlay={onLoadUpdate}
+      onCanPlayThrough={onLoadUpdate}
       onDurationChange={onDurationChange}
+      onTimeUpdate={onTimeUpdate}
+      onEnded={onEnded}
       controls={false}
       autoPlay={false}
     />

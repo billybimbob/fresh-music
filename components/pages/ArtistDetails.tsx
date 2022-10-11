@@ -2,8 +2,7 @@ import { RoutableProps } from "preact-router";
 import { useComputed } from "@preact/signals";
 import classes from "classNames/index.ts";
 
-import type { ArtistSong } from "@/utils/types.ts";
-import { toSize } from "@/utils/conversions.ts";
+import { type ArtistSong, toSize } from "@/utils/types.ts";
 import { useArtistDetails } from "@/utils/client.ts";
 import { useSongQueue } from "@/utils/songQueue.ts";
 

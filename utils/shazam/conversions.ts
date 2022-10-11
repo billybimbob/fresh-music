@@ -3,12 +3,14 @@ import type {
   ArtistPreview,
   ArtistSong,
   Artwork,
+  Track,
+} from "@/utils/types.ts";
+import type {
   ShazamArtist,
   ShazamArtistPreview,
   ShazamArtwork,
   ShazamTrack,
-  Track,
-} from "@/utils/types.ts";
+} from "@/utils/shazam/types.ts";
 
 export function toTrack(source: ShazamTrack): Track {
   return {

@@ -1,5 +1,10 @@
-import type { ReadonlySignal, Signal } from "@preact/signals";
-import { useComputed, useSignal } from "@preact/signals";
+import { useEffect } from "preact/hooks";
+import {
+  type ReadonlySignal,
+  type Signal,
+  useComputed,
+  useSignal,
+} from "@preact/signals";
 import classes from "classNames/index.ts";
 import { useSongQueue } from "@/utils/songQueue.ts";
 
@@ -13,6 +18,48 @@ interface PlaybackProps {
 export default function Playback(
   { loop, progression, duration, onSeek }: PlaybackProps,
 ) {
+  const queue = useSongQueue();
+  const hasSong = useComputed(() => queue.current !== null);
+
+  useEffect(() => {
+    const onKeyUp = (event: KeyboardEvent) => {
+      const { key, shiftKey } = event;
+
+      if (key === " ") {
+        event.stopPropagation();
+        event.preventDefault();
+        queue.toggle();
+        return;
+      }
+
+      if (key === "ArrowLeft" && shiftKey && queue.hasPrevious) {
+        queue.seekPrevious();
+        return;
+      }
+
+      if (key === "ArrowRight" && shiftKey && queue.hasNext) {
+        queue.seekNext();
+        return;
+      }
+
+      if (key === "ArrowLeft" && hasSong.value) {
+        onSeek(Math.max(progression.value - 5, 0));
+        return;
+      }
+
+      if (key === "ArrowRight" && hasSong.value) {
+        onSeek(Math.min(progression.value + 5, duration.value));
+        return;
+      }
+    };
+
+    addEventListener("keyup", onKeyUp);
+
+    return () => {
+      removeEventListener("keyup", onKeyUp);
+    };
+  }, [queue, progression, duration, onSeek]);
+
   return (
     <div class="playback">
       <PlaybackButtons loop={loop} />
@@ -28,17 +75,17 @@ function PlaybackButtons({ loop }: PlaybackButtonProps) {
 
   const queue = useSongQueue();
 
+  const playTitle = useComputed(() => queue.isPlaying ? "Pause" : "Play");
+
+  const playSrc = useComputed(() =>
+    queue.isPlaying ? "/pause.svg#pause" : "/play.svg#play"
+  );
+
   const loopIcon = useComputed(() =>
     classes({
       "loop-icon": true,
       "loop-icon-active": loop.value,
     })
-  );
-
-  const playTitle = useComputed(() => queue.isPlaying ? "Pause" : "Play");
-
-  const playSrc = useComputed(() =>
-    queue.isPlaying ? "/pause.svg#pause" : "/play.svg#play"
   );
 
   const toggleLoop = () => {

@@ -14,7 +14,7 @@ export default function ArtistCard({ name, images, artist }: ArtistCardProps) {
         />
       </a>
       <p class="artist-card-name">
-        <a href={`/artists/${artistId}`}>
+        <a href={`/artists/${artistId}`} title={artist.name}>
           {artist.name}
         </a>
       </p>

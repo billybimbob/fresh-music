@@ -1,20 +1,13 @@
-import { type HandlerContext, Status } from "$fresh/server.ts";
-import type { ShazamTrack } from "@/utils/types.ts";
-import { toTrack } from "@/utils/conversions.ts";
-import fetchShazam from "@/utils/shazam.ts";
+import { type Handler, Status } from "$fresh/server.ts";
+import { fetchRelatedSongs } from "@/utils/shazam/mod.ts";
 
-export const handler = async (_req: Request, ctx: HandlerContext<never>) => {
+export const handler: Handler<never> = async (_req, ctx) => {
   const { song } = ctx.params;
+  const related = await fetchRelatedSongs(song);
 
-  const response = await fetchShazam("/tracks/related", { track_id: song });
-
-  if (!response.ok) {
+  if (related === null) {
     return new Response(null, { status: Status.InternalServerError });
   }
 
-  const source: readonly ShazamTrack[] = await response.json();
-
-  const tracks = source.map(toTrack);
-
-  return Response.json(tracks);
+  return Response.json(related);
 };
