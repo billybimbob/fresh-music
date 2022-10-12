@@ -40,7 +40,7 @@ function NowPlayingImage() {
   const poster = useComputed(() =>
     classes({
       "now-playing-poster": true,
-      "now-playing-active": queue.isPlaying,
+      "active": queue.isPlaying,
     })
   );
 

@@ -1,22 +1,43 @@
 interface PlayButtonProps {
   isActive: boolean;
-  onClick(): void;
+  title: string;
+  onClick?: () => void;
 }
 
-export default function PlayButton({ isActive, onClick }: PlayButtonProps) {
+export default function PlayButton(
+  { isActive, title, onClick }: PlayButtonProps,
+) {
+  const tabIndex = onClick === undefined ? -1 : 0;
+
   if (isActive) {
     return (
-      <svg class="play-icon-browse" onClick={onClick}>
-        <title>Pause Button</title>
-        <use href="/pause.svg#pause" />
-      </svg>
+      <button
+        type="button"
+        title={`Pause ${title}`}
+        class="btn-icon"
+        onClick={onClick}
+        tabIndex={tabIndex}
+      >
+        <svg class="play-icon-browse">
+          <title>Pause {title}</title>
+          <use href="/icons/pause.svg#pause" />
+        </svg>
+      </button>
     );
   } else {
     return (
-      <svg class="play-icon-browse" onClick={onClick}>
-        <title>Play Button</title>
-        <use href="/play.svg#play" />
-      </svg>
+      <button
+        type="button"
+        title={`Play ${title}`}
+        class="btn-icon"
+        onClick={onClick}
+        tabIndex={tabIndex}
+      >
+        <svg class="play-icon-browse">
+          <title>Play {title}</title>
+          <use href="/icons/play.svg#play" />
+        </svg>
+      </button>
     );
   }
 }

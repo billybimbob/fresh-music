@@ -15,7 +15,7 @@ export interface Artist {
 export interface ArtistPreview {
   readonly id: string;
   readonly name: string;
-  readonly image: string;
+  readonly image?: string;
 }
 
 export interface ArtistDescription {

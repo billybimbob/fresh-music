@@ -19,24 +19,24 @@ export default function SongRow(
 
   const row = classes({
     "song-row-item": true,
-    "song-row-active": isActive,
+    "active": isActive,
   });
 
   return (
-    <li class={row}>
+    <li class={row} onDblClick={onClick}>
       <h3 class="song-row-spot">{spot}</h3>
       <div class="song-row-body">
         <img class="song-row-img" alt={`${name} Cover`} src={images?.cover} />
         <div class="song-row-title">
-          <a href={`/songs/${id}`}>
-            <p class="song-row-name" title={name}>{name}</p>
-          </a>
+          <p class="song-row-name">
+            <a href={`/songs/${id}`} title={name}>{name}</a>
+          </p>
           <p class="song-row-artist">
             <ArtistLink {...artist} />
           </p>
         </div>
       </div>
-      <PlayButton isActive={isActive} onClick={onClick} />
+      <PlayButton isActive={isActive} title={name} onClick={onClick} />
     </li>
   );
 }

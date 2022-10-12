@@ -8,12 +8,28 @@ export default function Navigation() {
         <use href="/logo.svg#logo" />
       </svg>
       <nav class="nav-links">
-        <Link href="/" class="nav-item" activeClassName="active">Discover</Link>
-        {/* <Link href="/around-you" class="nav-item">Around You</Link> */}
-        <Link href="/top/artists" class="nav-item" activeClassName="active">
+        <Link
+          title="Discover"
+          href="/"
+          class="nav-item"
+          activeClassName="active"
+        >
+          Discover
+        </Link>
+        <Link
+          title="Top Artists"
+          href="/top/artists"
+          class="nav-item"
+          activeClassName="active"
+        >
           Top Artists
         </Link>
-        <Link href="/top/songs" class="nav-item" activeClassName="active">
+        <Link
+          title="Top Charts"
+          href="/top/songs"
+          class="nav-item"
+          activeClassName="active"
+        >
           Top Charts
         </Link>
       </nav>

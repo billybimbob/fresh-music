@@ -22,6 +22,8 @@ export default function Playback(
   const hasSong = useComputed(() => queue.current !== null);
 
   useEffect(() => {
+    // console.log("listening to keyboard");
+
     const onKeyUp = (event: KeyboardEvent) => {
       const { key, shiftKey } = event;
 
@@ -42,12 +44,12 @@ export default function Playback(
         return;
       }
 
-      if (key === "ArrowLeft" && hasSong.value) {
+      if (key === "ArrowLeft" && !shiftKey && hasSong.value) {
         onSeek(Math.max(progression.value - 5, 0));
         return;
       }
 
-      if (key === "ArrowRight" && hasSong.value) {
+      if (key === "ArrowRight" && !shiftKey && hasSong.value) {
         onSeek(Math.min(progression.value + 5, duration.value));
         return;
       }
@@ -72,13 +74,17 @@ type PlaybackButtonProps = Pick<PlaybackProps, "loop">;
 
 function PlaybackButtons({ loop }: PlaybackButtonProps) {
   const isShuffled = useSignal(false);
-
   const queue = useSongQueue();
 
+  const prevSong = useComputed(() => queue.finished.at(-1)?.name ?? "Previous");
+  const currentSong = useComputed(() => queue.current?.name ?? "Song");
+  const nextSong = useComputed(() => queue.upcoming.at(0)?.name ?? "Next");
+
+  const isDisabled = useComputed(() => queue.current === null);
   const playTitle = useComputed(() => queue.isPlaying ? "Pause" : "Play");
 
   const playSrc = useComputed(() =>
-    queue.isPlaying ? "/pause.svg#pause" : "/play.svg#play"
+    queue.isPlaying ? "/icons/pause.svg#pause" : "/icons/play.svg#play"
   );
 
   const loopIcon = useComputed(() =>
@@ -113,30 +119,70 @@ function PlaybackButtons({ loop }: PlaybackButtonProps) {
 
   return (
     <div class="playback-buttons">
-      <svg class={loopIcon.value} onClick={toggleLoop}>
-        <title>Loop Song</title>
-        <use href="/loop.svg#loop" />
-      </svg>
+      <button
+        title={`Loop ${currentSong}`}
+        type="button"
+        class="btn-icon"
+        disabled={isDisabled.value}
+        onClick={toggleLoop}
+      >
+        <svg class={loopIcon.value}>
+          <title>Loop {currentSong}</title>
+          <use href="/icons/loop.svg#loop" />
+        </svg>
+      </button>
 
-      <svg class="seek-icon" onClick={toPrevious}>
-        <title>Seek Previous</title>
-        <use href="/previous.svg#previous" />
-      </svg>
+      <button
+        title={`To ${prevSong}`}
+        type="button"
+        class="btn-icon"
+        disabled={isDisabled.value}
+        onClick={toPrevious}
+      >
+        <svg class="seek-icon">
+          <title>To {prevSong}</title>
+          <use href="/icons/previous.svg#previous" />
+        </svg>
+      </button>
 
-      <svg class="play-icon" onClick={queue.toggle}>
-        <title>{playTitle}</title>
-        <use href={playSrc.value} />
-      </svg>
+      <button
+        title={`${playTitle} ${currentSong}`}
+        type="button"
+        class="btn-icon"
+        disabled={isDisabled.value}
+        onClick={queue.toggle}
+      >
+        <svg class="play-icon">
+          <title>{playTitle} {currentSong}</title>
+          <use href={playSrc.value} />
+        </svg>
+      </button>
 
-      <svg class="seek-icon" onClick={toNext}>
-        <title>Seek Next</title>
-        <use href="/next.svg#next" />
-      </svg>
+      <button
+        title={`To ${nextSong}`}
+        type="button"
+        class="btn-icon"
+        disabled={isDisabled.value}
+        onClick={toNext}
+      >
+        <svg class="seek-icon">
+          <title>To {nextSong}</title>
+          <use href="/icons/next.svg#next" />
+        </svg>
+      </button>
 
-      <svg class="shuffle-icon" onClick={shuffle}>
-        <title>Shuffle</title>
-        <use href="/shuffle.svg#shuffle" />
-      </svg>
+      <button
+        title="Shuffle"
+        type="button"
+        class="btn-icon"
+        disabled={isDisabled.value}
+        onClick={shuffle}
+      >
+        <svg class="shuffle-icon">
+          <title>Shuffle</title>
+          <use href="/icons/shuffle.svg#shuffle" />
+        </svg>
+      </button>
     </div>
   );
 }
@@ -144,14 +190,18 @@ function PlaybackButtons({ loop }: PlaybackButtonProps) {
 type SeekBarProps = Omit<PlaybackProps, "loop">;
 
 function SeekBar({ progression, duration, onSeek }: SeekBarProps) {
+  const queue = useSongQueue();
+  const currentSong = useComputed(() => queue.current?.name ?? "Song");
+  const isDisabled = useComputed(() => queue.current === null);
+
   const passed = useComputed(() => toMinutes(progression.value));
   const limit = useComputed(() => toMinutes(duration.value));
 
-  const previousFive = () => {
+  const seekPastFive = () => {
     onSeek(Math.max(progression.value - 5, 0));
   };
 
-  const nextFive = () => {
+  const seekFutureFive = () => {
     onSeek(Math.min(progression.value + 5, duration.value));
   };
 
@@ -165,15 +215,17 @@ function SeekBar({ progression, duration, onSeek }: SeekBarProps) {
   return (
     <div class="playback-seek">
       <button
-        class="playback-seek-btn-left"
+        title="Previous 5 Seconds"
         type="button"
-        onClick={previousFive}
+        class="playback-seek-btn-left"
+        disabled={isDisabled.value}
+        onClick={seekPastFive}
       >
         -
       </button>
       <p class="playback-time">{passed}</p>
       <input
-        title="Playback Slider"
+        title={`Seek ${currentSong}`}
         name="playback-slider"
         class="playback-slider"
         type="range"
@@ -181,10 +233,17 @@ function SeekBar({ progression, duration, onSeek }: SeekBarProps) {
         value={progression.value}
         min="0"
         max={duration.value}
+        disabled={isDisabled.value}
         onInput={onInput}
       />
       <p class="playback-time">{limit}</p>
-      <button class="playback-seek-btn-right" type="button" onClick={nextFive}>
+      <button
+        title="Forward 5 Seconds"
+        type="button"
+        class="playback-seek-btn-right"
+        disabled={isDisabled.value}
+        onClick={seekFutureFive}
+      >
         +
       </button>
     </div>

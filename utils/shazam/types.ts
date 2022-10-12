@@ -15,11 +15,14 @@ export interface ShazamTrack {
   };
   readonly artists?: readonly { readonly adamid: string }[];
   readonly genres?: { [key: string]: string };
-  readonly sections?: readonly { readonly text?: readonly string[] }[];
+  readonly sections?: readonly {
+    readonly type: string;
+    readonly text?: readonly string[];
+  }[];
 }
 
 export interface ShazamArtistPreview {
-  readonly avatar: string;
+  readonly avatar?: string;
   readonly name: string;
   readonly verified: boolean;
   readonly adamid: string;

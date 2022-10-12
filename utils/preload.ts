@@ -13,6 +13,6 @@ export interface PreloadData {
 
 export const Preload = createContext<PreloadData>({});
 
-export function usePreload() {
+export function usePreload(): PreloadData {
   return useContext(Preload);
 }

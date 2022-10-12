@@ -17,27 +17,23 @@ export default function SearchBar() {
   };
 
   return (
-    <aside>
-      <form onSubmit={onSubmit} class="search-bar">
-        <label for="search-bar-input" class="search-bar-label">
-          Search Music
-        </label>
-        <div class="search-bar-field">
-          <svg class="search-bar-icon">
-            <title>Search Icon</title>
-            <use href="/search.svg#search" />
-          </svg>
-          <input
-            id="search-bar-input"
-            name="search-bar-input"
-            class="search-bar-input"
-            type="search"
-            placeholder="Search"
-            autoComplete="off"
-            value={search.value}
-            onInput={onInput}
-          />
-        </div>
+    <aside class="search-bar">
+      <form onSubmit={onSubmit} class="search-bar-field">
+        <svg class="search-bar-icon">
+          <title>Search Icon</title>
+          <use href="/icons/search.svg#search" />
+        </svg>
+        <input
+          title="Search Music"
+          id="search-bar-input"
+          name="search-bar-input"
+          class="search-bar-input"
+          type="search"
+          placeholder="Search"
+          autoComplete="off"
+          value={search.value}
+          onInput={onInput}
+        />
       </form>
     </aside>
   );

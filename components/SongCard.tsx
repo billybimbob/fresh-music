@@ -18,18 +18,23 @@ export default function SongCard(
 
   const btn = classes({
     "song-card-btn": true,
-    "song-card-btn-active": isActive,
+    "active": isActive,
   });
 
   return (
     <li class="song-card">
-      <div class="song-card-left">
+      <div
+        title={`Play ${name}`}
+        class="song-card-body"
+        onClick={onClick}
+        tabIndex={0}
+      >
         <div class={btn}>
-          <PlayButton isActive={isActive} onClick={onClick} />
+          <PlayButton isActive={isActive} title={name} />
         </div>
         <img class="song-card-img" alt={`${name} Image`} src={images?.cover} />
       </div>
-      <div class="song-card-right">
+      <div class="song-card-label">
         <p class="song-card-name">
           <a href={`/songs/${id}`} title={name}>{name}</a>
         </p>

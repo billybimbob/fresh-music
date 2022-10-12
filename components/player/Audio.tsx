@@ -34,8 +34,8 @@ export default function Audio(
   useSignalEffect(() => {
     if (seek.value <= 0) return;
     if (audio.current === null) return;
-    if (seek.value === audio.current.currentTime) return;
     if (seek.value > audio.current.duration) return;
+    if (seek.value === audio.current.currentTime) return;
 
     audio.current.currentTime = seek.value;
   });

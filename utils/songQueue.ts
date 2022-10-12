@@ -5,6 +5,7 @@ import type { Song } from "@/utils/types.ts";
 
 export interface SongQueueSignal {
   readonly current: Song | null;
+  readonly finished: readonly Song[];
   readonly upcoming: readonly Song[];
 
   readonly isPlaying: boolean;
@@ -24,7 +25,9 @@ export interface SongQueueSignal {
 
 export const SongQueue = createContext<SongQueueSignal>({
   current: null,
+  finished: [],
   upcoming: [],
+
   isPlaying: false,
   hasPrevious: false,
   hasNext: false,
@@ -52,6 +55,10 @@ export function useSongQueueSource(): SongQueueSignal {
   return useMemo(() => ({
     get current() {
       return current.value;
+    },
+
+    get finished() {
+      return finished.value;
     },
 
     get upcoming() {
@@ -147,9 +154,7 @@ export function useSongQueueSource(): SongQueueSignal {
 
       for (let i = 0; i < last; ++i) {
         const j = Math.round(Math.random() * (last - i)) + i;
-        const temp = shuffled[j];
-        shuffled[j] = shuffled[i];
-        shuffled[i] = temp;
+        [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
       }
 
       upcoming.value = shuffled;

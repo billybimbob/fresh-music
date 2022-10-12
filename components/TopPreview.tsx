@@ -31,9 +31,11 @@ export default function TopPreview() {
       <div class="top-preview-inner">
         <section class="top-preview-songs">
           <header class="top-preview-songs-header">
-            <h2 class="top-preview-songs-title">Top Charts</h2>
+            <h2 class="top-preview-songs-title" title="Top Charts">
+              Top Charts
+            </h2>
             <p class="top-preview-songs-link">
-              <a href="/top/songs">See more</a>
+              <a href="/top/songs" title="See More Charts">See more</a>
             </p>
           </header>
           <ol class="top-preview-songs-list">
@@ -49,9 +51,11 @@ export default function TopPreview() {
         </section>
         <section class="top-preview-artists">
           <header class="top-preview-artists-header">
-            <h2 class="top-preview-artists-title">Top Artists</h2>
+            <h2 class="top-preview-artists-title" title="Top Artists">
+              Top Artists
+            </h2>
             <p class="top-preview-artists-link">
-              <a href="/top/artists">See more</a>
+              <a href="/top/artists" title="See More Artists">See more</a>
             </p>
           </header>
           <ol class="top-preview-songs-list">

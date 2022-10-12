@@ -54,26 +54,47 @@ export default function Volume({ volume }: VolumeProps) {
 function VolumeButton({ volume }: VolumeProps) {
   if (volume.value === 0) {
     return (
-      <svg class="volume-icon" onClick={() => volume.value = 1}>
-        <title>Volume Mute</title>
-        <use href="/volume-mute.svg#volume-mute" />
-      </svg>
+      <button
+        type="button"
+        title="To Max Volume"
+        class="btn-icon"
+        onClick={() => volume.value = 1}
+      >
+        <svg class="volume-icon">
+          <title>To Max Volume</title>
+          <use href="/icons/volume-mute.svg#volume-mute" />
+        </svg>
+      </button>
     );
   }
 
   if (volume.value > 0.5) {
     return (
-      <svg class="volume-icon" onClick={() => volume.value = 0}>
-        <title>Volume High</title>
-        <use href="/volume-high.svg#volume-high" />
-      </svg>
+      <button
+        type="button"
+        title="Mute Volume"
+        class="btn-icon"
+        onClick={() => volume.value = 0}
+      >
+        <svg class="volume-icon">
+          <title>Mute Volume</title>
+          <use href="/icons/volume-high.svg#volume-high" />
+        </svg>
+      </button>
     );
   }
 
   return (
-    <svg class="volume-icon" onClick={() => volume.value = 0}>
-      <title>Volume Low</title>
-      <use href="/volume-low.svg#volume-low" />
-    </svg>
+    <button
+      type="button"
+      title="Mute Volume"
+      class="btn-icon"
+      onClick={() => volume.value = 0}
+    >
+      <svg class="volume-icon" onClick={() => volume.value = 0}>
+        <title>Mute Volume</title>
+        <use href="/icons/volume-low.svg#volume-low" />
+      </svg>
+    </button>
   );
 }

@@ -53,8 +53,7 @@ export default function ArtistDetails({ id = "" }: ArtistDetailsProps) {
   return (
     <article class="artist-page">
       <section class="artist-details">
-        <div class="artist-header"></div>
-
+        <div class="artist-header" aria-hidden="true"></div>
         <div class="artist-banner">
           <img
             class="artist-img"
@@ -62,12 +61,13 @@ export default function ArtistDetails({ id = "" }: ArtistDetailsProps) {
             src={image.value}
           />
           <div class="artist-title">
-            <h1 class="artist-title-name">{artist.value.name}</h1>
+            <h1 class="artist-title-name" title={artist.value.name}>
+              {artist.value.name}
+            </h1>
             <p class="artist-title-genres">{artist.value.genres.join(" ")}</p>
           </div>
         </div>
-
-        <div class="artist-footer"></div>
+        <div class="artist-footer" aria-hidden="true"></div>
       </section>
 
       <section class="artist-songs">
@@ -101,7 +101,7 @@ function ArtistSongRow(
 
   const item = classes({
     "artist-song-item": true,
-    "artist-song-active": isActive,
+    "active": isActive,
   });
 
   const image = toSize(artwork.url, 125);
@@ -112,13 +112,13 @@ function ArtistSongRow(
       <div class="artist-song-body">
         <img class="artist-song-img" alt={`${name} Artwork`} src={image} />
         <div class="artist-song-title">
-          <a href={`/songs/${id}`}>
-            <p class="artist-song-name">{name}</p>
-          </a>
-          <p class="artist-song-album">{album}</p>
+          <p class="artist-song-name">
+            <a href={`/songs/${id}`} title={name}>{name}</a>
+          </p>
+          <p class="artist-song-album" title={album}>{album}</p>
         </div>
       </div>
-      <PlayButton isActive={isActive} onClick={onClick} />
+      <PlayButton isActive={isActive} title={name} onClick={onClick} />
     </li>
   );
 }

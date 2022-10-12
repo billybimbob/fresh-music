@@ -49,7 +49,6 @@ export default function SongDetails({ id = "" }: SongDetailsProps) {
     <article class="song-page">
       <section class="song-details">
         <div class="song-header"></div>
-
         <div class="song-banner">
           <img
             class="song-img"
@@ -66,7 +65,6 @@ export default function SongDetails({ id = "" }: SongDetailsProps) {
             </p>
           </div>
         </div>
-
         <div class="song-footer"></div>
       </section>
 

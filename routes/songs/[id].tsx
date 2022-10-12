@@ -1,6 +1,6 @@
 import type { Handler, PageProps } from "$fresh/server.ts";
 import type { Track } from "@/utils/types.ts";
-import * as endpoints from "@/utils/api.ts";
+import endpoints from "@/utils/api.ts";
 import {
   fetchRelatedSongs,
   fetchSong,

@@ -1,5 +1,6 @@
-import { useComputed } from "@preact/signals";
 import { RoutableProps, route } from "preact-router";
+import { useComputed } from "@preact/signals";
+
 import genres from "@/static/genres.json" assert { type: "json" };
 
 import type { Track } from "@/utils/types.ts";

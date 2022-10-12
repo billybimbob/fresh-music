@@ -2,11 +2,11 @@
 // import { IS_BROWSER } from "$fresh/runtime.ts";
 // import genres from "@/static/genres.json" assert { type: "json" };
 import * as convert from "@/utils/shazam/conversions.ts";
-import type {
-  ShazamArtist,
-  ShazamSearch,
-  ShazamTrack,
-} from "@/utils/shazam/types.ts";
+// import type {
+//   ShazamArtist,
+//   ShazamSearch,
+//   ShazamTrack,
+// } from "@/utils/shazam/types.ts";
 
 // const [{ value: defaultGenre }] = genres;
 
@@ -128,48 +128,57 @@ import type {
 //   });
 // }
 
-const RESPONSE_LOC = "./responses";
-
 export async function fetchGenreCharts(_id?: string) {
-  const contents = await Deno.readTextFile(`${RESPONSE_LOC}/charts-genre.json`);
-
-  const data: readonly ShazamTrack[] = JSON.parse(contents);
+  const { default: data } = await import(
+    "@/utils/shazam/responses/charts-genre.json",
+    {
+      assert: { type: "json" },
+    }
+  );
 
   return data.map(convert.toTrack);
 }
 
 export async function fetchCountryCharts(_id: string) {
-  const contents = await Deno.readTextFile(
-    `${RESPONSE_LOC}/charts-country.json`,
+  const { default: data } = await import(
+    "@/utils/shazam/responses/charts-country.json",
+    {
+      assert: { type: "json" },
+    }
   );
-
-  const data: readonly ShazamTrack[] = JSON.parse(contents);
 
   return data.map(convert.toTrack);
 }
 
 export async function fetchWorldCharts() {
-  const contents = await Deno.readTextFile(`${RESPONSE_LOC}/charts-world.json`);
-
-  const data: readonly ShazamTrack[] = JSON.parse(contents);
+  const { default: data } = await import(
+    "@/utils/shazam/responses/charts-world.json",
+    {
+      assert: { type: "json" },
+    }
+  );
 
   return data.map(convert.toTrack);
 }
 
 export async function fetchRelatedSongs(_song: string) {
-  const contents = await Deno.readTextFile(
-    `${RESPONSE_LOC}/related-tracks.json`,
+  const { default: data } = await import(
+    "@/utils/shazam//responses/related-tracks.json",
+    {
+      assert: { type: "json" },
+    }
   );
-
-  const data: readonly ShazamTrack[] = await JSON.parse(contents);
 
   return data.map(convert.toTrack);
 }
 
 export async function fetchSearch(_query: string) {
-  const contents = await Deno.readTextFile(`${RESPONSE_LOC}/multi-search.json`);
-
-  const data: ShazamSearch = JSON.parse(contents);
+  const { default: data } = await import(
+    "@/utils/shazam//responses/multi-search.json",
+    {
+      assert: { type: "json" },
+    }
+  );
 
   return {
     tracks: data.tracks.hits
@@ -183,17 +192,23 @@ export async function fetchSearch(_query: string) {
 }
 
 export async function fetchArtist(_id: string) {
-  const contents = await Deno.readTextFile(`${RESPONSE_LOC}/artist.json`);
-
-  const data: ShazamArtist = JSON.parse(contents);
+  const { default: data } = await import(
+    "@/utils/shazam/responses/artist.json",
+    {
+      assert: { type: "json" },
+    }
+  );
 
   return convert.toArtist(data);
 }
 
 export async function fetchSong(_id: string) {
-  const contents = await Deno.readTextFile(`${RESPONSE_LOC}/track.json`);
-
-  const data: ShazamTrack = JSON.parse(contents);
+  const { default: data } = await import(
+    "@/utils/shazam/responses/track.json",
+    {
+      assert: { type: "json" },
+    }
+  );
 
   return convert.toTrack(data);
 }

@@ -3,7 +3,7 @@ import { useSignal } from "@preact/signals";
 import useSWR from "swr";
 
 import type { Artist, SearchResult, Track } from "@/utils/types.ts";
-import * as endpoints from "@/utils/api.ts";
+import endpoints from "@/utils/api.ts";
 import { usePreload } from "@/utils/preload.ts";
 
 export interface ResponseSignal<T> {
