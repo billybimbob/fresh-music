@@ -16,20 +16,20 @@ export default function SongCard(
 
   const isActive = queue.isPlaying && queue.current?.id === id;
 
-  const btn = classes({
-    "song-card-btn": true,
+  const card = classes({
+    "song-card": true,
     "active": isActive,
   });
 
   return (
-    <li class="song-card">
+    <li class={card}>
       <div
         title={`Play ${name}`}
         class="song-card-body"
         onClick={onClick}
         tabIndex={0}
       >
-        <div class={btn}>
+        <div class="song-card-btn">
           <PlayButton isActive={isActive} title={name} />
         </div>
         <img class="song-card-img" alt={`${name} Image`} src={images?.cover} />

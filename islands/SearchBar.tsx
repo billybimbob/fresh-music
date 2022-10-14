@@ -1,12 +1,15 @@
-import { useSignal } from "@preact/signals";
 import { route } from "preact-router";
+import { useSignal } from "@preact/signals";
 
 export default function SearchBar() {
   const search = useSignal("");
 
   const onSubmit = (event: Event) => {
     event.preventDefault();
-    route(`/search/${search}`);
+    if (search.value !== "") {
+      route(`/search/${search}`);
+      search.value = "";
+    }
   };
 
   const onInput = (event: Event) => {
@@ -17,16 +20,24 @@ export default function SearchBar() {
   };
 
   return (
-    <aside class="search-bar">
-      <form onSubmit={onSubmit} class="search-bar-field">
-        <svg class="search-bar-icon">
-          <title>Search Icon</title>
-          <use href="/icons/search.svg#search" />
-        </svg>
+    <form class="search-bar">
+      <div onSubmit={onSubmit} class="search-bar-field">
+        <button
+          title="Search Music"
+          type="submit"
+          class="btn-icon"
+          disabled={search.value === ""}
+        >
+          <svg class="search-bar-icon">
+            <title>Search Music</title>
+            <use href="/icons/search.svg#search" />
+          </svg>
+        </button>
         <input
           title="Search Music"
           id="search-bar-input"
           name="search-bar-input"
+          required
           class="search-bar-input"
           type="search"
           placeholder="Search"
@@ -34,7 +45,7 @@ export default function SearchBar() {
           value={search.value}
           onInput={onInput}
         />
-      </form>
-    </aside>
+      </div>
+    </form>
   );
 }

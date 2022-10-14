@@ -47,8 +47,7 @@ export default function SongDetails({ id = "" }: SongDetailsProps) {
 
   return (
     <article class="song-page">
-      <section class="song-details">
-        <div class="song-header"></div>
+      <header class="song-details">
         <div class="song-banner">
           <img
             class="song-img"
@@ -65,8 +64,7 @@ export default function SongDetails({ id = "" }: SongDetailsProps) {
             </p>
           </div>
         </div>
-        <div class="song-footer"></div>
-      </section>
+      </header>
 
       <section class="song-lyrics">
         <h2 class="song-lyrics-title">Lyrics:</h2>

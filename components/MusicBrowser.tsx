@@ -1,7 +1,10 @@
 import { type PreloadData } from "@/utils/preload.ts";
-import MusicCatalog from "@/islands/MusicCatalog.tsx";
+
 import Navigation from "@/islands/Navigation.tsx";
+import MusicRoutes from "@/islands/MusicRoutes.tsx";
 import SearchBar from "@/islands/SearchBar.tsx";
+import SongPlayer from "@/islands/SongPlayer.tsx";
+import TopPreview from "@/islands/TopPreview.tsx";
 
 interface MusicBrowserProps {
   readonly initial: PreloadData;
@@ -9,12 +12,14 @@ interface MusicBrowserProps {
 
 export default function MusicBrowser({ initial }: MusicBrowserProps) {
   return (
-    <main class="music-browser">
+    <div class="music-browser">
       <Navigation />
-      <div class="browser-main">
+      <main class="browser-main">
         <SearchBar />
-        <MusicCatalog initial={initial} />
-      </div>
-    </main>
+        <MusicRoutes initial={initial} />
+        <TopPreview initial={initial} />
+        <SongPlayer />
+      </main>
+    </div>
   );
 }

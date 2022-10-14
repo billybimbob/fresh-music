@@ -22,8 +22,6 @@ export default function Playback(
   const hasSong = useComputed(() => queue.current !== null);
 
   useEffect(() => {
-    // console.log("listening to keyboard");
-
     const onKeyUp = (event: KeyboardEvent) => {
       const { key, shiftKey } = event;
 
@@ -90,7 +88,7 @@ function PlaybackButtons({ loop }: PlaybackButtonProps) {
   const loopIcon = useComputed(() =>
     classes({
       "loop-icon": true,
-      "loop-icon-active": loop.value,
+      "active": loop.value,
     })
   );
 

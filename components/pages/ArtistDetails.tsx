@@ -1,14 +1,13 @@
 import { RoutableProps } from "preact-router";
 import { useComputed } from "@preact/signals";
-import classes from "classNames/index.ts";
 
 import { type ArtistSong, toSize } from "@/utils/types.ts";
 import { useArtistDetails } from "@/utils/client.ts";
 import { useSongQueue } from "@/utils/songQueue.ts";
 
-import PlayButton from "@/components/PlayButton.tsx";
 import Error from "@/components/Error.tsx";
 import Loader from "@/components/Loader.tsx";
+import ArtistSongRow from "@/components/ArtistSongRow.tsx";
 
 interface ArtistDetailsProps extends RoutableProps {
   readonly id?: string;
@@ -52,8 +51,7 @@ export default function ArtistDetails({ id = "" }: ArtistDetailsProps) {
 
   return (
     <article class="artist-page">
-      <section class="artist-details">
-        <div class="artist-header" aria-hidden="true"></div>
+      <header class="artist-details">
         <div class="artist-banner">
           <img
             class="artist-img"
@@ -67,8 +65,7 @@ export default function ArtistDetails({ id = "" }: ArtistDetailsProps) {
             <p class="artist-title-genres">{artist.value.genres.join(" ")}</p>
           </div>
         </div>
-        <div class="artist-footer" aria-hidden="true"></div>
-      </section>
+      </header>
 
       <section class="artist-songs">
         <h2 class="artist-songs-header">Related Songs:</h2>
@@ -84,41 +81,5 @@ export default function ArtistDetails({ id = "" }: ArtistDetailsProps) {
         </ol>
       </section>
     </article>
-  );
-}
-
-interface ArtistSongProps extends ArtistSong {
-  readonly spot: number;
-  onClick(): void;
-}
-
-function ArtistSongRow(
-  { id, spot, name, album, artwork, onClick }: ArtistSongProps,
-) {
-  const queue = useSongQueue();
-
-  const isActive = queue.isPlaying && queue.current?.id === id;
-
-  const item = classes({
-    "artist-song-item": true,
-    "active": isActive,
-  });
-
-  const image = toSize(artwork.url, 125);
-
-  return (
-    <li class={item}>
-      <h3 class="artist-song-spot">{spot}</h3>
-      <div class="artist-song-body">
-        <img class="artist-song-img" alt={`${name} Artwork`} src={image} />
-        <div class="artist-song-title">
-          <p class="artist-song-name">
-            <a href={`/songs/${id}`} title={name}>{name}</a>
-          </p>
-          <p class="artist-song-album" title={album}>{album}</p>
-        </div>
-      </div>
-      <PlayButton isActive={isActive} title={name} onClick={onClick} />
-    </li>
   );
 }

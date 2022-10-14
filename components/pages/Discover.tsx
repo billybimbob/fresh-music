@@ -64,7 +64,7 @@ export default function Discover({ genre = defaultGenre }: DiscoverProps) {
           title="Discover Genre"
           value={genre}
           name="genre"
-          class="discover-genres-options"
+          class="discover-genres-select"
           onChange={onGenreChange}
         >
           {genres.map(({ title, value }) => (

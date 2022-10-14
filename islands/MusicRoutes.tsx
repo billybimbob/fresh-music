@@ -1,4 +1,6 @@
-import Router, { type RouterOnChangeArgs } from "preact-router";
+import Router from "preact-router";
+import { Preload, type PreloadData } from "@/utils/preload.ts";
+
 import ArtistDetails from "@/components/pages/ArtistDetails.tsx";
 import Discover from "@/components/pages/Discover.tsx";
 import Search from "@/components/pages/Search.tsx";
@@ -15,7 +17,11 @@ import TopSongs from "@/components/pages/TopSongs.tsx";
 //   [TopSongs.name, "Top Songs"],
 // ]);
 
-export default function MusicRoutes() {
+interface MusicRouteProps {
+  readonly initial?: PreloadData;
+}
+
+export default function MusicRoutes({ initial = {} }: MusicRouteProps) {
   // const title = useSignal(defaultTitle);
 
   // const onRouteChange = (args: RouterOnChangeArgs) => {
@@ -26,16 +32,18 @@ export default function MusicRoutes() {
   // };
 
   return (
-    <div class="routes">
-      <Router>
-        <Discover path="/" />
-        <Discover path="/discover/:genre" />
-        <Search path="/search/:query" />
-        <SongDetails path="/songs/:id" />
-        <ArtistDetails path="/artists/:id" />
-        <TopArtists path="/top/artists" />
-        <TopSongs path="/top/songs" />
-      </Router>
-    </div>
+    <Preload.Provider value={initial}>
+      <div class="routes">
+        <Router>
+          <Discover path="/" />
+          <Discover path="/discover/:genre" />
+          <Search path="/search/:query" />
+          <SongDetails path="/songs/:id" />
+          <ArtistDetails path="/artists/:id" />
+          <TopArtists path="/top/artists" />
+          <TopSongs path="/top/songs" />
+        </Router>
+      </div>
+    </Preload.Provider>
   );
 }

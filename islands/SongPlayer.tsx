@@ -25,23 +25,21 @@ export default function SongPlayer() {
 
   return (
     <aside class="song-player">
-      <div class="song-player-items">
-        <NowPlaying />
-        <Playback
-          loop={loop}
-          progression={progression}
-          duration={duration}
-          onSeek={onSeek}
-        />
-        <Audio
-          volume={volume}
-          seek={seek}
-          loop={loop}
-          onProgress={onProgress}
-          onDurationFound={onDurationFound}
-        />
-        <Volume volume={volume} />
-      </div>
+      <NowPlaying />
+      <Playback
+        loop={loop}
+        progression={progression}
+        duration={duration}
+        onSeek={onSeek}
+      />
+      <Audio
+        volume={volume}
+        seek={seek}
+        loop={loop}
+        onProgress={onProgress}
+        onDurationFound={onDurationFound}
+      />
+      <Volume volume={volume} />
     </aside>
   );
 }

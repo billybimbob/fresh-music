@@ -20,7 +20,7 @@ export default function TopArtists(_props: RoutableProps) {
 
   return (
     <article class="top-artists">
-      <h2 class="top-artists-title">Top Artists:</h2>
+      <h2 class="top-artists-title">Top Artists</h2>
       <ol class="top-artists-list">
         {tracks.value.map((track) => <ArtistCard key={track.id} {...track} />)}
       </ol>

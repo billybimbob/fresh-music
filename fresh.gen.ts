@@ -18,9 +18,11 @@ import * as $11 from "./routes/search/[query].tsx";
 import * as $12 from "./routes/songs/[id].tsx";
 import * as $13 from "./routes/top/artists.tsx";
 import * as $14 from "./routes/top/songs.tsx";
-import * as $$0 from "./islands/MusicCatalog.tsx";
+import * as $$0 from "./islands/MusicRoutes.tsx";
 import * as $$1 from "./islands/Navigation.tsx";
 import * as $$2 from "./islands/SearchBar.tsx";
+import * as $$3 from "./islands/SongPlayer.tsx";
+import * as $$4 from "./islands/TopPreview.tsx";
 
 const manifest = {
   routes: {
@@ -41,9 +43,11 @@ const manifest = {
     "./routes/top/songs.tsx": $14,
   },
   islands: {
-    "./islands/MusicCatalog.tsx": $$0,
+    "./islands/MusicRoutes.tsx": $$0,
     "./islands/Navigation.tsx": $$1,
     "./islands/SearchBar.tsx": $$2,
+    "./islands/SongPlayer.tsx": $$3,
+    "./islands/TopPreview.tsx": $$4,
   },
   baseUrl: import.meta.url,
   config,
