@@ -1,7 +1,9 @@
 import { useSignal } from "@preact/signals";
+
 import Audio from "@/components/player/Audio.tsx";
+import Controls from "@/components/player/Controls.tsx";
 import NowPlaying from "@/components/player/NowPlaying.tsx";
-import Playback from "@/components/player/Playback.tsx";
+import SeekBar from "@/components/player/SeekBar.tsx";
 import Volume from "@/components/player/Volume.tsx";
 
 export default function SongPlayer() {
@@ -26,12 +28,14 @@ export default function SongPlayer() {
   return (
     <aside class="song-player">
       <NowPlaying />
-      <Playback
-        loop={loop}
-        progression={progression}
-        duration={duration}
-        onSeek={onSeek}
-      />
+      <div class="playback">
+        <Controls loop={loop} />
+        <SeekBar
+          progression={progression}
+          duration={duration}
+          onSeek={onSeek}
+        />
+      </div>
       <Audio
         volume={volume}
         seek={seek}

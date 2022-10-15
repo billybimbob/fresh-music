@@ -1,6 +1,7 @@
 import { useRef } from "preact/hooks";
 import {
   type ReadonlySignal,
+  useComputed,
   useSignal,
   useSignalEffect,
 } from "@preact/signals";
@@ -18,17 +19,25 @@ export default function Audio(
   { seek, volume, loop, onProgress, onDurationFound }: AudioProps,
 ) {
   const audio = useRef<HTMLAudioElement>(null);
-  const queue = useSongQueue();
   const isLoading = useSignal(true);
+
+  const queue = useSongQueue();
+  const src = useComputed(() => queue.current?.data ?? "");
 
   useSignalEffect(() => {
     if (isLoading.value) return;
 
-    if (queue.isPlaying) {
-      audio.current?.play().catch(console.error);
-    } else {
+    if (!queue.isPlaying) {
       audio.current?.pause();
+      return;
     }
+
+    audio.current?.play().catch((e) => {
+      console.error(e);
+      if (queue.isPlaying) {
+        queue.toggle();
+      }
+    });
   });
 
   useSignalEffect(() => {
@@ -59,7 +68,7 @@ export default function Audio(
   const onTimeUpdate = (event: Event) => {
     const { currentTime = undefined } = event.target as HTMLAudioElement;
 
-    if (currentTime !== undefined && currentTime !== seek.value) {
+    if (currentTime !== undefined) {
       onProgress(currentTime);
     }
   };
@@ -76,17 +85,17 @@ export default function Audio(
   return (
     <audio
       ref={audio}
-      src={queue.current?.data}
+      src={src.value}
       volume={volume.value}
       loop={loop.value}
+      controls={false}
+      autoPlay={false}
       onLoadStart={onLoadUpdate}
       onCanPlay={onLoadUpdate}
       onCanPlayThrough={onLoadUpdate}
       onDurationChange={onDurationChange}
       onTimeUpdate={onTimeUpdate}
       onEnded={onEnded}
-      controls={false}
-      autoPlay={false}
     />
   );
 }

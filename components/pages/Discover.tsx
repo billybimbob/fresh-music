@@ -1,4 +1,4 @@
-import { RoutableProps, route } from "preact-router";
+import { type RoutableProps, route } from "preact-router";
 import { useComputed } from "@preact/signals";
 
 import genres from "@/static/genres.json" assert { type: "json" };
@@ -34,6 +34,7 @@ export default function Discover({ genre = defaultGenre }: DiscoverProps) {
   };
 
   const onSongClick = (song: Track, index: number) => {
+    console.log(queue);
     if (tracks.value === undefined) {
       return;
     }

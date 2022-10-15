@@ -1,4 +1,4 @@
-import { RoutableProps } from "preact-router";
+import { type RoutableProps } from "preact-router";
 import { useComputed } from "@preact/signals";
 
 import { type ArtistSong, toSize } from "@/utils/types.ts";
@@ -14,16 +14,12 @@ interface ArtistDetailsProps extends RoutableProps {
 }
 
 export default function ArtistDetails({ id = "" }: ArtistDetailsProps) {
-  const response = useArtistDetails(id);
-
   const queue = useSongQueue();
-
+  const response = useArtistDetails(id);
   const artist = useComputed(() => response.data);
 
   const image = useComputed(() =>
-    artist.value === undefined
-      ? undefined
-      : toSize(artist.value.artwork.url, 500)
+    artist.value === undefined ? "" : toSize(artist.value.artwork.url, 500)
   );
 
   const onSongClick = (song: ArtistSong, index: number) => {

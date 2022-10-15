@@ -1,5 +1,5 @@
 import { useEffect } from "preact/hooks";
-import { type Signal } from "@preact/signals";
+import { type Signal, useComputed } from "@preact/signals";
 
 interface VolumeProps {
   readonly volume: Signal<number>;
@@ -8,13 +8,16 @@ interface VolumeProps {
 const VOLUME_PREF = "volume_preference";
 
 export default function Volume({ volume }: VolumeProps) {
+  // console.log("running volume");
+
   useEffect(() => {
     const perf = parseFloat(localStorage.getItem(VOLUME_PREF) ?? "");
-
     if (isFinite(perf)) {
       volume.value = perf;
     }
+  }, []);
 
+  useEffect(() => {
     const saveVolume = () => {
       localStorage.setItem(VOLUME_PREF, volume.value.toString());
     };
@@ -52,48 +55,40 @@ export default function Volume({ volume }: VolumeProps) {
 }
 
 function VolumeButton({ volume }: VolumeProps) {
-  if (volume.value === 0) {
-    return (
-      <button
-        type="button"
-        title="To Max Volume"
-        class="btn-icon"
-        onClick={() => volume.value = 1}
-      >
-        <svg class="volume-icon">
-          <title>To Max Volume</title>
-          <use href="/icons/volume-mute.svg#volume-mute" />
-        </svg>
-      </button>
-    );
-  }
+  // console.log("running volume button");
 
-  if (volume.value > 0.5) {
-    return (
-      <button
-        type="button"
-        title="Mute Volume"
-        class="btn-icon"
-        onClick={() => volume.value = 0}
-      >
-        <svg class="volume-icon">
-          <title>Mute Volume</title>
-          <use href="/icons/volume-high.svg#volume-high" />
-        </svg>
-      </button>
-    );
-  }
+  const href = useComputed(() => {
+    if (volume.value === 0) {
+      return "/icons/volume-mute.svg#volume-mute";
+    } else if (volume.value <= 0.5) {
+      return "/icons/volume-low.svg#volume-low";
+    } else {
+      return "/icons/volume-high.svg#volume-high";
+    }
+  });
+
+  const title = useComputed(() =>
+    volume.value === 0 ? "Max Volume" : "Mute Volume"
+  );
+
+  const onClick = () => {
+    if (volume.value === 0) {
+      volume.value = 1;
+    } else {
+      volume.value = 0;
+    }
+  };
 
   return (
     <button
       type="button"
-      title="Mute Volume"
+      title={title.value}
       class="btn-icon"
-      onClick={() => volume.value = 0}
+      onClick={onClick}
     >
-      <svg class="volume-icon" onClick={() => volume.value = 0}>
-        <title>Mute Volume</title>
-        <use href="/icons/volume-low.svg#volume-low" />
+      <svg class="volume-icon">
+        <title>{title}</title>
+        <use href={href.value} />
       </svg>
     </button>
   );

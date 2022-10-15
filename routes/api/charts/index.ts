@@ -1,4 +1,5 @@
 import { type Handler, Status } from "$fresh/server.ts";
+import { contentType } from "$media_types";
 import { fetchWorldCharts } from "@/utils/shazam/mod.ts";
 
 export const handler: Handler<never> = async (_req, _ctx) => {
@@ -8,5 +9,7 @@ export const handler: Handler<never> = async (_req, _ctx) => {
     return new Response(null, { status: Status.InternalServerError });
   }
 
-  return Response.json(charts);
+  return Response.json(charts, {
+    headers: { "content-type": contentType(".json") },
+  });
 };

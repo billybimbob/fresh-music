@@ -7,7 +7,6 @@ export default function Navigation() {
         <title>Logo</title>
         <use href="/logo.svg#logo" />
       </svg>
-
       <ul class="nav-links">
         <li title="Discover" class="nav-item">
           <Link href="/" activeClassName="active">

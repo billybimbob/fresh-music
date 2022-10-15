@@ -16,26 +16,7 @@ export default function NowPlaying() {
 
 function NowPlayingImage() {
   const queue = useSongQueue();
-
-  const imageSrc = useComputed(() => {
-    if (queue.current === null) {
-      return undefined;
-    }
-
-    const { images = undefined } = queue.current as Track;
-
-    if (images !== undefined) {
-      return images.cover;
-    }
-
-    const { artwork = undefined } = queue.current as ArtistSong;
-
-    if (artwork !== undefined) {
-      return toSize(artwork.url, 200);
-    }
-
-    return undefined;
-  });
+  const title = useComputed(() => `${queue.current?.name ?? "Song"} Cover`);
 
   const poster = useComputed(() =>
     classes({
@@ -44,24 +25,38 @@ function NowPlayingImage() {
     })
   );
 
-  if (queue.current === null) {
-    return (
-      <div class={poster.value}>
-        <div
-          class="now-playing-img now-playing-none"
-          aria-hidden={true}
-        />
-      </div>
-    );
-  }
+  const image = useComputed(() =>
+    classes({
+      "now-playing-img": true,
+      "none": queue.current === null,
+    })
+  );
+
+  const src = useComputed(() => {
+    if (queue.current === null) {
+      return "";
+    }
+
+    const { images = undefined } = queue.current as Track;
+    if (images !== undefined) {
+      return images.cover;
+    }
+
+    const { artwork = undefined } = queue.current as ArtistSong;
+    if (artwork !== undefined) {
+      return toSize(artwork.url, 200);
+    }
+
+    return "";
+  });
 
   return (
     <div class={poster.value}>
       <img
-        title="Now Playing Art"
-        class="now-playing-img"
-        src={imageSrc.value}
-        alt={`${queue.current.name} Cover`}
+        class={image.value}
+        title={title.value}
+        alt={title.value}
+        src={src.value}
       />
     </div>
   );
@@ -81,12 +76,10 @@ function NowPlayingText() {
 
   return (
     <figcaption class="now-playing-text">
-      <p class="now-playing-name">
-        <a href={`/songs/${queue.current.id}`} title={queue.current.name}>
-          {queue.current.name}
-        </a>
+      <p class="now-playing-name" title={queue.current.name}>
+        <a href={`/songs/${queue.current.id}`}>{queue.current.name}</a>
       </p>
-      <p class="now-playing-artist">
+      <p class="now-playing-artist" title={queue.current.artist.name}>
         <ArtistLink {...queue.current.artist} />
       </p>
     </figcaption>

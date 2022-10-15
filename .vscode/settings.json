@@ -2,6 +2,7 @@
   "deno.enable": true,
   "deno.lint": true,
   "editor.defaultFormatter": "denoland.vscode-deno",
+  "editor.tabSize": 2,
   "cSpell.words": [
     "adamid",
     "coverart",

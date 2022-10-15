@@ -1,4 +1,4 @@
-import { RoutableProps } from "preact-router";
+import { type RoutableProps } from "preact-router";
 import { useComputed } from "@preact/signals";
 
 import type { Track } from "@/utils/types.ts";

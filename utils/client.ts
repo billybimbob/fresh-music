@@ -1,5 +1,5 @@
 import { useMemo } from "preact/hooks";
-import { useSignal } from "@preact/signals";
+import { batch, useSignal } from "@preact/signals";
 import useSWR from "swr";
 
 import type { Artist, SearchResult, Track } from "@/utils/types.ts";
@@ -53,18 +53,21 @@ function useSWRSignal<T>(key: string): ResponseSignal<T> {
 
     use: [
       (next) => (...args) => {
-        data.value = undefined;
-        error.value = undefined;
+        batch(() => {
+          data.value = undefined;
+          error.value = undefined;
+        });
 
         const result = next(...args);
 
         // console.log("setting", args[0], "to", result.data, result.error);
         // console.log("fallback is", args[2].fallback);
 
-        // keep eye on type assumptions here
-
-        data.value = result.data as typeof data.value;
-        error.value = result.error as typeof error.value;
+        batch(() => {
+          // keep eye on type assumptions here
+          data.value = result.data as typeof data.value;
+          error.value = result.error as typeof error.value;
+        });
 
         return result;
       },

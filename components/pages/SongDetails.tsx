@@ -51,7 +51,7 @@ export default function SongDetails({ id = "" }: SongDetailsProps) {
         <div class="song-banner">
           <img
             class="song-img"
-            alt={`${track.value.name} Cover`}
+            alt={track.value.name}
             src={track.value.images?.cover}
           />
           <div class="song-title">
@@ -67,16 +67,16 @@ export default function SongDetails({ id = "" }: SongDetailsProps) {
       </header>
 
       <section class="song-lyrics">
-        <h2 class="song-lyrics-title">Lyrics:</h2>
+        <h2 class="song-lyrics-title">Lyrics</h2>
         <div class="song-lyrics-body">
           <p class="song-lyrics-text">
-            {track.value.lyrics ?? "No lyrics found!"}
+            {track.value.lyrics ?? "No lyrics found"}
           </p>
         </div>
       </section>
 
       <section class="song-related">
-        <h2 class="song-related-header">Related Songs:</h2>
+        <h2 class="song-related-header">Related Songs</h2>
         <ol class="song-related-list">
           {songs.value.map((song, i) => (
             <SongRow

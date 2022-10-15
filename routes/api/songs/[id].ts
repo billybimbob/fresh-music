@@ -1,4 +1,5 @@
 import { type Handler, Status } from "$fresh/server.ts";
+import { contentType } from "$media_types";
 import { fetchSong } from "@/utils/shazam/mod.ts";
 
 export const handler: Handler<never> = async (_req, ctx) => {
@@ -9,5 +10,7 @@ export const handler: Handler<never> = async (_req, ctx) => {
     return new Response(null, { status: Status.InternalServerError });
   }
 
-  return Response.json(song);
+  return Response.json(song, {
+    headers: { "content-type": contentType(".json") },
+  });
 };
