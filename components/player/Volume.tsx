@@ -8,8 +8,6 @@ interface VolumeProps {
 const VOLUME_PREF = "volume_preference";
 
 export default function Volume({ volume }: VolumeProps) {
-  // console.log("running volume");
-
   useEffect(() => {
     const perf = parseFloat(localStorage.getItem(VOLUME_PREF) ?? "");
     if (isFinite(perf)) {
@@ -47,7 +45,7 @@ export default function Volume({ volume }: VolumeProps) {
         step="any"
         min="0"
         max="1"
-        value={volume.value}
+        value={volume}
         onChange={onChange}
       />
     </div>
@@ -55,17 +53,13 @@ export default function Volume({ volume }: VolumeProps) {
 }
 
 function VolumeButton({ volume }: VolumeProps) {
-  // console.log("running volume button");
-
-  const href = useComputed(() => {
-    if (volume.value === 0) {
-      return "/icons/volume-mute.svg#volume-mute";
-    } else if (volume.value <= 0.5) {
-      return "/icons/volume-low.svg#volume-low";
-    } else {
-      return "/icons/volume-high.svg#volume-high";
-    }
-  });
+  const href = useComputed(() =>
+    "/icons/" + (
+      volume.value === 0 && "volume-mute.svg#volume-mute" ||
+      volume.value <= 0.5 && "volume-low.svg#volume-low" ||
+      "volume-high.svg#volume-high"
+    )
+  );
 
   const title = useComputed(() =>
     volume.value === 0 ? "Max Volume" : "Mute Volume"
@@ -82,13 +76,13 @@ function VolumeButton({ volume }: VolumeProps) {
   return (
     <button
       type="button"
-      title={title.value}
+      title={title}
       class="btn-icon"
       onClick={onClick}
     >
       <svg class="volume-icon">
         <title>{title}</title>
-        <use href={href.value} />
+        <use href={href} />
       </svg>
     </button>
   );

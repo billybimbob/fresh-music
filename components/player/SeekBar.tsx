@@ -66,22 +66,22 @@ export default function SeekBar(
         title="Previous 5 Seconds"
         type="button"
         class="playback-seek-btn-left"
-        disabled={disabled.value}
+        disabled={disabled}
         onClick={seekPastFive}
       >
         -
       </button>
       <p class="playback-time">{passed}</p>
       <input
-        title={title.value}
+        title={title}
         name="playback-slider"
         class="playback-slider"
         type="range"
         step="any"
-        value={progression.value}
+        value={progression}
         min="0"
-        max={max.value}
-        disabled={disabled.value}
+        max={max}
+        disabled={disabled}
         onInput={onInput}
       />
       <p class="playback-time">{limit}</p>
@@ -89,7 +89,7 @@ export default function SeekBar(
         title="Forward 5 Seconds"
         type="button"
         class="playback-seek-btn-right"
-        disabled={disabled.value}
+        disabled={disabled}
         onClick={seekFutureFive}
       >
         +

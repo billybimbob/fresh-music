@@ -1,5 +1,5 @@
 import { type Signal, useComputed } from "@preact/signals";
-import classes from "classNames/index.ts";
+import classes from "classnames/index.ts";
 import { useSongQueue } from "@/utils/songQueue.ts";
 
 interface LoopProps {
@@ -24,13 +24,13 @@ export default function Loop({ value: loop }: LoopProps) {
 
   return (
     <button
-      title={title.value}
+      title={title}
       type="button"
       class="btn-icon"
-      disabled={disabled.value}
+      disabled={disabled}
       onClick={toggle}
     >
-      <svg class={icon.value}>
+      <svg class={icon}>
         <title>{title}</title>
         <use href="/icons/loop.svg#loop" />
       </svg>

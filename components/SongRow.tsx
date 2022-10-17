@@ -1,4 +1,4 @@
-import classes from "classNames/index.ts";
+import classes from "classnames/index.ts";
 import type { Track } from "@/utils/types.ts";
 import { useSongQueue } from "@/utils/songQueue.ts";
 

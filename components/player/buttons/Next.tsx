@@ -8,10 +8,10 @@ export default function Next() {
 
   return (
     <button
-      title={title.value}
+      title={title}
       type="button"
       class="btn-icon"
-      disabled={disabled.value}
+      disabled={disabled}
       onClick={queue.seekNext}
     >
       <svg class="seek-icon">

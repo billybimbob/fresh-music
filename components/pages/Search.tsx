@@ -1,6 +1,4 @@
-import { type RoutableProps } from "preact-router";
 import { useComputed } from "@preact/signals";
-
 import type { Track } from "@/utils/types.ts";
 import { useMusicSearch } from "@/utils/client.ts";
 import { useSongQueue } from "@/utils/songQueue.ts";
@@ -9,11 +7,11 @@ import SongCard from "@/components/SongCard.tsx";
 import Error from "@/components/Error.tsx";
 import Loader from "@/components/Loader.tsx";
 
-interface SearchProps extends RoutableProps {
-  readonly query?: string;
+interface SearchProps {
+  readonly query: string;
 }
 
-export default function Search({ query = "" }: SearchProps) {
+export default function Search({ query }: SearchProps) {
   const response = useMusicSearch(query);
   const queue = useSongQueue();
   const tracks = useComputed(() => response.data?.tracks);

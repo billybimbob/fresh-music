@@ -1,6 +1,4 @@
-import { type RoutableProps } from "preact-router";
 import { useComputed } from "@preact/signals";
-
 import { type ArtistSong, toSize } from "@/utils/types.ts";
 import { useArtistDetails } from "@/utils/client.ts";
 import { useSongQueue } from "@/utils/songQueue.ts";
@@ -9,18 +7,14 @@ import Error from "@/components/Error.tsx";
 import Loader from "@/components/Loader.tsx";
 import ArtistSongRow from "@/components/ArtistSongRow.tsx";
 
-interface ArtistDetailsProps extends RoutableProps {
-  readonly id?: string;
+interface ArtistDetailsProps {
+  readonly id: string;
 }
 
-export default function ArtistDetails({ id = "" }: ArtistDetailsProps) {
+export default function ArtistDetails({ id }: ArtistDetailsProps) {
   const queue = useSongQueue();
   const response = useArtistDetails(id);
   const artist = useComputed(() => response.data);
-
-  const image = useComputed(() =>
-    artist.value === undefined ? "" : toSize(artist.value.artwork.url, 500)
-  );
 
   const onSongClick = (song: ArtistSong, index: number) => {
     if (artist.value === undefined) {
@@ -45,6 +39,8 @@ export default function ArtistDetails({ id = "" }: ArtistDetailsProps) {
     return <Loader>Loading artist details...</Loader>;
   }
 
+  const image = toSize(artist.value.artwork.url, 500);
+
   return (
     <article class="artist-page">
       <header class="artist-details">
@@ -52,7 +48,7 @@ export default function ArtistDetails({ id = "" }: ArtistDetailsProps) {
           <img
             class="artist-img"
             alt={`${artist.value.name} Profile`}
-            src={image.value}
+            src={image}
           />
           <div class="artist-title">
             <h1 class="artist-title-name" title={artist.value.name}>

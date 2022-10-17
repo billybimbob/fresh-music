@@ -1,4 +1,3 @@
-import { type RoutableProps } from "preact-router";
 import { useComputed } from "@preact/signals";
 import { useCharts } from "@/utils/client.ts";
 
@@ -6,7 +5,7 @@ import ArtistCard from "@/components/ArtistCard.tsx";
 import Error from "@/components/Error.tsx";
 import Loader from "@/components/Loader.tsx";
 
-export default function TopArtists(_props: RoutableProps) {
+export default function TopArtists() {
   const response = useCharts();
   const tracks = useComputed(() => response.data);
 

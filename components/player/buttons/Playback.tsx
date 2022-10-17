@@ -15,15 +15,15 @@ export default function Playback() {
 
   return (
     <button
-      title={title.value}
+      title={title}
       type="button"
       class="btn-icon"
-      disabled={disabled.value}
+      disabled={disabled}
       onClick={queue.toggle}
     >
       <svg class="play-icon">
         <title>{title}</title>
-        <use href={href.value} />
+        <use href={href} />
       </svg>
     </button>
   );

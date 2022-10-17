@@ -11,10 +11,10 @@ export default function Previous() {
 
   return (
     <button
-      title={title.value}
+      title={title}
       type="button"
       class="btn-icon"
-      disabled={disabled.value}
+      disabled={disabled}
       onClick={queue.seekPrevious}
     >
       <svg class="seek-icon">

@@ -1,6 +1,4 @@
-import { type RoutableProps } from "preact-router";
 import { useComputed } from "@preact/signals";
-
 import type { Track } from "@/utils/types.ts";
 import { useCharts } from "@/utils/client.ts";
 import { useSongQueue } from "@/utils/songQueue.ts";
@@ -9,7 +7,7 @@ import SongCard from "@/components/SongCard.tsx";
 import Error from "@/components/Error.tsx";
 import Loader from "@/components/Loader.tsx";
 
-export default function TopSongs(_props: RoutableProps) {
+export default function TopSongs() {
   const response = useCharts();
   const queue = useSongQueue();
   const tracks = useComputed(() => response.data);

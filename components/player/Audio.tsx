@@ -85,9 +85,9 @@ export default function Audio(
   return (
     <audio
       ref={audio}
-      src={src.value}
-      volume={volume.value}
-      loop={loop.value}
+      src={src}
+      volume={volume}
+      loop={loop}
       controls={false}
       autoPlay={false}
       onLoadStart={onLoadUpdate}

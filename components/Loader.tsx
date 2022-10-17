@@ -1,14 +1,16 @@
-import { ComponentChildren } from "preact";
+import { ComponentChildren, isValidElement } from "preact";
 
 interface LoaderProps {
   readonly children?: ComponentChildren;
 }
 
-export default function Loader({ children }: LoaderProps) {
+export default function Loader({ children = "Loading" }: LoaderProps) {
   return (
     <article class="loader">
       <img alt="Loading Animation" src="/loader.svg" class="loader-icon" />
-      <h1 class="loader-title">{children ?? "Loading"}</h1>
+      {isValidElement(children)
+        ? children
+        : <h1 class="loader-title">{children}</h1>}
     </article>
   );
 }

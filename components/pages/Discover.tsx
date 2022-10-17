@@ -1,8 +1,7 @@
-import { type RoutableProps, route } from "preact-router";
+import { route } from "preact-router";
 import { useComputed } from "@preact/signals";
 
 import genres from "@/static/genres.json" assert { type: "json" };
-
 import type { Track } from "@/utils/types.ts";
 import { useGenreCharts } from "@/utils/client.ts";
 import { useSongQueue } from "@/utils/songQueue.ts";
@@ -13,7 +12,7 @@ import Loader from "@/components/Loader.tsx";
 
 const [{ title: defaultTitle, value: defaultGenre }] = genres;
 
-interface DiscoverProps extends RoutableProps {
+interface DiscoverProps {
   readonly genre?: string;
 }
 
@@ -21,9 +20,6 @@ export default function Discover({ genre = defaultGenre }: DiscoverProps) {
   const queue = useSongQueue();
   const response = useGenreCharts(genre);
   const tracks = useComputed(() => response.data);
-
-  const genreTitle = genres
-    .find((g) => g.value === genre)?.title ?? defaultTitle;
 
   const onGenreChange = (event: Event) => {
     const { value = undefined } = event.target as HTMLSelectElement;
@@ -34,7 +30,6 @@ export default function Discover({ genre = defaultGenre }: DiscoverProps) {
   };
 
   const onSongClick = (song: Track, index: number) => {
-    console.log(queue);
     if (tracks.value === undefined) {
       return;
     }
@@ -56,6 +51,9 @@ export default function Discover({ genre = defaultGenre }: DiscoverProps) {
   if (tracks.value === undefined) {
     return <Loader>Loading songs...</Loader>;
   }
+
+  const genreTitle = genres
+    .find((g) => g.value === genre)?.title ?? defaultTitle;
 
   return (
     <article class="discover">

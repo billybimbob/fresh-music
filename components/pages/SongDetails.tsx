@@ -1,6 +1,4 @@
-import { RoutableProps } from "preact-router";
 import { useComputed } from "@preact/signals";
-
 import type { Track } from "@/utils/types.ts";
 import { useRelatedSongs, useSongDetails } from "@/utils/client.ts";
 import { useSongQueue } from "@/utils/songQueue.ts";
@@ -10,11 +8,11 @@ import SongRow from "@/components/SongRow.tsx";
 import Error from "@/components/Error.tsx";
 import Loader from "@/components/Loader.tsx";
 
-interface SongDetailsProps extends RoutableProps {
-  readonly id?: string;
+interface SongDetailsProps {
+  readonly id: string;
 }
 
-export default function SongDetails({ id = "" }: SongDetailsProps) {
+export default function SongDetails({ id }: SongDetailsProps) {
   const details = useSongDetails(id);
   const related = useRelatedSongs(id);
   const queue = useSongQueue();

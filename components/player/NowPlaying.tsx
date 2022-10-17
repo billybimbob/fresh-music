@@ -1,5 +1,5 @@
 import { useComputed } from "@preact/signals";
-import classes from "classNames/index.ts";
+import classes from "classnames/index.ts";
 
 import { type ArtistSong, toSize, type Track } from "@/utils/types.ts";
 import { useSongQueue } from "@/utils/songQueue.ts";
@@ -51,13 +51,8 @@ function NowPlayingImage() {
   });
 
   return (
-    <div class={poster.value}>
-      <img
-        class={image.value}
-        title={title.value}
-        alt={title.value}
-        src={src.value}
-      />
+    <div class={poster}>
+      <img class={image} title={title} alt={title} src={src} />
     </div>
   );
 }

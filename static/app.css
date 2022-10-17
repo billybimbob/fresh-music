@@ -191,7 +191,6 @@ input[type="range"]:focus::-moz-range-thumb {
   width: 1.25rem;
   height: 1.25rem;
   margin: 0 0.75rem;
-  cursor: pointer;
 }
 
 .search-bar-input {
@@ -667,7 +666,6 @@ input[type="range"]:focus::-moz-range-thumb {
 .shuffle-icon {
   fill: var(--text-primary);
   display: block;
-  cursor: pointer;
   height: 1rem;
   width: 1rem;
 }
@@ -690,14 +688,12 @@ input[type="range"]:focus::-moz-range-thumb {
 
 .seek-icon {
   fill: var(--text-primary);
-  cursor: pointer;
   height: 2rem;
   width: 2rem;
 }
 
 .play-icon {
   fill: var(--text-primary);
-  cursor: pointer;
   height: 3rem;
   width: 3rem;
 }
@@ -706,7 +702,7 @@ input[type="range"]:focus::-moz-range-thumb {
   display: flex;
   flex-direction: row;
   align-items: center;
-  margin-bottom: 0.25rem;
+  margin: 0.25rem 0;
 }
 
 .playback-seek-btn-left,
@@ -744,6 +740,12 @@ input[type="range"]:focus::-moz-range-thumb {
   margin: 0 1rem;
   border-radius: 0.5rem;
   cursor: pointer;
+}
+
+.playback-seek-btn-left[disabled],
+.playback-seek-btn-right[disabled],
+.playback-slider[disabled] {
+  cursor: default;
 }
 
 @media (min-width: 768px) {
@@ -838,6 +840,10 @@ input[type="range"]:focus::-moz-range-thumb {
   color: transparent;
   background-color: transparent;
   cursor: pointer;
+}
+
+.btn-icon[disabled] {
+  cursor: default;
 }
 
 .loader,

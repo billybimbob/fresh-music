@@ -7,7 +7,7 @@ export default function SearchBar() {
 
   const onSubmit = (event: Event) => {
     event.preventDefault();
-    if (search.value !== "") {
+    if (!isEmpty.value) {
       route(`/search/${search}`);
       search.value = "";
     }
@@ -26,7 +26,7 @@ export default function SearchBar() {
         title="Search Music"
         type="submit"
         class="btn-icon"
-        disabled={isEmpty.value}
+        disabled={isEmpty}
       >
         <svg class="search-bar-icon">
           <title>Search Music</title>
@@ -42,7 +42,7 @@ export default function SearchBar() {
         type="search"
         placeholder="Search"
         autoComplete="off"
-        value={search.value}
+        value={search}
         onInput={onInput}
       />
     </form>

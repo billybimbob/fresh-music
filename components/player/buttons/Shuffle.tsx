@@ -30,7 +30,7 @@ export default function Shuffle() {
       title="Shuffle"
       type="button"
       class="btn-icon"
-      disabled={disabled.value}
+      disabled={disabled}
       onClick={shuffle}
     >
       <svg class="shuffle-icon">
