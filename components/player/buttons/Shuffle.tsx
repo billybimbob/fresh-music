@@ -1,3 +1,4 @@
+import { asset } from "$fresh/runtime.ts";
 import {
   batch,
   useComputed,
@@ -35,7 +36,7 @@ export default function Shuffle() {
     >
       <svg class="shuffle-icon">
         <title>Shuffle</title>
-        <use href="/icons/shuffle.svg#shuffle" />
+        <use href={asset("/icons/shuffle.svg#shuffle")} />
       </svg>
     </button>
   );

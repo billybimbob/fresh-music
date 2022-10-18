@@ -1,4 +1,5 @@
 import { useComputed } from "@preact/signals";
+import { asset } from "$fresh/runtime.ts";
 import { useSongQueue } from "@/utils/songQueue.ts";
 
 export default function Playback() {
@@ -10,7 +11,7 @@ export default function Playback() {
   );
 
   const href = useComputed(() =>
-    queue.isPlaying ? "/icons/pause.svg#pause" : "/icons/play.svg#play"
+    asset(queue.isPlaying ? "/icons/pause.svg#pause" : "/icons/play.svg#play")
   );
 
   return (

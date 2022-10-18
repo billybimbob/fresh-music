@@ -1,14 +1,30 @@
-import { route } from "preact-router";
 import { useComputed, useSignal } from "@preact/signals";
+import { useLocation } from "wouter";
+import { asset } from "$fresh/runtime.ts";
+import LocationProvider from "@/components/LocationProvider.tsx";
 
-export default function SearchBar() {
+interface SearchBarProps {
+  readonly url?: string;
+}
+
+export default function ({ url }: SearchBarProps) {
+  return (
+    <LocationProvider url={url}>
+      <SearchBar />
+    </LocationProvider>
+  );
+}
+
+function SearchBar() {
+  const [, navigate] = useLocation();
   const search = useSignal("");
   const isEmpty = useComputed(() => search.value === "");
 
   const onSubmit = (event: Event) => {
     event.preventDefault();
+
     if (!isEmpty.value) {
-      route(`/search/${search}`);
+      navigate(`/search/${search}`);
       search.value = "";
     }
   };
@@ -30,13 +46,13 @@ export default function SearchBar() {
       >
         <svg class="search-bar-icon">
           <title>Search Music</title>
-          <use href="/icons/search.svg#search" />
+          <use href={asset("/icons/search.svg#search")} />
         </svg>
       </button>
       <input
         title="Search Music"
         id="search-bar-input"
-        name="search-bar-input"
+        name="lookup"
         required
         class="search-bar-input"
         type="search"

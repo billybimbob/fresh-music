@@ -1,5 +1,5 @@
 import { useComputed } from "@preact/signals";
-import classes from "classnames/index.ts";
+import classes from "classnames";
 
 import { type ArtistSong, toSize, type Track } from "@/utils/types.ts";
 import { useSongQueue } from "@/utils/songQueue.ts";

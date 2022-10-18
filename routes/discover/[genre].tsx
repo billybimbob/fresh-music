@@ -21,6 +21,6 @@ export const handler: Handler<DiscoverData> = async (_req, ctx) => {
   });
 };
 
-export default function DiscoverPage({ data }: PageProps<DiscoverData>) {
-  return <MusicBrowser initial={data} />;
+export default function DiscoverPage({ url, data }: PageProps<DiscoverData>) {
+  return <MusicBrowser url={url.pathname} initial={data} />;
 }

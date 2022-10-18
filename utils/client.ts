@@ -1,15 +1,22 @@
-import { useMemo } from "preact/hooks";
+import { createContext } from "preact";
+import { useContext, useMemo } from "preact/hooks";
 import { batch, useSignal } from "@preact/signals";
 import useSWR from "swr";
 
-import type { Artist, SearchResult, Track } from "@/utils/types.ts";
 import endpoints from "@/utils/api.ts";
-import { usePreload } from "@/utils/preload.ts";
+import type {
+  Artist,
+  PreloadData,
+  SearchResult,
+  Track,
+} from "@/utils/types.ts";
 
 export interface ResponseSignal<T> {
   readonly data: T | undefined;
   readonly error: Error | undefined;
 }
+
+export const Preload = createContext<PreloadData>({});
 
 export function useCharts() {
   return useSWRSignal<readonly Track[]>(endpoints.charts);
@@ -39,12 +46,12 @@ export function useArtistDetails(id: string) {
   return useSWRSignal<Artist>(endpoints.artist(id));
 }
 
-function useSWRSignal<T>(key: string): ResponseSignal<T> {
+function useSWRSignal<T>(endpoint: string): ResponseSignal<T> {
   const data = useSignal<T | undefined>(undefined);
   const error = useSignal<Error | undefined>(undefined);
-  const preload = usePreload();
+  const preload = useContext(Preload);
 
-  useSWR(key, null, {
+  useSWR(endpoint, null, {
     revalidateIfStale: false,
     revalidateOnMount: true,
     revalidateOnFocus: false,
@@ -75,7 +82,7 @@ function useSWRSignal<T>(key: string): ResponseSignal<T> {
 
     isPaused: () => data.value !== undefined,
 
-    fetcher: async (endpoint: string) => {
+    fetcher: async () => {
       console.log(`running fetch on ${endpoint}`);
       const response = await fetch(endpoint);
       return await response.json() as T;

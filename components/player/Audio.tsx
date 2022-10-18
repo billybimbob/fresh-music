@@ -1,5 +1,6 @@
 import { useRef } from "preact/hooks";
 import {
+  batch,
   type ReadonlySignal,
   useComputed,
   useSignal,
@@ -52,9 +53,15 @@ export default function Audio(
   const onLoadUpdate = (event: Event) => {
     const { readyState = undefined } = event.target as HTMLAudioElement;
 
-    if (readyState !== undefined) {
+    if (readyState === undefined) return;
+
+    batch(() => {
       isLoading.value = readyState < 3;
-    }
+
+      if (readyState === 0) {
+        onDurationFound(0);
+      }
+    });
   };
 
   const onDurationChange = (event: Event) => {

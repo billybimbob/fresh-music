@@ -20,6 +20,6 @@ export const handler: Handler<HomeData> = async (_req, ctx) => {
   });
 };
 
-export default function HomePage({ data }: PageProps<HomeData>) {
-  return <MusicBrowser initial={data} />;
+export default function HomePage({ url, data }: PageProps<HomeData>) {
+  return <MusicBrowser url={url.pathname} initial={data} />;
 }

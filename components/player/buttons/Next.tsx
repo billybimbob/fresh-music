@@ -1,4 +1,5 @@
 import { useComputed } from "@preact/signals";
+import { asset } from "$fresh/runtime.ts";
 import { useSongQueue } from "@/utils/songQueue.ts";
 
 export default function Next() {
@@ -16,7 +17,7 @@ export default function Next() {
     >
       <svg class="seek-icon">
         <title>{title}</title>
-        <use href="/icons/next.svg#next" />
+        <use href={asset("/icons/next.svg#next")} />
       </svg>
     </button>
   );

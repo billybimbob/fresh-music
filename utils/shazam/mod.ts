@@ -163,7 +163,7 @@ export async function fetchWorldCharts() {
 
 export async function fetchRelatedSongs(_song: string) {
   const { default: data } = await import(
-    "@/utils/shazam//responses/related-tracks.json",
+    "@/utils/shazam/responses/related-tracks.json",
     {
       assert: { type: "json" },
     }
@@ -174,7 +174,7 @@ export async function fetchRelatedSongs(_song: string) {
 
 export async function fetchSearch(_query: string) {
   const { default: data } = await import(
-    "@/utils/shazam//responses/multi-search.json",
+    "@/utils/shazam/responses/multi-search.json",
     {
       assert: { type: "json" },
     }

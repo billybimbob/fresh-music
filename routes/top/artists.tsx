@@ -14,6 +14,8 @@ export const handler: Handler<TopArtistData> = async (_req, ctx) => {
   return ctx.render({ [endpoints.charts]: charts ?? undefined });
 };
 
-export default function TopArtistsPage({ data }: PageProps<TopArtistData>) {
-  return <MusicBrowser initial={data} />;
+export default function TopArtistsPage(
+  { url, data }: PageProps<TopArtistData>,
+) {
+  return <MusicBrowser url={url.pathname} initial={data} />;
 }

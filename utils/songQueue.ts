@@ -1,7 +1,7 @@
 import { createContext } from "preact";
 import { useContext } from "preact/hooks";
 import { batch, computed, signal } from "@preact/signals";
-import type { Song } from "@/utils/types.ts";
+import type { ArtistSong, Song, Track } from "@/utils/types.ts";
 
 export interface SongQueueSignal {
   readonly current: Song | null;
@@ -28,6 +28,8 @@ const finished = signal<readonly Song[]>([]);
 const upcoming = signal<readonly Song[]>([]);
 
 const isPlaying = signal(false);
+const canPlay = computed(() => current.value?.data !== undefined);
+
 const hasPrevious = computed(() => finished.value.length > 0);
 const hasNext = computed(() => upcoming.value.length > 0);
 
@@ -63,6 +65,7 @@ export const SongQueue = createContext<SongQueueSignal>({
       }
 
       current.value = finished.value.at(-1) ?? null;
+      isPlaying.value = isPlaying.value && canPlay.value;
 
       if (hasPrevious.value) {
         finished.value = finished.value.slice(0, -1);
@@ -77,6 +80,7 @@ export const SongQueue = createContext<SongQueueSignal>({
       }
 
       current.value = upcoming.value.at(0) ?? null;
+      isPlaying.value = isPlaying.value && canPlay.value;
 
       if (hasNext.value) {
         upcoming.value = upcoming.value.slice(1);
@@ -90,15 +94,16 @@ export const SongQueue = createContext<SongQueueSignal>({
       return;
     }
 
-    if (current.value !== null) {
+    if (canPlay.value) {
       isPlaying.value = true;
     }
   },
 
   add(...songs: readonly Song[]) {
-    if (songs.length === 0) return;
+    const valid = songs.filter(isValidSong);
+    if (valid.length === 0) return;
 
-    const added = [...upcoming.value, ...songs];
+    const added = [...upcoming.value, ...valid];
 
     if (current.value !== null) {
       upcoming.value = added;
@@ -113,12 +118,13 @@ export const SongQueue = createContext<SongQueueSignal>({
   },
 
   listenTo(...songs: readonly Song[]) {
-    if (songs.length === 0) return;
+    const valid = songs.filter(isValidSong);
+    if (valid.length === 0) return;
 
     batch(() => {
       finished.value = [];
-      current.value = songs[0];
-      upcoming.value = songs.slice(1);
+      current.value = valid[0];
+      upcoming.value = valid.slice(1);
       isPlaying.value = true;
     });
   },
@@ -139,6 +145,12 @@ export const SongQueue = createContext<SongQueueSignal>({
     upcoming.value = shuffled;
   },
 });
+
+function isValidSong(song: Song) {
+  const hasImage = (song as Track).images?.cover ||
+    (song as ArtistSong).artwork?.url;
+  return Boolean(hasImage && song.data);
+}
 
 export function useSongQueue(): SongQueueSignal {
   return useContext(SongQueue);

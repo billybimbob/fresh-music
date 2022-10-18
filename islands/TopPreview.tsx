@@ -1,7 +1,7 @@
 import { useComputed } from "@preact/signals";
-import type { Track } from "@/utils/types.ts";
-import { useCharts } from "@/utils/client.ts";
-import { Preload, type PreloadData } from "@/utils/preload.ts";
+
+import type { PreloadData, Track } from "@/utils/types.ts";
+import { Preload, useCharts } from "@/utils/client.ts";
 import { useSongQueue } from "@/utils/songQueue.ts";
 
 import ArtistCard from "@/components/ArtistCard.tsx";
@@ -11,7 +11,7 @@ interface TopPreviewProps {
   readonly initial?: PreloadData;
 }
 
-export default function WrappedTopPreview({ initial = {} }: TopPreviewProps) {
+export default function ({ initial = {} }: TopPreviewProps) {
   return (
     <Preload.Provider value={initial}>
       <TopPreview />

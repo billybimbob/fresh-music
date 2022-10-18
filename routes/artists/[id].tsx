@@ -22,6 +22,6 @@ export const handler: Handler<ArtistData> = async (_req, ctx) => {
   });
 };
 
-export default function ArtistPage({ data }: PageProps<ArtistData>) {
-  return <MusicBrowser initial={data} />;
+export default function ArtistPage({ url, data }: PageProps<ArtistData>) {
+  return <MusicBrowser url={url.pathname} initial={data} />;
 }

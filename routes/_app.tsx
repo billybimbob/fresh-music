@@ -6,7 +6,12 @@ export default function App({ Component }: AppProps) {
     <>
       <Head>
         <title>Browse Music</title>
-        <link rel="stylesheet" type="text/css" charSet="utf-8" href="/app.css" />
+        <link
+          rel="stylesheet"
+          type="text/css"
+          charSet="utf-8"
+          href="/app.css"
+        />
       </Head>
       <Component />
     </>

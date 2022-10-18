@@ -22,6 +22,6 @@ export const handler: Handler<SearchData> = async (_req, ctx) => {
   });
 };
 
-export default function SearchPage({ data }: PageProps<SearchData>) {
-  return <MusicBrowser initial={data} />;
+export default function SearchPage({ url, data }: PageProps<SearchData>) {
+  return <MusicBrowser url={url.pathname} initial={data} />;
 }

@@ -1,4 +1,4 @@
-import classes from "classnames/index.ts";
+import classes from "classnames";
 import type { Track } from "@/utils/types.ts";
 import { useSongQueue } from "@/utils/songQueue.ts";
 
@@ -10,7 +10,7 @@ interface SongCardProps extends Track {
 }
 
 export default function SongCard(
-  { id, name, images, artist, onClick }: SongCardProps,
+  { id, name, data, images, artist, onClick }: SongCardProps,
 ) {
   const queue = useSongQueue();
 
@@ -19,6 +19,7 @@ export default function SongCard(
   const card = classes({
     "song-card": true,
     "active": isActive,
+    "disabled": data === undefined,
   });
 
   return (
@@ -26,11 +27,11 @@ export default function SongCard(
       <div
         title={`Play ${name}`}
         class="song-card-body"
-        onClick={onClick}
+        onClick={data ? onClick : undefined}
         tabIndex={0}
       >
         <div class="song-card-btn">
-          <PlayButton isActive={isActive} title={name} />
+          {data && <PlayButton isActive={isActive} title={name} />}
         </div>
         <img class="song-card-img" alt={`${name} Image`} src={images?.cover} />
       </div>

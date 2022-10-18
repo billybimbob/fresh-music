@@ -1,5 +1,6 @@
 import { useEffect } from "preact/hooks";
 import { type Signal, useComputed } from "@preact/signals";
+import { asset } from "$fresh/runtime.ts";
 
 interface VolumeProps {
   readonly volume: Signal<number>;
@@ -53,17 +54,19 @@ export default function Volume({ volume }: VolumeProps) {
 }
 
 function VolumeButton({ volume }: VolumeProps) {
-  const href = useComputed(() =>
-    "/icons/" + (
-      volume.value === 0 && "volume-mute.svg#volume-mute" ||
-      volume.value <= 0.5 && "volume-low.svg#volume-low" ||
-      "volume-high.svg#volume-high"
-    )
-  );
-
   const title = useComputed(() =>
     volume.value === 0 ? "Max Volume" : "Mute Volume"
   );
+
+  const href = useComputed(() => {
+    const svg = (
+      volume.value === 0 && "volume-mute.svg#volume-mute" ||
+      volume.value <= 0.5 && "volume-low.svg#volume-low" ||
+      "volume-high.svg#volume-high"
+    );
+
+    return asset(`/icons/${svg}`);
+  });
 
   const onClick = () => {
     if (volume.value === 0) {

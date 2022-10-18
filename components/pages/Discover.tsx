@@ -1,7 +1,7 @@
-import { route } from "preact-router";
 import { useComputed } from "@preact/signals";
-
+import { useLocation } from "wouter";
 import genres from "@/static/genres.json" assert { type: "json" };
+
 import type { Track } from "@/utils/types.ts";
 import { useGenreCharts } from "@/utils/client.ts";
 import { useSongQueue } from "@/utils/songQueue.ts";
@@ -16,8 +16,12 @@ interface DiscoverProps {
   readonly genre?: string;
 }
 
+console.log("load discover");
+
 export default function Discover({ genre = defaultGenre }: DiscoverProps) {
   const queue = useSongQueue();
+  const [, navigate] = useLocation();
+
   const response = useGenreCharts(genre);
   const tracks = useComputed(() => response.data);
 
@@ -25,7 +29,7 @@ export default function Discover({ genre = defaultGenre }: DiscoverProps) {
     const { value = undefined } = event.target as HTMLSelectElement;
 
     if (genres.some((g) => g.value === value)) {
-      route(`/discover/${value}`);
+      navigate(`/discover/${value}`);
     }
   };
 

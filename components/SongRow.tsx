@@ -1,4 +1,4 @@
-import classes from "classnames/index.ts";
+import classes from "classnames";
 import type { Track } from "@/utils/types.ts";
 import { useSongQueue } from "@/utils/songQueue.ts";
 
@@ -11,7 +11,7 @@ interface SongRowProps extends Track {
 }
 
 export default function SongRow(
-  { id, spot, name, artist, images, onClick }: SongRowProps,
+  { id, spot, name, data, artist, images, onClick }: SongRowProps,
 ) {
   const queue = useSongQueue();
 
@@ -20,10 +20,11 @@ export default function SongRow(
   const row = classes({
     "song-row": true,
     "active": isActive,
+    "disabled": data === undefined,
   });
 
   return (
-    <li class={row} onDblClick={onClick}>
+    <li class={row} onDblClick={data ? onClick : undefined}>
       <div class="song-row-body">
         <p class="song-row-spot">{spot}</p>
         <img class="song-row-img" alt={`${name} Cover`} src={images?.cover} />
@@ -36,7 +37,13 @@ export default function SongRow(
           </p>
         </div>
       </div>
-      <PlayButton isActive={isActive} title={name} onClick={onClick} />
+      {data && (
+        <PlayButton
+          isActive={isActive}
+          title={name}
+          onClick={onClick}
+        />
+      )}
     </li>
   );
 }

@@ -1,5 +1,6 @@
+import { asset } from "$fresh/runtime.ts";
 import { type Signal, useComputed } from "@preact/signals";
-import classes from "classnames/index.ts";
+import classes from "classnames";
 import { useSongQueue } from "@/utils/songQueue.ts";
 
 interface LoopProps {
@@ -32,7 +33,7 @@ export default function Loop({ value: loop }: LoopProps) {
     >
       <svg class={icon}>
         <title>{title}</title>
-        <use href="/icons/loop.svg#loop" />
+        <use href={asset("/icons/loop.svg#loop")} />
       </svg>
     </button>
   );

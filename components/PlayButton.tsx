@@ -1,3 +1,5 @@
+import { asset } from "$fresh/runtime.ts";
+
 interface PlayButtonProps {
   isActive: boolean;
   title: string;
@@ -20,7 +22,7 @@ export default function PlayButton(
       >
         <svg class="play-icon-browse">
           <title>Pause {title}</title>
-          <use href="/icons/pause.svg#pause" />
+          <use href={asset("/icons/pause.svg#pause")} />
         </svg>
       </button>
     );
@@ -35,7 +37,7 @@ export default function PlayButton(
       >
         <svg class="play-icon-browse">
           <title>Play {title}</title>
-          <use href="/icons/play.svg#play" />
+          <use href={asset("/icons/play.svg#play")} />
         </svg>
       </button>
     );

@@ -1,4 +1,4 @@
-import classes from "classnames/index.ts";
+import classes from "classnames";
 import { type ArtistSong, toSize } from "@/utils/types.ts";
 import { useSongQueue } from "@/utils/songQueue.ts";
 import PlayButton from "@/components/PlayButton.tsx";
@@ -9,7 +9,7 @@ interface ArtistSongProps extends ArtistSong {
 }
 
 export default function ArtistSongRow(
-  { id, spot, name, album, artwork, onClick }: ArtistSongProps,
+  { id, spot, name, data, album, artwork, onClick }: ArtistSongProps,
 ) {
   const queue = useSongQueue();
 
@@ -18,12 +18,13 @@ export default function ArtistSongRow(
   const item = classes({
     "song-row": true,
     "active": isActive,
+    "disabled": data === undefined,
   });
 
   const image = toSize(artwork.url, 125);
 
   return (
-    <li class={item} onDblClick={onClick}>
+    <li class={item} onDblClick={data ? onClick : undefined}>
       <div class="song-row-body">
         <p class="song-row-spot">{spot}</p>
         <img class="song-row-img" alt={`${name} Artwork`} src={image} />
@@ -34,7 +35,13 @@ export default function ArtistSongRow(
           <p class="song-row-album" title={album}>{album}</p>
         </div>
       </div>
-      <PlayButton isActive={isActive} title={name} onClick={onClick} />
+      {data && (
+        <PlayButton
+          isActive={isActive}
+          title={name}
+          onClick={onClick}
+        />
+      )}
     </li>
   );
 }

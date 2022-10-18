@@ -8,7 +8,8 @@
     "coverart",
     "Millis",
     "Routable",
-    "shazam"
+    "shazam",
+    "wouter"
   ],
   "[svg]": {
     "editor.defaultFormatter": "jock.svg"

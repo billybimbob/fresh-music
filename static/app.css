@@ -92,6 +92,13 @@ input[type="range"]:focus::-moz-range-thumb {
   outline-offset: 0.125rem;
 }
 
+input[type="search"]::-webkit-search-decoration,
+input[type="search"]::-webkit-search-cancel-button,
+input[type="search"]::-webkit-search-results-button,
+input[type="search"]::-webkit-search-results-decoration {
+  display: none;
+}
+
 .music-browser {
   /* position: relative; */
   display: flex;
@@ -610,7 +617,7 @@ input[type="range"]:focus::-moz-range-thumb {
 }
 
 .now-playing-text {
-  width: 50%;
+  width: 20rem;
 }
 
 .now-playing-name {
@@ -702,7 +709,8 @@ input[type="range"]:focus::-moz-range-thumb {
   display: flex;
   flex-direction: row;
   align-items: center;
-  margin: 0.25rem 0;
+  margin-top: 0.4rem;
+  margin-bottom: 0.25rem;
 }
 
 .playback-seek-btn-left,
@@ -855,6 +863,10 @@ input[type="range"]:focus::-moz-range-thumb {
   align-items: center;
 }
 
+.loader {
+  animation: appear 0.5s ease-in-out;
+}
+
 .loader-icon {
   height: 20rem;
   width: 20rem;
@@ -944,6 +956,10 @@ input[type="range"]:focus::-moz-range-thumb {
   transition: background-color 0.2s ease-out;
 }
 
+.song-card.disabled .song-card-btn {
+  cursor: default;
+}
+
 .song-card:focus-within .song-card-btn,
 .song-card-body:hover .song-card-btn {
   background-color: #13101880;
@@ -998,6 +1014,10 @@ input[type="range"]:focus::-moz-range-thumb {
   border-radius: 0.5rem;
   cursor: pointer;
   transition: background-color 0.2s ease-in;
+}
+
+.song-row.disabled {
+  cursor: default;
 }
 
 .song-row:focus-within,

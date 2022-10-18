@@ -1,29 +1,52 @@
-import { Link } from "preact-router/match";
+import { type ComponentChild } from "preact";
+import { asset } from "$fresh/runtime.ts";
+import { useRoute } from "wouter";
+import classes from "classnames";
+import LocationProvider from "@/components/LocationProvider.tsx";
 
-export default function Navigation() {
+interface NavigationProps {
+  readonly url?: string;
+}
+
+export default function ({ url }: NavigationProps) {
+  return (
+    <LocationProvider url={url}>
+      <Navigation />
+    </LocationProvider>
+  );
+}
+
+function Navigation() {
   return (
     <nav class="nav-menu">
       <svg class="nav-icon" viewBox="0 0 220 75">
         <title>Logo</title>
-        <use href="/logo.svg#logo" />
+        <use href={asset("/logo.svg#logo")} />
       </svg>
+
       <ul class="nav-links">
-        <li title="Discover" class="nav-item">
-          <Link href="/" activeClassName="active">
-            Discover
-          </Link>
+        <li class="nav-item" title="Discover">
+          <NavLink href="/">Discover</NavLink>
         </li>
-        <li title="Top Artists" class="nav-item">
-          <Link href="/top/artists" activeClassName="active">
-            Top Artists
-          </Link>
+        <li class="nav-item" title="Top Artists">
+          <NavLink href="/top/artists">Top Artists</NavLink>
         </li>
-        <li title="Top Charts" class="nav-item">
-          <Link href="/top/songs" activeClassName="active">
-            Top Charts
-          </Link>
+        <li class="nav-item" title="Top Charts">
+          <NavLink href="/top/songs">Top Charts</NavLink>
         </li>
       </ul>
     </nav>
   );
+}
+
+interface NavLinkProps {
+  readonly href: string;
+  readonly children: ComponentChild;
+}
+
+function NavLink({ href, children }: NavLinkProps) {
+  const [isActive] = useRoute(href);
+  const className = classes({ active: isActive });
+
+  return <a href={href} class={className}>{children}</a>;
 }

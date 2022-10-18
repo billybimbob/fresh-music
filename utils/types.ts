@@ -62,3 +62,12 @@ export type Song = ArtistSong | Track;
 export function toSize(src: string, size: number) {
   return src.replace(/({w})|({h})/g, size.toString());
 }
+
+export interface PreloadData {
+  readonly [key: string]:
+    | Artist
+    | SearchResult
+    | Track
+    | readonly Track[]
+    | undefined;
+}
