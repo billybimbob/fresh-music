@@ -1,8 +1,9 @@
+import { useContext } from "preact/hooks";
 import { useComputed } from "@preact/signals";
 import classes from "classnames";
 
 import { type ArtistSong, toSize, type Track } from "@/utils/types.ts";
-import { useSongQueue } from "@/utils/songQueue.ts";
+import SongQueue from "@/utils/songQueue.ts";
 import ArtistLink from "@/components/ArtistLink.tsx";
 
 export default function NowPlaying() {
@@ -15,7 +16,7 @@ export default function NowPlaying() {
 }
 
 function NowPlayingImage() {
-  const queue = useSongQueue();
+  const queue = useContext(SongQueue);
   const title = useComputed(() => `${queue.current?.name ?? "Song"} Cover`);
 
   const poster = useComputed(() =>
@@ -58,7 +59,7 @@ function NowPlayingImage() {
 }
 
 function NowPlayingText() {
-  const queue = useSongQueue();
+  const queue = useContext(SongQueue);
 
   if (queue.current === null) {
     return (

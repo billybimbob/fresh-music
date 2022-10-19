@@ -1,15 +1,16 @@
-import { asset } from "$fresh/runtime.ts";
+import { useContext } from "preact/hooks";
 import {
   batch,
   useComputed,
   useSignal,
   useSignalEffect,
 } from "@preact/signals";
-import { useSongQueue } from "@/utils/songQueue.ts";
+import { asset } from "$fresh/runtime.ts";
+import SongQueue from "@/utils/songQueue.ts";
 
 export default function Shuffle() {
   const isShuffled = useSignal(false);
-  const queue = useSongQueue();
+  const queue = useContext(SongQueue);
 
   const disabled = useComputed(() =>
     isShuffled.value || queue.current === null

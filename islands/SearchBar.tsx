@@ -1,6 +1,6 @@
-import { useComputed, useSignal } from "@preact/signals";
-import { useLocation } from "wouter";
+import { batch, useComputed, useSignal } from "@preact/signals";
 import { asset } from "$fresh/runtime.ts";
+import { useLocationSignal } from "@/utils/locationSignal.ts";
 import LocationProvider from "@/components/LocationProvider.tsx";
 
 interface SearchBarProps {
@@ -16,17 +16,18 @@ export default function ({ url }: SearchBarProps) {
 }
 
 function SearchBar() {
-  const [, navigate] = useLocation();
+  const loc = useLocationSignal();
   const search = useSignal("");
   const isEmpty = useComputed(() => search.value === "");
 
   const onSubmit = (event: Event) => {
     event.preventDefault();
+    if (isEmpty.value) return;
 
-    if (!isEmpty.value) {
-      navigate(`/search/${search}`);
+    batch(() => {
+      loc.value = `/search/${search}`;
       search.value = "";
-    }
+    });
   };
 
   const onInput = (event: Event) => {
@@ -52,7 +53,7 @@ function SearchBar() {
       <input
         title="Search Music"
         id="search-bar-input"
-        name="lookup"
+        name="query"
         required
         class="search-bar-input"
         type="search"

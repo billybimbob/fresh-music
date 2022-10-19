@@ -3,8 +3,8 @@ import { contentType } from "$media_types";
 import { fetchRelatedSongs } from "@/utils/shazam/mod.ts";
 
 export const handler: Handler<never> = async (_req, ctx) => {
-  const { song } = ctx.params;
-  const related = await fetchRelatedSongs(song);
+  const { id } = ctx.params;
+  const related = await fetchRelatedSongs(id);
 
   if (related === null) {
     return new Response(null, { status: Status.InternalServerError });

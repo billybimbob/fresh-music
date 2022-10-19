@@ -1,6 +1,7 @@
+import { useContext } from "preact/hooks";
 import classes from "classnames";
 import type { Track } from "@/utils/types.ts";
-import { useSongQueue } from "@/utils/songQueue.ts";
+import SongQueue from "@/utils/songQueue.ts";
 
 import ArtistLink from "@/components/ArtistLink.tsx";
 import PlayButton from "@/components/PlayButton.tsx";
@@ -12,7 +13,7 @@ interface SongCardProps extends Track {
 export default function SongCard(
   { id, name, data, images, artist, onClick }: SongCardProps,
 ) {
-  const queue = useSongQueue();
+  const queue = useContext(SongQueue);
 
   const isActive = queue.isPlaying && queue.current?.id === id;
 

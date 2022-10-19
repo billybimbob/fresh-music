@@ -1,8 +1,9 @@
+import { useContext } from "preact/hooks";
 import { useComputed } from "@preact/signals";
 
 import type { PreloadData, Track } from "@/utils/types.ts";
-import { Preload, useCharts } from "@/utils/client.ts";
-import { useSongQueue } from "@/utils/songQueue.ts";
+import { FallbackProvider, useCharts } from "@/utils/client.ts";
+import SongQueueContext from "@/utils/songQueue.ts";
 
 import ArtistCard from "@/components/ArtistCard.tsx";
 import SongRow from "@/components/SongRow.tsx";
@@ -13,14 +14,14 @@ interface TopPreviewProps {
 
 export default function ({ initial = {} }: TopPreviewProps) {
   return (
-    <Preload.Provider value={initial}>
+    <FallbackProvider value={initial}>
       <TopPreview />
-    </Preload.Provider>
+    </FallbackProvider>
   );
 }
 
 function TopPreview() {
-  const queue = useSongQueue();
+  const queue = useContext(SongQueueContext);
   const response = useCharts();
   const topSongs = useComputed(() => response.data?.slice(0, 5));
 

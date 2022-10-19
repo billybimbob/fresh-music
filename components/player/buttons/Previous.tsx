@@ -1,8 +1,9 @@
+import { useContext } from "preact/hooks";
 import { useComputed } from "@preact/signals";
-import { useSongQueue } from "@/utils/songQueue.ts";
+import SongQueue from "@/utils/songQueue.ts";
 
 export default function Previous() {
-  const queue = useSongQueue();
+  const queue = useContext(SongQueue);
   const disabled = useComputed(() => !queue.hasPrevious);
 
   const title = useComputed(() =>

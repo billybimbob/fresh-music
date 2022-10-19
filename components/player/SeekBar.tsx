@@ -1,6 +1,6 @@
-import { useEffect } from "preact/hooks";
+import { useContext, useEffect } from "preact/hooks";
 import { type ReadonlySignal, useComputed } from "@preact/signals";
-import { useSongQueue } from "@/utils/songQueue.ts";
+import SongQueue from "@/utils/songQueue.ts";
 
 interface SeekBarProps {
   readonly progression: ReadonlySignal<number>;
@@ -8,10 +8,10 @@ interface SeekBarProps {
   onSeek(seek: number): void;
 }
 
-export default function SeekBar(
-  { progression, duration, onSeek }: SeekBarProps,
-) {
-  const queue = useSongQueue();
+export default function SeekBar(props: SeekBarProps) {
+  const { progression, duration, onSeek } = props;
+
+  const queue = useContext(SongQueue);
   const title = useComputed(() => `Seek ${queue.current?.name ?? "Song"}`);
   const disabled = useComputed(() => queue.current === null);
 

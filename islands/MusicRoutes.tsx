@@ -1,8 +1,9 @@
 import { useEffect } from "preact/hooks";
-import { Route, Switch, useLocation } from "wouter";
+import { Route, Switch } from "wouter";
 
 import type { PreloadData } from "@/utils/types.ts";
-import { Preload } from "@/utils/client.ts";
+import { FallbackProvider } from "@/utils/client.ts";
+import { useLocationSignal } from "@/utils/locationSignal.ts";
 
 import LocationProvider from "@/components/LocationProvider.tsx";
 import ArtistDetails from "@/components/pages/ArtistDetails.tsx";
@@ -30,7 +31,7 @@ export default function ({ url, initial }: MusicRouteProps) {
 function MusicRoutes({ initial = {} }: Pick<MusicRouteProps, "initial">) {
   return (
     <div class="routes">
-      <Preload.Provider value={initial}>
+      <FallbackProvider value={initial}>
         <Switch>
           <Route path="/">
             <Discover />
@@ -55,13 +56,13 @@ function MusicRoutes({ initial = {} }: Pick<MusicRouteProps, "initial">) {
             {({ id }) => <ArtistDetails id={id} />}
           </Route>
         </Switch>
-      </Preload.Provider>
+      </FallbackProvider>
     </div>
   );
 }
 
 function ClientRouter() {
-  const [, navigate] = useLocation();
+  const loc = useLocationSignal();
 
   useEffect(() => {
     const routeToClient = (e: MouseEvent) => {
@@ -69,18 +70,17 @@ function ClientRouter() {
         return;
       }
 
-      const { href = undefined } = e.target as HTMLAnchorElement;
-      if (href === undefined) {
-        return;
-      }
+      const { origin = undefined, href } = e.target as HTMLAnchorElement;
 
-      const url = new URL(href);
-      if (url.origin !== location?.origin) {
+      // console.log(origin, href);
+
+      if (origin === undefined || origin !== location?.origin) {
         return;
       }
 
       e.preventDefault();
-      navigate(href);
+
+      loc.value = href;
     };
 
     addEventListener("click", routeToClient);
@@ -88,7 +88,7 @@ function ClientRouter() {
     return () => {
       removeEventListener("click", routeToClient);
     };
-  }, [navigate]);
+  }, [loc]);
 
   return null;
 }

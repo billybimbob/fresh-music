@@ -1,9 +1,10 @@
+import { useContext } from "preact/hooks";
 import { useComputed } from "@preact/signals";
 import { asset } from "$fresh/runtime.ts";
-import { useSongQueue } from "@/utils/songQueue.ts";
+import SongQueue from "@/utils/songQueue.ts";
 
 export default function Next() {
-  const queue = useSongQueue();
+  const queue = useContext(SongQueue);
   const title = useComputed(() => `To ${queue.upcoming.at(0)?.name ?? "Next"}`);
   const disabled = useComputed(() => !queue.hasNext);
 

@@ -1,4 +1,4 @@
-import { useRef } from "preact/hooks";
+import { useContext, useRef } from "preact/hooks";
 import {
   batch,
   type ReadonlySignal,
@@ -6,7 +6,7 @@ import {
   useSignal,
   useSignalEffect,
 } from "@preact/signals";
-import { useSongQueue } from "@/utils/songQueue.ts";
+import SongQueue from "@/utils/songQueue.ts";
 
 interface AudioProps {
   readonly seek: ReadonlySignal<number>;
@@ -22,7 +22,7 @@ export default function Audio(
   const audio = useRef<HTMLAudioElement>(null);
   const isLoading = useSignal(true);
 
-  const queue = useSongQueue();
+  const queue = useContext(SongQueue);
   const src = useComputed(() => queue.current?.data ?? "");
 
   useSignalEffect(() => {

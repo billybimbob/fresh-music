@@ -1,6 +1,6 @@
-import { useEffect } from "preact/hooks";
+import { useContext, useEffect } from "preact/hooks";
 import { type Signal } from "@preact/signals";
-import { useSongQueue } from "@/utils/songQueue.ts";
+import SongQueue from "@/utils/songQueue.ts";
 
 import Loop from "@/components/player/buttons/Loop.tsx";
 import Next from "@/components/player/buttons/Next.tsx";
@@ -13,7 +13,7 @@ interface ControlProps {
 }
 
 export default function Controls({ loop }: ControlProps) {
-  const queue = useSongQueue();
+  const queue = useContext(SongQueue);
 
   useEffect(() => {
     const onKeyUp = (event: KeyboardEvent) => {

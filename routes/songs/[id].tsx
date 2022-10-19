@@ -1,6 +1,5 @@
 import type { Handler, PageProps } from "$fresh/server.ts";
 import type { Track } from "@/utils/types.ts";
-import endpoints from "@/utils/api.ts";
 import {
   fetchRelatedSongs,
   fetchSong,
@@ -22,9 +21,9 @@ export const handler: Handler<SongData> = async (_req, ctx) => {
   ]);
 
   return ctx.render({
-    [endpoints.song(id)]: details ?? undefined,
-    [endpoints.related(id)]: related ?? undefined,
-    [endpoints.charts]: charts ?? undefined,
+    [`/api/songs/${id}`]: details ?? undefined,
+    [`/api/songs/related/${id}`]: related ?? undefined,
+    ["/api/charts"]: charts ?? undefined,
   });
 };
 

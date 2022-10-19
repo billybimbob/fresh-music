@@ -1,6 +1,7 @@
+import { useContext } from "preact/hooks";
 import classes from "classnames";
 import { type ArtistSong, toSize } from "@/utils/types.ts";
-import { useSongQueue } from "@/utils/songQueue.ts";
+import SongQueue from "@/utils/songQueue.ts";
 import PlayButton from "@/components/PlayButton.tsx";
 
 interface ArtistSongProps extends ArtistSong {
@@ -11,7 +12,7 @@ interface ArtistSongProps extends ArtistSong {
 export default function ArtistSongRow(
   { id, spot, name, data, album, artwork, onClick }: ArtistSongProps,
 ) {
-  const queue = useSongQueue();
+  const queue = useContext(SongQueue);
 
   const isActive = queue.isPlaying && queue.current?.id === id;
 

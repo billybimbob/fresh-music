@@ -2,8 +2,6 @@ import { createContext } from "preact";
 import { useContext, useMemo } from "preact/hooks";
 import { batch, useSignal } from "@preact/signals";
 import useSWR from "swr";
-
-import endpoints from "@/utils/api.ts";
 import type {
   Artist,
   PreloadData,
@@ -16,47 +14,49 @@ export interface ResponseSignal<T> {
   readonly error: Error | undefined;
 }
 
-export const Preload = createContext<PreloadData>({});
-
 export function useCharts() {
-  return useSWRSignal<readonly Track[]>(endpoints.charts);
+  return useSWRSignal<readonly Track[]>("/api/charts");
+}
+
+export function useGenreCharts(id: string) {
+  return useSWRSignal<readonly Track[]>(`/api/charts/genres/${id}`);
 }
 
 // export function useCountryCharts(id: string) {
 //   return useSWRSignal<readonly Track[]>(`/api/charts/countries/${id}`);
 // }
 
-export function useGenreCharts(id: string) {
-  return useSWRSignal<readonly Track[]>(endpoints.genreCharts(id));
-}
-
-export function useRelatedSongs(id: string) {
-  return useSWRSignal<readonly Track[]>(endpoints.related(id));
-}
-
 export function useMusicSearch(query: string) {
-  return useSWRSignal<SearchResult>(endpoints.search(query));
+  return useSWRSignal<SearchResult>(`/api/search/${query}`);
 }
 
 export function useSongDetails(id: string) {
-  return useSWRSignal<Track>(endpoints.song(id));
+  return useSWRSignal<Track>(`/api/songs/${id}`);
+}
+
+export function useRelatedSongs(id: string) {
+  return useSWRSignal<readonly Track[]>(`/api/songs/related/${id}`);
 }
 
 export function useArtistDetails(id: string) {
-  return useSWRSignal<Artist>(endpoints.artist(id));
+  return useSWRSignal<Artist>(`/api/artists/${id}`);
 }
+
+const Fallback = createContext<PreloadData>({});
+
+export const FallbackProvider = Fallback.Provider;
 
 function useSWRSignal<T>(endpoint: string): ResponseSignal<T> {
   const data = useSignal<T | undefined>(undefined);
   const error = useSignal<Error | undefined>(undefined);
-  const preload = useContext(Preload);
+  const fallback = useContext(Fallback);
 
   useSWR(endpoint, null, {
     revalidateIfStale: false,
     revalidateOnMount: true,
     revalidateOnFocus: false,
     revalidateOnReconnect: false,
-    fallback: preload,
+    fallback,
 
     use: [
       (next) => (...args) => {
@@ -80,7 +80,9 @@ function useSWRSignal<T>(endpoint: string): ResponseSignal<T> {
       },
     ],
 
-    isPaused: () => data.value !== undefined,
+    isPaused: () => {
+      return data.value !== undefined;
+    },
 
     fetcher: async () => {
       console.log(`running fetch on ${endpoint}`);

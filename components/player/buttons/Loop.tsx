@@ -1,14 +1,15 @@
-import { asset } from "$fresh/runtime.ts";
+import { useContext } from "preact/hooks";
 import { type Signal, useComputed } from "@preact/signals";
+import { asset } from "$fresh/runtime.ts";
 import classes from "classnames";
-import { useSongQueue } from "@/utils/songQueue.ts";
+import SongQueue from "@/utils/songQueue.ts";
 
 interface LoopProps {
   readonly value: Signal<boolean>;
 }
 
 export default function Loop({ value: loop }: LoopProps) {
-  const queue = useSongQueue();
+  const queue = useContext(SongQueue);
   const title = useComputed(() => `Loop ${queue.current?.name ?? "Song"}`);
   const disabled = useComputed(() => queue.current === null);
 

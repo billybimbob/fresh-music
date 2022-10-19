@@ -1,8 +1,11 @@
 import type { Handler, PageProps } from "$fresh/server.ts";
+import genres from "@/static/genres.json" assert { type: "json" };
+
 import type { Track } from "@/utils/types.ts";
-import endpoints from "@/utils/api.ts";
 import { fetchGenreCharts, fetchWorldCharts } from "@/utils/shazam/mod.ts";
 import MusicBrowser from "@/components/MusicBrowser.tsx";
+
+const [{ value: firstGenre }] = genres;
 
 interface HomeData {
   [key: string]: readonly Track[] | undefined;
@@ -15,8 +18,8 @@ export const handler: Handler<HomeData> = async (_req, ctx) => {
   ]);
 
   return ctx.render({
-    [endpoints.defaultGenre]: genreCharts ?? undefined,
-    [endpoints.charts]: charts ?? undefined,
+    [`/api/charts/genres/${firstGenre}`]: genreCharts ?? undefined,
+    ["/api/charts"]: charts ?? undefined,
   });
 };
 

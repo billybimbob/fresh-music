@@ -1,6 +1,5 @@
 import type { Handler, PageProps } from "$fresh/server.ts";
 import type { Track } from "@/utils/types.ts";
-import endpoints from "@/utils/api.ts";
 import { fetchGenreCharts, fetchWorldCharts } from "@/utils/shazam/mod.ts";
 import MusicBrowser from "@/components/MusicBrowser.tsx";
 
@@ -16,8 +15,8 @@ export const handler: Handler<DiscoverData> = async (_req, ctx) => {
   ]);
 
   return ctx.render({
-    [endpoints.genreCharts(genre)]: genreCharts ?? undefined,
-    [endpoints.charts]: charts ?? undefined,
+    [`/api/charts/genres/${genre}`]: genreCharts ?? undefined,
+    ["/api/charts"]: charts ?? undefined,
   });
 };
 

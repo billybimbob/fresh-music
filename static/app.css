@@ -617,7 +617,13 @@ input[type="search"]::-webkit-search-results-decoration {
 }
 
 .now-playing-text {
-  width: 20rem;
+  width: 8rem;
+}
+
+@media (min-width: 1024px) {
+  .now-playing-text {
+    width: 16rem;
+  }
 }
 
 .now-playing-name {

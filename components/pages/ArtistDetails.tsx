@@ -1,7 +1,9 @@
+import { useContext } from "preact/hooks";
 import { useComputed } from "@preact/signals";
+
 import { type ArtistSong, toSize } from "@/utils/types.ts";
 import { useArtistDetails } from "@/utils/client.ts";
-import { useSongQueue } from "@/utils/songQueue.ts";
+import SongQueue from "@/utils/songQueue.ts";
 
 import Error from "@/components/Error.tsx";
 import Loader from "@/components/Loader.tsx";
@@ -12,7 +14,7 @@ interface ArtistDetailsProps {
 }
 
 export default function ArtistDetails({ id }: ArtistDetailsProps) {
-  const queue = useSongQueue();
+  const queue = useContext(SongQueue);
   const response = useArtistDetails(id);
   const artist = useComputed(() => response.data);
 

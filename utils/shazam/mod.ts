@@ -44,8 +44,8 @@ import * as convert from "@/utils/shazam/conversions.ts";
 //   return data.map(convert.toTrack);
 // }
 
-// export async function fetchRelatedSongs(song: string) {
-//   const response = await fetchShazam("tracks/related", { track_id: song });
+// export async function fetchRelatedSongs(id: string) {
+//   const response = await fetchShazam("tracks/related", { track_id: id });
 
 //   if (!response.ok) return null;
 
@@ -161,7 +161,7 @@ export async function fetchWorldCharts() {
   return data.map(convert.toTrack);
 }
 
-export async function fetchRelatedSongs(_song: string) {
+export async function fetchRelatedSongs(_id: string) {
   const { default: data } = await import(
     "@/utils/shazam/responses/related-tracks.json",
     {
