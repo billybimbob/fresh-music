@@ -8,22 +8,16 @@ interface SeekBarProps {
   onSeek(seek: number): void;
 }
 
-export default function SeekBar(props: SeekBarProps) {
-  const { progression, duration, onSeek } = props;
-
+export default function SeekBar(
+  { progression, duration, onSeek }: SeekBarProps,
+) {
   const queue = useContext(SongQueue);
-  const title = useComputed(() => `Seek ${queue.current?.name ?? "Song"}`);
-  const disabled = useComputed(() => queue.current === null);
-
-  const passed = useComputed(() => toMinutes(progression.value));
-  const limit = useComputed(() => toMinutes(duration.value));
-  const max = useComputed(() => duration.value.toString());
 
   useEffect(() => {
     const onKeyUp = (event: KeyboardEvent) => {
       const { key, shiftKey } = event;
 
-      if (shiftKey || disabled.value) {
+      if (shiftKey || queue.current === null) {
         return;
       }
 
@@ -44,6 +38,24 @@ export default function SeekBar(props: SeekBarProps) {
       removeEventListener("keyup", onKeyUp);
     };
   }, [queue, progression, duration, onSeek]);
+
+  return (
+    <SeekBarButtons
+      progression={progression}
+      duration={duration}
+      onSeek={onSeek}
+    />
+  );
+}
+
+function SeekBarButtons({ progression, duration, onSeek }: SeekBarProps) {
+  const queue = useContext(SongQueue);
+  const title = useComputed(() => `Seek ${queue.current?.name ?? "Song"}`);
+  const disabled = useComputed(() => queue.current === null);
+
+  const passed = useComputed(() => toMinutes(progression.value));
+  const limit = useComputed(() => toMinutes(duration.value));
+  const max = useComputed(() => duration.value.toString());
 
   const seekPastFive = () => {
     onSeek(Math.max(progression.value - 5, 0));

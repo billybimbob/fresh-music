@@ -1,5 +1,6 @@
 import { useEffect } from "preact/hooks";
 import { Route, Switch } from "wouter";
+import { IS_BROWSER } from "$fresh/runtime.ts";
 
 import type { PreloadData } from "@/utils/types.ts";
 import { FallbackProvider } from "@/utils/client.ts";
@@ -65,18 +66,26 @@ function ClientRouter() {
   const loc = useLocationSignal();
 
   useEffect(() => {
+    if (!IS_BROWSER) return;
+
     const routeToClient = (e: MouseEvent) => {
-      if (e.ctrlKey || e.metaKey || e.altKey || e.shiftKey || e.button !== 0) {
-        return;
-      }
+      if (e.ctrlKey) return;
+      if (e.metaKey) return;
+      if (e.altKey) return;
+      if (e.shiftKey) return;
+      if (e.button !== 0) return;
 
-      const { origin = undefined, href } = e.target as HTMLAnchorElement;
+      const { closest = undefined } = e.target as Element;
+      if (closest === undefined) return;
 
-      // console.log(origin, href);
+      const anchor = closest.call(e.target, "a[href]");
+      if (anchor === null) return;
 
-      if (origin === undefined || origin !== location?.origin) {
-        return;
-      }
+      const { origin = undefined, href } = anchor as HTMLAnchorElement;
+      if (origin === undefined) return;
+      if (origin !== location.origin) return;
+
+      // console.log(e.target, origin, href);
 
       e.preventDefault();
 

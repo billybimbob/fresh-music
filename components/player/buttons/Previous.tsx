@@ -1,5 +1,6 @@
 import { useContext } from "preact/hooks";
 import { useComputed } from "@preact/signals";
+import { asset } from "$fresh/runtime.ts";
 import SongQueue from "@/utils/songQueue.ts";
 
 export default function Previous() {
@@ -20,7 +21,7 @@ export default function Previous() {
     >
       <svg class="seek-icon">
         <title>{title}</title>
-        <use href="/icons/previous.svg#previous" />
+        <use href={asset("/icons/previous.svg#previous")} />
       </svg>
     </button>
   );

@@ -1,45 +1,37 @@
+import { type ReadonlySignal, useComputed } from "@preact/signals";
 import { asset } from "$fresh/runtime.ts";
 
 interface PlayButtonProps {
-  isActive: boolean;
-  title: string;
+  readonly isActive: ReadonlySignal<boolean>;
+  readonly title: string;
+  readonly tabIndex?: number;
   onClick?: () => void;
 }
 
 export default function PlayButton(
-  { isActive, title, onClick }: PlayButtonProps,
+  { isActive, title, tabIndex, onClick }: PlayButtonProps,
 ) {
-  const tabIndex = onClick === undefined ? -1 : 0;
+  const $title = useComputed(() =>
+    isActive.value ? `Pause ${title}` : `Play ${title}`
+  );
 
-  if (isActive) {
-    return (
-      <button
-        type="button"
-        title={`Pause ${title}`}
-        class="btn-icon"
-        onClick={onClick}
-        tabIndex={tabIndex}
-      >
-        <svg class="play-icon-browse">
-          <title>Pause {title}</title>
-          <use href={asset("/icons/pause.svg#pause")} />
-        </svg>
-      </button>
-    );
-  } else {
-    return (
-      <button
-        type="button"
-        title={`Play ${title}`}
-        class="btn-icon"
-        onClick={onClick}
-        tabIndex={tabIndex}
-      >
-        <svg class="play-icon-browse">
-          <title>Play {title}</title>
-          <use href={asset("/icons/play.svg#play")} />
-        </svg>
-      </button>
-    );
-  }
+  const href = useComputed(() => {
+    const svg = isActive.value ? "pause.svg#pause" : "play.svg#play";
+    return asset(`/icons/${svg}`);
+  });
+
+  return (
+    <button
+      type="button"
+      title={$title}
+      class="btn-icon"
+      onClick={onClick}
+      tabIndex={tabIndex}
+    >
+      <svg class="play-icon-browse">
+        <title>{$title}</title>
+        <use href={href} />
+      </svg>
+    </button>
+  );
 }

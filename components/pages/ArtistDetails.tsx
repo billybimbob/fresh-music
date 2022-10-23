@@ -33,7 +33,7 @@ export default function ArtistDetails({ id }: ArtistDetailsProps) {
     queue.listenTo(...songSlice);
   };
 
-  if (response.error !== undefined) {
+  if (response.error) {
     return <Error />;
   }
 

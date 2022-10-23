@@ -114,7 +114,7 @@ import * as convert from "@/utils/shazam/conversions.ts";
 
 //   const url = new URL(endpoint, baseUrl);
 
-//   if (params !== undefined) {
+//   if (params) {
 //     for (const [name, value] of Object.entries(params)) {
 //       url.searchParams.set(name, value);
 //     }

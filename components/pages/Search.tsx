@@ -33,7 +33,7 @@ export default function Search({ query }: SearchProps) {
     queue.listenTo(...songSlice);
   };
 
-  if (response.error !== undefined) {
+  if (response.error) {
     return <Error />;
   }
 

@@ -11,9 +11,10 @@ export default function Playback() {
     `${queue.isPlaying ? "Pause" : "Play"} ${queue.current?.name ?? "Song"}`
   );
 
-  const href = useComputed(() =>
-    asset(queue.isPlaying ? "/icons/pause.svg#pause" : "/icons/play.svg#play")
-  );
+  const href = useComputed(() => {
+    const svg = queue.isPlaying ? "pause.svg#pause" : "play.svg#play";
+    return asset(`/icons/${svg}`);
+  });
 
   return (
     <button

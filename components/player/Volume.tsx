@@ -14,19 +14,17 @@ export default function Volume({ volume }: VolumeProps) {
     if (isFinite(perf)) {
       volume.value = perf;
     }
-  }, []);
+  }, [volume]);
 
   useEffect(() => {
     const saveVolume = () => {
       localStorage.setItem(VOLUME_PREF, volume.value.toString());
     };
-
     addEventListener("beforeunload", saveVolume);
-
     return () => {
       removeEventListener("beforeunload", saveVolume);
     };
-  }, []);
+  }, [volume]);
 
   const onChange = (event: Event) => {
     const { valueAsNumber = undefined } = event.target as HTMLInputElement;

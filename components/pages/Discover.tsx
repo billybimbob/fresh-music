@@ -47,7 +47,7 @@ export default function Discover({ genre = defaultGenre }: DiscoverProps) {
     queue.listenTo(...songSlice);
   };
 
-  if (response.error !== undefined) {
+  if (response.error) {
     return <Error />;
   }
 

@@ -1,5 +1,7 @@
 import { useContext } from "preact/hooks";
+import { useComputed } from "@preact/signals";
 import classes from "classnames";
+
 import type { Track } from "@/utils/types.ts";
 import SongQueue from "@/utils/songQueue.ts";
 
@@ -15,16 +17,20 @@ export default function SongCard(
 ) {
   const queue = useContext(SongQueue);
 
-  const isActive = queue.isPlaying && queue.current?.id === id;
+  const isActive = useComputed(() =>
+    queue.isPlaying && queue.current?.id === id
+  );
 
-  const card = classes({
-    "song-card": true,
-    "active": isActive,
-    "disabled": data === undefined,
-  });
+  const $class = useComputed(() =>
+    classes({
+      "song-card": true,
+      "active": isActive.value,
+      "disabled": data === undefined,
+    })
+  );
 
   return (
-    <li class={card}>
+    <li class={$class}>
       <div
         title={`Play ${name}`}
         class="song-card-body"
@@ -32,13 +38,19 @@ export default function SongCard(
         tabIndex={0}
       >
         <div class="song-card-btn">
-          {data && <PlayButton isActive={isActive} title={name} />}
+          {data && (
+            <PlayButton
+              isActive={isActive}
+              title={name}
+              tabIndex={-1}
+            />
+          )}
         </div>
         <img class="song-card-img" alt={`${name} Image`} src={images?.cover} />
       </div>
       <div class="song-card-label">
-        <p class="song-card-name">
-          <a href={`/songs/${id}`} title={name}>{name}</a>
+        <p class="song-card-name" title={name}>
+          <a href={`/songs/${id}`}>{name}</a>
         </p>
         <p class="song-card-artist">
           <ArtistLink {...artist} />

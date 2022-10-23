@@ -34,19 +34,13 @@ function NowPlayingImage() {
   );
 
   const src = useComputed(() => {
-    if (queue.current === null) {
-      return "";
-    }
+    if (queue.current === null) return "";
 
     const { images = undefined } = queue.current as Track;
-    if (images !== undefined) {
-      return images.cover;
-    }
+    if (images) return images.cover;
 
     const { artwork = undefined } = queue.current as ArtistSong;
-    if (artwork !== undefined) {
-      return toSize(artwork.url, 200);
-    }
+    if (artwork) return toSize(artwork.url, 200);
 
     return "";
   });

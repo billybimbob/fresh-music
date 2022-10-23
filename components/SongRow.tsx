@@ -1,5 +1,7 @@
 import { useContext } from "preact/hooks";
+import { useComputed } from "@preact/signals";
 import classes from "classnames";
+
 import type { Track } from "@/utils/types.ts";
 import SongQueue from "@/utils/songQueue.ts";
 
@@ -12,20 +14,24 @@ interface SongRowProps extends Track {
 }
 
 export default function SongRow(
-  { id, spot, name, data, artist, images, onClick }: SongRowProps,
+  { id, spot, name, artist, data, images, onClick }: SongRowProps,
 ) {
   const queue = useContext(SongQueue);
 
-  const isActive = queue.isPlaying && queue.current?.id === id;
+  const isActive = useComputed(() =>
+    queue.isPlaying && queue.current?.id === id
+  );
 
-  const row = classes({
-    "song-row": true,
-    "active": isActive,
-    "disabled": data === undefined,
-  });
+  const $class = useComputed(() =>
+    classes({
+      "song-row": true,
+      "active": isActive.value,
+      "disabled": data === undefined,
+    })
+  );
 
   return (
-    <li class={row} onDblClick={data ? onClick : undefined}>
+    <li class={$class} onDblClick={data ? onClick : undefined}>
       <div class="song-row-body">
         <p class="song-row-spot">{spot}</p>
         <img class="song-row-img" alt={`${name} Cover`} src={images?.cover} />

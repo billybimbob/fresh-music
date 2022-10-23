@@ -29,7 +29,7 @@ export default function TopSongs() {
     queue.listenTo(...songSlice);
   };
 
-  if (response.error !== undefined) {
+  if (response.error) {
     return <Error />;
   }
 

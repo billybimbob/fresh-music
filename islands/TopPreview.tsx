@@ -47,8 +47,8 @@ function TopPreview() {
           <h2 class="top-preview-songs-title" title="Top Charts">
             Top Charts
           </h2>
-          <p class="top-preview-songs-link">
-            <a href="/top/songs" title="See More Charts">See more</a>
+          <p class="top-preview-songs-link" title="See More Charts">
+            <a href="/top/songs">See all</a>
           </p>
         </header>
         <ol class="top-preview-songs-list">
@@ -69,7 +69,7 @@ function TopPreview() {
             Top Artists
           </h2>
           <p class="top-preview-artists-link" title="See More Artists">
-            <a href="/top/artists">See more</a>
+            <a href="/top/artists">See all</a>
           </p>
         </header>
         <ol class="top-preview-songs-list">

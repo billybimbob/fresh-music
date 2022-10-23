@@ -9,7 +9,7 @@ export default function TopArtists() {
   const response = useCharts();
   const tracks = useComputed(() => response.data);
 
-  if (response.error !== undefined) {
+  if (response.error) {
     return <Error />;
   }
 

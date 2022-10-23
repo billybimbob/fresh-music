@@ -1,21 +1,23 @@
-import { useEffect, useMemo } from "preact/hooks";
+import { type JSX } from "preact";
+import { useMemo } from "preact/hooks";
 import {
   batch,
   computed,
   type ReadonlySignal,
   signal,
   useComputed,
-  useSignal,
 } from "@preact/signals";
-import { type HookReturnValue, useRouter } from "wouter";
-
-export interface LocationSignalHook {
-  (options?: { readonly peek?: boolean }): [string, LocationSignalUpdate];
-  path: ReadonlySignal<string>;
-}
+import { type BaseLocationHook, type HookReturnValue, useRouter } from "wouter";
+import { useWatcher } from "@/utils/signals.ts";
 
 export interface LocationSignal {
   value: string;
+}
+
+export interface LocationSignalHook extends BaseLocationHook {
+  source: ReadonlySignal<string>;
+  dispose(): void;
+  (options?: { readonly peek?: boolean }): [string, LocationSignalUpdate];
 }
 
 type LocationSignalUpdate = (to: string, replace?: boolean) => void;
@@ -29,41 +31,32 @@ export interface MatchSignal {
 
 export function useLocationSignal(): LocationSignal {
   const { hook } = useRouter();
+  const { source = undefined } = hook as LocationSignalHook;
+
   const [path, navigate] = hook({ peek: true });
-
-  const { path: source = undefined } = hook as LocationSignalHook;
-  const pathSource = useSignal(path);
-
-  useEffect(() => void (pathSource.value = path), [path]);
+  const $path = useWatcher(source ?? path);
 
   return useMemo(() => ({
     get value() {
-      return (source ?? pathSource).value;
+      return $path.value;
     },
     set value(to) {
       navigate(to);
     },
-  }), [source, pathSource, navigate]);
+  }), [$path, navigate]);
 }
 
-function useUpdatedSignal<T>(value: T) {
-  const source = useSignal(value);
-  source.value = value;
-
-  return source;
-}
-
-export function useRouteSignal(pattern: string): MatchSignal {
+export function useRouteSignal(
+  pattern: string | JSX.SignalLike<string>,
+): MatchSignal {
   const { matcher } = useRouter();
   const loc = useLocationSignal();
+  const $pattern = useWatcher(pattern);
 
-  const patternSource = useUpdatedSignal(pattern);
-  const matchSource = useUpdatedSignal(matcher);
-
-  // console.log(pattern === patternSource.value, patternSource.value);
+  // console.log(pattern === $pattern.peek(), $pattern.peek());
 
   const match = useComputed(() => {
-    return matchSource.value(patternSource.value, loc.value);
+    return matcher($pattern.value, loc.value);
   });
 
   return useMemo(() => ({
@@ -87,16 +80,24 @@ export function createLocationSignal(): LocationSignalHook {
     href.value = location.href;
   };
 
-  const hook = ({ peek = false } = {}) => {
+  const hook = (options?: { readonly peek?: boolean }) => {
     if (!isListening) {
       addEventListener("popstate", update);
       isListening = true;
     }
 
-    return peek ? tuple.peek() : tuple.value;
+    return options?.peek ? tuple.peek() : tuple.value;
   };
 
-  return Object.assign(hook, { path });
+  const dispose = () => {
+    if (isListening) {
+      console.log("cleaning up popstate");
+      removeEventListener("popstate", update);
+      isListening = false;
+    }
+  };
+
+  return Object.assign(hook, { source: path, dispose });
 }
 
 function navigate(to: string, replace = false) {

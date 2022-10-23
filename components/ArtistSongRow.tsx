@@ -1,5 +1,7 @@
 import { useContext } from "preact/hooks";
+import { useComputed } from "@preact/signals";
 import classes from "classnames";
+
 import { type ArtistSong, toSize } from "@/utils/types.ts";
 import SongQueue from "@/utils/songQueue.ts";
 import PlayButton from "@/components/PlayButton.tsx";
@@ -14,18 +16,22 @@ export default function ArtistSongRow(
 ) {
   const queue = useContext(SongQueue);
 
-  const isActive = queue.isPlaying && queue.current?.id === id;
+  const isActive = useComputed(() =>
+    queue.isPlaying && queue.current?.id === id
+  );
 
-  const item = classes({
-    "song-row": true,
-    "active": isActive,
-    "disabled": data === undefined,
-  });
+  const $class = useComputed(() =>
+    classes({
+      "song-row": true,
+      "active": isActive.value,
+      "disabled": data === undefined,
+    })
+  );
 
   const image = toSize(artwork.url, 125);
 
   return (
-    <li class={item} onDblClick={data ? onClick : undefined}>
+    <li class={$class} onDblClick={data ? onClick : undefined}>
       <div class="song-row-body">
         <p class="song-row-spot">{spot}</p>
         <img class="song-row-img" alt={`${name} Artwork`} src={image} />
