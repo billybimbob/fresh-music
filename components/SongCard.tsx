@@ -3,6 +3,7 @@ import { useComputed } from "@preact/signals";
 import classes from "classnames";
 
 import type { Track } from "@/utils/types.ts";
+import { useWatcher } from "@/utils/signals.ts";
 import SongQueue from "@/utils/songQueue.ts";
 
 import ArtistLink from "@/components/ArtistLink.tsx";
@@ -15,17 +16,19 @@ interface SongCardProps extends Track {
 export default function SongCard(
   { id, name, data, images, artist, onClick }: SongCardProps,
 ) {
+  const $id = useWatcher(id);
+  const $data = useWatcher(data);
   const queue = useContext(SongQueue);
 
   const isActive = useComputed(() =>
-    queue.isPlaying && queue.current?.id === id
+    queue.isPlaying && queue.current?.id === $id.value
   );
 
   const $class = useComputed(() =>
     classes({
       "song-card": true,
       "active": isActive.value,
-      "disabled": data === undefined,
+      "disabled": $data.value === undefined,
     })
   );
 
@@ -33,11 +36,11 @@ export default function SongCard(
     <li class={$class}>
       <div
         title={`Play ${name}`}
-        class="song-card-body"
+        class="body"
         onClick={data ? onClick : undefined}
         tabIndex={0}
       >
-        <div class="song-card-btn">
+        <div class="btn">
           {data && (
             <PlayButton
               isActive={isActive}
@@ -46,15 +49,13 @@ export default function SongCard(
             />
           )}
         </div>
-        <img class="song-card-img" alt={`${name} Image`} src={images?.cover} />
+        <img class="img" alt={`${name} Image`} src={images?.cover} />
       </div>
-      <div class="song-card-label">
-        <p class="song-card-name" title={name}>
+      <div class="label">
+        <p class="name" title={name}>
           <a href={`/songs/${id}`}>{name}</a>
         </p>
-        <p class="song-card-artist">
-          <ArtistLink {...artist} />
-        </p>
+        <ArtistLink {...artist} />
       </div>
     </li>
   );

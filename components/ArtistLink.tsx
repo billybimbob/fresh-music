@@ -1,11 +1,15 @@
 import type { ArtistDescription } from "@/utils/types.ts";
 
 export default function ArtistLink({ name, ids }: ArtistDescription) {
-  const [artistId = undefined] = ids;
+  const [id = undefined] = ids;
 
-  if (artistId === undefined) {
-    return <span title={name}>{name}</span>;
+  if (id === undefined) {
+    return <p class="artist" title={name}>{name}</p>;
   }
 
-  return <a href={`/artists/${artistId}`} title={name}>{name}</a>;
+  return (
+    <p class="artist" title={name}>
+      <a href={`/artists/${id}`}>{name}</a>
+    </p>
+  );
 }

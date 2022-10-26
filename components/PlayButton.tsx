@@ -1,5 +1,6 @@
 import { type ReadonlySignal, useComputed } from "@preact/signals";
 import { asset } from "$fresh/runtime.ts";
+import { useWatcher } from "@/utils/signals.ts";
 
 interface PlayButtonProps {
   readonly isActive: ReadonlySignal<boolean>;
@@ -9,10 +10,12 @@ interface PlayButtonProps {
 }
 
 export default function PlayButton(
-  { isActive, title, tabIndex, onClick }: PlayButtonProps,
+  { isActive, title: songTitle, tabIndex, onClick }: PlayButtonProps,
 ) {
+  const $songTitle = useWatcher(songTitle);
+
   const $title = useComputed(() =>
-    isActive.value ? `Pause ${title}` : `Play ${title}`
+    isActive.value ? `Pause ${$songTitle}` : `Play ${$songTitle}`
   );
 
   const href = useComputed(() => {
@@ -28,7 +31,7 @@ export default function PlayButton(
       onClick={onClick}
       tabIndex={tabIndex}
     >
-      <svg class="play-icon-browse">
+      <svg class="play-icon browse">
         <title>{$title}</title>
         <use href={href} />
       </svg>

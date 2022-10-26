@@ -11,11 +11,9 @@ export default function Loader({ children = "Loading" }: LoaderProps) {
       <img
         alt="Loading Animation"
         src={asset("/loader.svg")}
-        class="loader-icon"
+        class="icon"
       />
-      {isValidElement(children)
-        ? children
-        : <h1 class="loader-title">{children}</h1>}
+      {isValidElement(children) ? children : <h1 class="title">{children}</h1>}
     </article>
   );
 }

@@ -14,9 +14,9 @@ export default function Next() {
       type="button"
       class="btn-icon"
       disabled={disabled}
-      onClick={queue.seekNext}
+      onClick={queue.seekNext.bind(queue)}
     >
-      <svg class="seek-icon">
+      <svg class="next-icon">
         <title>{title}</title>
         <use href={asset("/icons/next.svg#next")} />
       </svg>

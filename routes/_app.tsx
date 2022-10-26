@@ -1,5 +1,5 @@
 import { AppProps } from "$fresh/server.ts";
-import { Head } from "$fresh/runtime.ts";
+import { asset, Head } from "$fresh/runtime.ts";
 
 export default function App({ Component }: AppProps) {
   return (
@@ -10,7 +10,7 @@ export default function App({ Component }: AppProps) {
           rel="stylesheet"
           type="text/css"
           charSet="utf-8"
-          href="/app.css"
+          href={asset("/app.css")}
         />
       </Head>
       <Component />

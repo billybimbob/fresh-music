@@ -43,10 +43,10 @@ export default function Search({ query }: SearchProps) {
 
   return (
     <article class="search-page">
-      <h2 class="search-title">
-        Showing results for <span class="search-query">{query}</span>
+      <h2 class="title">
+        Showing results for <span class="query">{query}</span>
       </h2>
-      <ol class="search-results">
+      <ol class="results">
         {tracks.value.map((track, i) => (
           <SongCard
             key={track.id}

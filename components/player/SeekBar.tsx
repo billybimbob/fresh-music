@@ -1,5 +1,6 @@
 import { useContext, useEffect } from "preact/hooks";
 import { type ReadonlySignal, useComputed } from "@preact/signals";
+import { IS_BROWSER } from "$fresh/runtime.ts";
 import SongQueue from "@/utils/songQueue.ts";
 
 interface SeekBarProps {
@@ -14,6 +15,8 @@ export default function SeekBar(
   const queue = useContext(SongQueue);
 
   useEffect(() => {
+    if (!IS_BROWSER) return;
+
     const onKeyUp = (event: KeyboardEvent) => {
       const { key, shiftKey } = event;
 
@@ -73,21 +76,21 @@ function SeekBarButtons({ progression, duration, onSeek }: SeekBarProps) {
   };
 
   return (
-    <div class="playback-seek">
+    <div class="seek-bar">
       <button
         title="Previous 5 Seconds"
         type="button"
-        class="playback-seek-btn-left"
+        class="btn-left"
         disabled={disabled}
         onClick={seekPastFive}
       >
         -
       </button>
-      <p class="playback-time">{passed}</p>
+      <p class="time">{passed}</p>
       <input
         title={title}
-        name="playback-slider"
-        class="playback-slider"
+        name="slider"
+        class="slider"
         type="range"
         step="any"
         value={progression}
@@ -96,11 +99,11 @@ function SeekBarButtons({ progression, duration, onSeek }: SeekBarProps) {
         disabled={disabled}
         onInput={onInput}
       />
-      <p class="playback-time">{limit}</p>
+      <p class="time">{limit}</p>
       <button
         title="Forward 5 Seconds"
         type="button"
-        class="playback-seek-btn-right"
+        class="btn-right"
         disabled={disabled}
         onClick={seekFutureFive}
       >

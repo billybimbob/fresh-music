@@ -1,5 +1,6 @@
 import { useContext, useEffect } from "preact/hooks";
 import { type Signal } from "@preact/signals";
+import { IS_BROWSER } from "$fresh/runtime.ts";
 import SongQueue from "@/utils/songQueue.ts";
 
 import Loop from "@/components/player/buttons/Loop.tsx";
@@ -16,6 +17,8 @@ export default function Controls({ loop }: ControlProps) {
   const queue = useContext(SongQueue);
 
   useEffect(() => {
+    if (!IS_BROWSER) return;
+
     const onKeyUp = (event: KeyboardEvent) => {
       const { key, shiftKey } = event;
 
@@ -49,7 +52,7 @@ export default function Controls({ loop }: ControlProps) {
   }, [queue]);
 
   return (
-    <div class="playback-buttons">
+    <div class="controls">
       <Loop value={loop} />
       <Previous />
       <Playback />

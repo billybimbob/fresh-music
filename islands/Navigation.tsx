@@ -1,5 +1,5 @@
 import { type ComponentChild, type JSX } from "preact";
-import { useComputed } from "@preact/signals";
+import { useComputed, useSignal } from "@preact/signals";
 import { asset } from "$fresh/runtime.ts";
 import classes from "classnames";
 
@@ -21,22 +21,55 @@ export default function ({ url }: NavigationProps) {
 }
 
 function Navigation() {
+  const hidden = useSignal(false);
+
+  const $class = useComputed(() =>
+    classes({ "side-nav": true, "hidden": hidden.value })
+  );
+
+  const icon = useComputed(() => {
+    const svg = hidden.value ? "bars.svg#bars" : "close.svg#close";
+    return asset(`/icons/${svg}`);
+  });
+
+  const title = useComputed(() => hidden.value ? "Show Nav" : "Close Nav");
+
+  const toggle = () => {
+    hidden.value = !hidden.value;
+  };
+
+  const onNavClick = () => {
+    if (matchMedia("(max-width: 640px)").matches) {
+      hidden.value = true;
+    }
+  };
+
   return (
-    <nav class="nav-menu">
-      <svg class="nav-icon" viewBox="0 0 220 75">
+    <nav class={$class}>
+      <button type="button" title={title} onClick={toggle} class="toggle">
+        <svg class="icon">
+          <title>{title}</title>
+          <use href={icon} />
+        </svg>
+      </button>
+      <svg class="logo" viewBox="0 0 220 75">
         <title>Logo</title>
         <use href={asset("/logo.svg#logo")} />
       </svg>
 
-      <ul class="nav-links">
-        <li class="nav-item" title="Discover">
-          <NavLink href={"/"}>Discover</NavLink>
+      <ul class="links">
+        <li class="item" title="Discover">
+          <NavLink class="link" onClick={onNavClick} href="/">Discover</NavLink>
         </li>
-        <li class="nav-item" title="Top Artists">
-          <NavLink href="/top/artists">Top Artists</NavLink>
+        <li class="item" title="Top Artists">
+          <NavLink class="link" onClick={onNavClick} href="/top/artists">
+            Top Artists
+          </NavLink>
         </li>
-        <li class="nav-item" title="Top Charts">
-          <NavLink href="/top/songs">Top Charts</NavLink>
+        <li class="item" title="Top Charts">
+          <NavLink class="link" onClick={onNavClick} href="/top/songs">
+            Top Charts
+          </NavLink>
         </li>
       </ul>
     </nav>
@@ -57,7 +90,7 @@ function NavLink({ href, children, ...props }: NavLinkProps) {
     classes(
       $class.value,
       $className.value,
-      { active: route.isMatch },
+      { "active": route.isMatch },
     )
   );
 

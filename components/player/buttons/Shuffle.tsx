@@ -31,7 +31,7 @@ export default function Shuffle() {
     <button
       title="Shuffle"
       type="button"
-      class="btn-icon"
+      class="btn-icon shuffle"
       disabled={disabled}
       onClick={shuffle}
     >

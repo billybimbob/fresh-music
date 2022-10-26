@@ -47,37 +47,35 @@ export default function SongDetails({ id }: SongDetailsProps) {
 
   return (
     <article class="song-page">
-      <header class="song-details">
-        <div class="song-banner">
+      <header class="details">
+        <div class="banner">
           <img
-            class="song-img"
+            class="img"
             alt={track.value.name}
             src={track.value.images?.cover}
           />
-          <div class="song-title">
-            <h1 class="song-title-name">{track.value.name}</h1>
-            <p class="song-title-artist">
+          <div class="title">
+            <h1 class="name">{track.value.name}</h1>
+            <p class="artist">
               <ArtistLink {...track.value.artist} />
             </p>
-            <p class="song-title-genres">
+            <p class="genres">
               {track.value.genres?.join(" ") ?? ""}
             </p>
           </div>
         </div>
       </header>
 
-      <section class="song-lyrics">
-        <h2 class="song-lyrics-title">Lyrics</h2>
-        <div class="song-lyrics-body">
-          <p class="song-lyrics-text">
-            {track.value.lyrics ?? "No lyrics found"}
-          </p>
+      <section class="lyrics">
+        <h2 class="title">Lyrics</h2>
+        <div class="body">
+          <p class="text">{track.value.lyrics ?? "No lyrics found"}</p>
         </div>
       </section>
 
-      <section class="song-related">
-        <h2 class="song-related-header">Related Songs</h2>
-        <ol class="song-related-list">
+      <section class="related">
+        <h2 class="header">Related Songs</h2>
+        <ol class="list">
           {songs.value.map((song, i) => (
             <SongRow
               key={song.id}

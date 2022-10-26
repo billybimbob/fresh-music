@@ -17,21 +17,6 @@ export default function NowPlaying() {
 
 function NowPlayingImage() {
   const queue = useContext(SongQueue);
-  const title = useComputed(() => `${queue.current?.name ?? "Song"} Cover`);
-
-  const poster = useComputed(() =>
-    classes({
-      "now-playing-poster": true,
-      "active": queue.isPlaying,
-    })
-  );
-
-  const image = useComputed(() =>
-    classes({
-      "now-playing-img": true,
-      "none": queue.current === null,
-    })
-  );
 
   const src = useComputed(() => {
     if (queue.current === null) return "";
@@ -45,6 +30,22 @@ function NowPlayingImage() {
     return "";
   });
 
+  const title = useComputed(() => `${queue.current?.name ?? "Song"} Cover`);
+
+  const poster = useComputed(() =>
+    classes({
+      "poster": true,
+      "active": queue.isPlaying,
+    })
+  );
+
+  const image = useComputed(() =>
+    classes({
+      "img": true,
+      "none": queue.current === null,
+    })
+  );
+
   return (
     <div class={poster}>
       <img class={image} title={title} alt={title} src={src} />
@@ -57,21 +58,19 @@ function NowPlayingText() {
 
   if (queue.current === null) {
     return (
-      <figcaption class="now-playing-text">
-        <p class="now-playing-name">No Active Song</p>
-        <p class="now-playing-artist">No Active Song</p>
+      <figcaption class="text">
+        <p class="name">No Active Song</p>
+        <p class="artist">No Active Song</p>
       </figcaption>
     );
   }
 
   return (
-    <figcaption class="now-playing-text">
-      <p class="now-playing-name" title={queue.current.name}>
+    <figcaption class="text">
+      <p class="name" title={queue.current.name}>
         <a href={`/songs/${queue.current.id}`}>{queue.current.name}</a>
       </p>
-      <p class="now-playing-artist" title={queue.current.artist.name}>
-        <ArtistLink {...queue.current.artist} />
-      </p>
+      <ArtistLink {...queue.current.artist} />
     </figcaption>
   );
 }

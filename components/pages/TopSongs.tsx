@@ -39,8 +39,8 @@ export default function TopSongs() {
 
   return (
     <article class="top-songs">
-      <h2 class="top-songs-title">Discover Top Songs</h2>
-      <ol class="top-songs-list">
+      <h2 class="title">Discover Top Songs</h2>
+      <ol class="list">
         {tracks.value.map((track, i) => (
           <SongCard
             key={track.id}

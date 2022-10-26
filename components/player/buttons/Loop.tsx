@@ -28,7 +28,7 @@ export default function Loop({ value: loop }: LoopProps) {
     <button
       title={title}
       type="button"
-      class="btn-icon"
+      class="btn-icon loop"
       disabled={disabled}
       onClick={toggle}
     >

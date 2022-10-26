@@ -22,7 +22,7 @@ export default function Playback() {
       type="button"
       class="btn-icon"
       disabled={disabled}
-      onClick={queue.toggle}
+      onClick={queue.toggle.bind(queue)}
     >
       <svg class="play-icon">
         <title>{title}</title>

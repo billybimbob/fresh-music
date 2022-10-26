@@ -1,6 +1,6 @@
 import { useEffect } from "preact/hooks";
 import { type Signal, useComputed } from "@preact/signals";
-import { asset } from "$fresh/runtime.ts";
+import { asset, IS_BROWSER } from "$fresh/runtime.ts";
 
 interface VolumeProps {
   readonly volume: Signal<number>;
@@ -10,17 +10,24 @@ const VOLUME_PREF = "volume_preference";
 
 export default function Volume({ volume }: VolumeProps) {
   useEffect(() => {
+    if (!IS_BROWSER) return;
+
     const perf = parseFloat(localStorage.getItem(VOLUME_PREF) ?? "");
+
     if (isFinite(perf)) {
       volume.value = perf;
     }
   }, [volume]);
 
   useEffect(() => {
+    if (!IS_BROWSER) return;
+
     const saveVolume = () => {
       localStorage.setItem(VOLUME_PREF, volume.value.toString());
     };
+
     addEventListener("beforeunload", saveVolume);
+
     return () => {
       removeEventListener("beforeunload", saveVolume);
     };
@@ -38,8 +45,8 @@ export default function Volume({ volume }: VolumeProps) {
       <VolumeButton volume={volume} />
       <input
         title="Volume Slider"
-        name="volume-field"
-        class="volume-field"
+        name="volume"
+        class="field"
         type="range"
         step="any"
         min="0"
@@ -58,9 +65,9 @@ function VolumeButton({ volume }: VolumeProps) {
 
   const href = useComputed(() => {
     const svg = (
-      volume.value === 0 && "volume-mute.svg#volume-mute" ||
-      volume.value <= 0.5 && "volume-low.svg#volume-low" ||
-      "volume-high.svg#volume-high"
+      volume.value === 0 && "volume/mute.svg#mute" ||
+      volume.value <= 0.5 && "volume/low.svg#low" ||
+      "volume/high.svg#high"
     );
 
     return asset(`/icons/${svg}`);
@@ -81,7 +88,7 @@ function VolumeButton({ volume }: VolumeProps) {
       class="btn-icon"
       onClick={onClick}
     >
-      <svg class="volume-icon">
+      <svg class="icon">
         <title>{title}</title>
         <use href={href} />
       </svg>

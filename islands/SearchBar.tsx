@@ -38,6 +38,7 @@ function SearchBar() {
   };
 
   return (
+    // <article class="search-music">
     <form class="search-bar" onSubmit={onSubmit}>
       <button
         title="Search Music"
@@ -45,17 +46,16 @@ function SearchBar() {
         class="btn-icon"
         disabled={isEmpty}
       >
-        <svg class="search-bar-icon">
+        <svg class="icon">
           <title>Search Music</title>
           <use href={asset("/icons/search.svg#search")} />
         </svg>
       </button>
       <input
         title="Search Music"
-        id="search-bar-input"
         name="query"
         required
-        class="search-bar-input"
+        class="input"
         type="search"
         placeholder="Search"
         autoComplete="off"
@@ -63,5 +63,6 @@ function SearchBar() {
         onInput={onInput}
       />
     </form>
+    // </article>
   );
 }

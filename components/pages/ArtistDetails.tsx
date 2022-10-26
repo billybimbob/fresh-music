@@ -45,25 +45,25 @@ export default function ArtistDetails({ id }: ArtistDetailsProps) {
 
   return (
     <article class="artist-page">
-      <header class="artist-details">
-        <div class="artist-banner">
+      <header class="details">
+        <div class="banner">
           <img
-            class="artist-img"
+            class="img"
             alt={`${artist.value.name} Profile`}
             src={image}
           />
-          <div class="artist-title">
-            <h1 class="artist-title-name" title={artist.value.name}>
+          <div class="title">
+            <h1 class="name" title={artist.value.name}>
               {artist.value.name}
             </h1>
-            <p class="artist-title-genres">{artist.value.genres.join(" ")}</p>
+            <p class="genres">{artist.value.genres.join(" ")}</p>
           </div>
         </div>
       </header>
 
-      <section class="artist-songs">
-        <h2 class="artist-songs-header">Related Songs:</h2>
-        <ol class="artist-songs-list">
+      <section class="songs">
+        <h2 class="header">Related Songs:</h2>
+        <ol class="list">
           {artist.value.songs.map((song, i) => (
             <ArtistSongRow
               key={song.id}

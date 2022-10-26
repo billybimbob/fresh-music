@@ -19,8 +19,8 @@ export default function TopArtists() {
 
   return (
     <article class="top-artists">
-      <h2 class="top-artists-title">Top Artists</h2>
-      <ol class="top-artists-list">
+      <h2 class="title">Top Artists</h2>
+      <ol class="list">
         {tracks.value.map((track) => <ArtistCard key={track.id} {...track} />)}
       </ol>
     </article>

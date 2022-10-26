@@ -1,7 +1,7 @@
 import type { PreloadData } from "@/utils/types.ts";
 
-import Navigation from "@/islands/Navigation.tsx";
 import MusicRoutes from "@/islands/MusicRoutes.tsx";
+import Navigation from "@/islands/Navigation.tsx";
 import SearchBar from "@/islands/SearchBar.tsx";
 import SongPlayer from "@/islands/SongPlayer.tsx";
 import TopPreview from "@/islands/TopPreview.tsx";
@@ -16,8 +16,10 @@ export default function MusicBrowser({ url, initial }: MusicBrowserProps) {
     <div class="music-browser">
       <Navigation url={url} />
       <main class="browser-main">
-        <SearchBar url={url} />
-        <MusicRoutes url={url} initial={initial} />
+        <div class="browser-center">
+          <SearchBar url={url} />
+          <MusicRoutes url={url} initial={initial} />
+        </div>
         <TopPreview initial={initial} />
         <SongPlayer />
       </main>

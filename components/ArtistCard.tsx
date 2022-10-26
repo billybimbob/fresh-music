@@ -8,12 +8,12 @@ export default function ArtistCard({ name, images, artist }: ArtistCardProps) {
     <li class="artist-card">
       <a title={artist.name} href={`/artists/${artistId}`}>
         <img
-          class="artist-card-img"
+          class="img"
           alt={`${name} Cover`}
           src={images?.cover}
         />
       </a>
-      <p class="artist-card-name">
+      <p class="name">
         <a title={artist.name} href={`/artists/${artistId}`}>
           {artist.name}
         </a>

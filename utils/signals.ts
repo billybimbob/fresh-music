@@ -1,6 +1,6 @@
 import { type JSX } from "preact";
 import { useMemo } from "preact/hooks";
-import { type ReadonlySignal, signal } from "@preact/signals";
+import { type ReadonlySignal, type Signal, signal } from "@preact/signals";
 
 export function useWatcher<T>(value: T | JSX.SignalLike<T>): ReadonlySignal<T> {
   const watcher = useMemo(() => new Watcher(value), []);
@@ -11,49 +11,47 @@ export function useWatcher<T>(value: T | JSX.SignalLike<T>): ReadonlySignal<T> {
 }
 
 class Watcher<T> {
-  #controlled!: boolean;
-  #source!: JSX.SignalLike<T>;
+  #controlled: boolean;
+  #primitive?: Signal<T>;
+  readonly #source: Signal<JSX.SignalLike<T>>;
 
   constructor(value: T | JSX.SignalLike<T>) {
     if (isSignal(value)) {
-      this.#watch(value);
+      this.#controlled = false;
+      this.#source = signal(value);
     } else {
-      this.#control(value);
+      this.#controlled = true;
+      this.#primitive = signal(value);
+      this.#source = signal(this.#primitive);
     }
   }
 
   get source() {
-    return this.#source as ReadonlySignal<T>;
+    return this.#source.value as ReadonlySignal<T>;
   }
 
   update(value: T | JSX.SignalLike<T>) {
-    if (this.#source === value) {
+    if (this.#primitive?.peek() === value || this.#source.peek() === value) {
       return;
     }
 
     if (isSignal(value)) {
-      throw new Error("Watching singal modified");
-    }
-
-    if (!this.#controlled) {
-      this.#control(value);
+      this.#controlled = false;
+      this.#source.value = value;
       return;
     }
 
-    this.#source.value = value;
-  }
+    this.#primitive ??= signal(value);
+    this.#primitive.value = value;
 
-  #control(value: T) {
-    this.#controlled = true;
-    this.#source = signal(value);
-  }
-
-  #watch(value: JSX.SignalLike<T>) {
-    this.#controlled = false;
-    this.#source = value;
+    if (!this.#controlled) {
+      this.#controlled = true;
+      this.#source.value = this.#primitive;
+    }
   }
 }
 
 function isSignal<T>(value: T | JSX.SignalLike<T>): value is JSX.SignalLike<T> {
-  return (value as JSX.SignalLike<T>)?.peek !== undefined;
+  return value && typeof value === "object" &&
+    "value" in value && "peek" in value;
 }

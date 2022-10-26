@@ -32,14 +32,14 @@ export default function ArtistSongRow(
 
   return (
     <li class={$class} onDblClick={data ? onClick : undefined}>
-      <div class="song-row-body">
-        <p class="song-row-spot">{spot}</p>
-        <img class="song-row-img" alt={`${name} Artwork`} src={image} />
-        <div class="song-row-title">
-          <h3 class="song-row-name">
+      <div class="body">
+        <p class="spot">{spot}</p>
+        <img class="img" alt={`${name} Artwork`} src={image} />
+        <div class="title">
+          <h3 class="name">
             <a href={`/songs/${id}`} title={name}>{name}</a>
           </h3>
-          <p class="song-row-album" title={album}>{album}</p>
+          <p class="album" title={album}>{album}</p>
         </div>
       </div>
       {data && (

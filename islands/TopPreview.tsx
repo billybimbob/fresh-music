@@ -42,16 +42,16 @@ function TopPreview() {
 
   return (
     <aside class="top-preview">
-      <section class="top-preview-songs">
-        <header class="top-preview-songs-header">
-          <h2 class="top-preview-songs-title" title="Top Charts">
+      <section class="songs">
+        <header class="header">
+          <h2 class="title" title="Top Charts">
             Top Charts
           </h2>
-          <p class="top-preview-songs-link" title="See More Charts">
+          <p class="link" title="See More Charts">
             <a href="/top/songs">See all</a>
           </p>
         </header>
-        <ol class="top-preview-songs-list">
+        <ol class="list">
           {topSongs.value?.map((track, i) => (
             <SongRow
               key={track.id}
@@ -63,16 +63,16 @@ function TopPreview() {
         </ol>
       </section>
 
-      <section class="top-preview-artists">
-        <header class="top-preview-artists-header">
-          <h2 class="top-preview-artists-title" title="Top Artists">
+      <section class="artists">
+        <header class="header">
+          <h2 class="title" title="Top Artists">
             Top Artists
           </h2>
-          <p class="top-preview-artists-link" title="See More Artists">
+          <p class="link" title="See More Artists">
             <a href="/top/artists">See all</a>
           </p>
         </header>
-        <ol class="top-preview-songs-list">
+        <ol class="list">
           {topSongs.value?.map((track) => (
             <ArtistCard key={track.id} {...track} />
           ))}

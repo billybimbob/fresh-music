@@ -1,7 +1,7 @@
 export default function Error() {
   return (
     <article class="error">
-      <h1 class="error-title">Something went wrong. Please try again</h1>
+      <h1 class="title">Something went wrong. Please try again</h1>
     </article>
   );
 }

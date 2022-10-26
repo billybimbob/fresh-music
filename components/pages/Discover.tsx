@@ -60,13 +60,13 @@ export default function Discover({ genre = defaultGenre }: DiscoverProps) {
 
   return (
     <article class="discover">
-      <section class="discover-genres">
-        <h2 class="discover-genres-title">Discover {genreTitle}</h2>
+      <section class="genres">
+        <h2 class="title">Discover {genreTitle}</h2>
         <select
           title="Discover Genre"
           value={genre}
           name="genre"
-          class="discover-genres-select"
+          class="options"
           onChange={onGenreChange}
         >
           {genres.map(({ title, value }) => (
@@ -75,7 +75,7 @@ export default function Discover({ genre = defaultGenre }: DiscoverProps) {
         </select>
       </section>
 
-      <ol class="discover-songs">
+      <ol class="songs">
         {tracks.value.map((track, i) => (
           <SongCard
             key={track.id}
