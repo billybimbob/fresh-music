@@ -4,7 +4,7 @@ import { IS_BROWSER } from "$fresh/runtime.ts";
 
 import type { PreloadData } from "@/utils/types.ts";
 import { FallbackProvider } from "@/utils/client.ts";
-import { useLocationSignal } from "@/utils/locationSignal.ts";
+import { useLocationSignal } from "@/utils/location.ts";
 
 import LocationProvider from "@/components/LocationProvider.tsx";
 import ArtistDetails from "@/components/pages/ArtistDetails.tsx";

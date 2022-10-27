@@ -1,7 +1,7 @@
 import { useContext, useEffect } from "preact/hooks";
 import { type ReadonlySignal, useComputed } from "@preact/signals";
 import { IS_BROWSER } from "$fresh/runtime.ts";
-import SongQueue from "@/utils/songQueue.ts";
+import { SongQueue } from "@/utils/songQueue.ts";
 
 interface SeekBarProps {
   readonly progression: ReadonlySignal<number>;
@@ -53,6 +53,7 @@ export default function SeekBar(
 
 function SeekBarButtons({ progression, duration, onSeek }: SeekBarProps) {
   const queue = useContext(SongQueue);
+
   const title = useComputed(() => `Seek ${queue.current?.name ?? "Song"}`);
   const disabled = useComputed(() => queue.current === null);
 

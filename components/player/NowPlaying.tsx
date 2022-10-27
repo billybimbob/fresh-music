@@ -3,7 +3,7 @@ import { useComputed } from "@preact/signals";
 import classes from "classnames";
 
 import { type ArtistSong, toSize, type Track } from "@/utils/types.ts";
-import SongQueue from "@/utils/songQueue.ts";
+import { SongQueue } from "@/utils/songQueue.ts";
 import ArtistLink from "@/components/ArtistLink.tsx";
 
 export default function NowPlaying() {

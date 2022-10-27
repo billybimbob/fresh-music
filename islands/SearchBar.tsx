@@ -1,6 +1,6 @@
 import { batch, useComputed, useSignal } from "@preact/signals";
 import { asset } from "$fresh/runtime.ts";
-import { useLocationSignal } from "@/utils/locationSignal.ts";
+import { useLocationSignal } from "@/utils/location.ts";
 import LocationProvider from "@/components/LocationProvider.tsx";
 
 interface SearchBarProps {
@@ -55,6 +55,7 @@ function SearchBar() {
         title="Search Music"
         name="query"
         required
+        id="search-music"
         class="input"
         type="search"
         placeholder="Search"

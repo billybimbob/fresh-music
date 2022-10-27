@@ -6,7 +6,7 @@ import {
   useSignalEffect,
 } from "@preact/signals";
 import { asset } from "$fresh/runtime.ts";
-import SongQueue from "@/utils/songQueue.ts";
+import { SongQueue } from "@/utils/songQueue.ts";
 
 export default function Shuffle() {
   const isShuffled = useSignal(false);

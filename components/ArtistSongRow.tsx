@@ -3,7 +3,7 @@ import { useComputed } from "@preact/signals";
 import classes from "classnames";
 
 import { type ArtistSong, toSize } from "@/utils/types.ts";
-import SongQueue from "@/utils/songQueue.ts";
+import { SongQueue } from "@/utils/songQueue.ts";
 import PlayButton from "@/components/PlayButton.tsx";
 
 interface ArtistSongProps extends ArtistSong {
@@ -42,13 +42,15 @@ export default function ArtistSongRow(
           <p class="album" title={album}>{album}</p>
         </div>
       </div>
-      {data && (
-        <PlayButton
-          isActive={isActive}
-          title={name}
-          onClick={onClick}
-        />
-      )}
+      {data
+        ? (
+          <PlayButton
+            isActive={isActive}
+            title={name}
+            onClick={onClick}
+          />
+        )
+        : <div class="play-icon empty" />}
     </li>
   );
 }

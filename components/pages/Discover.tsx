@@ -4,8 +4,8 @@ import genres from "@/static/genres.json" assert { type: "json" };
 
 import type { Track } from "@/utils/types.ts";
 import { useGenreCharts } from "@/utils/client.ts";
-import { useLocationSignal } from "@/utils/locationSignal.ts";
-import SongQueue from "@/utils/songQueue.ts";
+import { useLocationSignal } from "@/utils/location.ts";
+import { SongQueue } from "@/utils/songQueue.ts";
 
 import SongCard from "@/components/SongCard.tsx";
 import Error from "@/components/Error.tsx";
@@ -18,8 +18,8 @@ interface DiscoverProps {
 }
 
 export default function Discover({ genre = defaultGenre }: DiscoverProps) {
-  const queue = useContext(SongQueue);
   const loc = useLocationSignal();
+  const queue = useContext(SongQueue);
 
   const response = useGenreCharts(genre);
   const tracks = useComputed(() => response.data);

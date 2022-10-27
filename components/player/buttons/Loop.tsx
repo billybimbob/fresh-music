@@ -2,7 +2,7 @@ import { useContext } from "preact/hooks";
 import { type Signal, useComputed } from "@preact/signals";
 import { asset } from "$fresh/runtime.ts";
 import classes from "classnames";
-import SongQueue from "@/utils/songQueue.ts";
+import { SongQueue } from "@/utils/songQueue.ts";
 
 interface LoopProps {
   readonly value: Signal<boolean>;

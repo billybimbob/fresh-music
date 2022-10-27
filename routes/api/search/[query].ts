@@ -1,14 +1,10 @@
-import { type Handler, Status } from "$fresh/server.ts";
+import { type Handler } from "$fresh/server.ts";
 import { contentType } from "$media_types";
 import { fetchSearch } from "@/utils/shazam/mod.ts";
 
 export const handler: Handler<never> = async (_req, ctx) => {
   const { query } = ctx.params;
-  const result = await fetchSearch(query);
-
-  if (result === null) {
-    return new Response(null, { status: Status.InternalServerError });
-  }
+  const result = await fetchSearch(query) ?? [];
 
   return Response.json(result, {
     headers: { "content-type": contentType(".json") },

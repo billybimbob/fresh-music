@@ -28,7 +28,7 @@ export function toTrack(source: ShazamTrack): Track {
       cover: source.images.coverart,
     },
     data: source.hub.actions?.find((a) => a.type === "uri")?.uri,
-    lyrics: source.sections?.find(({ text }) => Boolean(text))?.text?.join(""),
+    lyrics: source.sections?.find(({ text }) => Boolean(text))?.text,
   };
 }
 

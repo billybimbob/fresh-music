@@ -8,10 +8,11 @@ import {
   useComputed,
 } from "@preact/signals";
 import { type BaseLocationHook, type HookReturnValue, useRouter } from "wouter";
-import { useWatcher } from "@/utils/signals.ts";
+import { useObserver } from "@/utils/observer.ts";
 
 export interface LocationSignal {
   value: string;
+  replace(path: string): void;
 }
 
 export interface LocationSignalHook extends BaseLocationHook {
@@ -34,7 +35,7 @@ export function useLocationSignal(): LocationSignal {
   const { source = undefined } = hook as LocationSignalHook;
 
   const [path, navigate] = hook({ peek: true });
-  const $path = useWatcher(source ?? path);
+  const $path = useObserver(source ?? path);
 
   return useMemo(() => ({
     get value() {
@@ -42,6 +43,10 @@ export function useLocationSignal(): LocationSignal {
     },
     set value(to) {
       navigate(to);
+    },
+
+    replace(path: string) {
+      navigate(path, true);
     },
   }), [$path, navigate]);
 }
@@ -51,7 +56,7 @@ export function useRouteSignal(
 ): MatchSignal {
   const { matcher } = useRouter();
   const loc = useLocationSignal();
-  const $pattern = useWatcher(pattern);
+  const $pattern = useObserver(pattern);
 
   // console.log(pattern === $pattern.peek(), $pattern.peek());
 
@@ -76,14 +81,24 @@ export function createLocationSignal(): LocationSignalHook {
 
   let isListening = false;
 
+  const navigate = (to: string, replace = false) => {
+    if (href.value === to) return;
+
+    const action = replace ? "replaceState" : "pushState";
+    history[action](null, "", to);
+
+    batch(() => void dispatchEvent(new PopStateEvent("popstate")));
+  };
+
   const update = () => {
     href.value = location.href;
   };
 
   const hook = (options?: { readonly peek?: boolean }) => {
     if (!isListening) {
-      addEventListener("popstate", update);
       isListening = true;
+      addEventListener("popstate", update);
+      update();
     }
 
     return options?.peek ? tuple.peek() : tuple.value;
@@ -91,19 +106,11 @@ export function createLocationSignal(): LocationSignalHook {
 
   const dispose = () => {
     if (isListening) {
+      isListening = false;
       console.log("cleaning up popstate");
       removeEventListener("popstate", update);
-      isListening = false;
     }
   };
 
   return Object.assign(hook, { source: path, dispose });
-}
-
-function navigate(to: string, replace = false) {
-  const action = replace ? "replaceState" : "pushState";
-
-  history[action](null, "", to);
-
-  batch(() => void dispatchEvent(new PopStateEvent("popstate")));
 }

@@ -3,8 +3,8 @@ import { useComputed } from "@preact/signals";
 import classes from "classnames";
 
 import type { Track } from "@/utils/types.ts";
-import { useWatcher } from "@/utils/signals.ts";
-import SongQueue from "@/utils/songQueue.ts";
+import { useObserver } from "@/utils/observer.ts";
+import { SongQueue } from "@/utils/songQueue.ts";
 
 import ArtistLink from "@/components/ArtistLink.tsx";
 import PlayButton from "@/components/PlayButton.tsx";
@@ -16,8 +16,8 @@ interface SongCardProps extends Track {
 export default function SongCard(
   { id, name, data, images, artist, onClick }: SongCardProps,
 ) {
-  const $id = useWatcher(id);
-  const $data = useWatcher(data);
+  const $id = useObserver(id);
+  const $data = useObserver(data);
   const queue = useContext(SongQueue);
 
   const isActive = useComputed(() =>
@@ -41,13 +41,15 @@ export default function SongCard(
         tabIndex={0}
       >
         <div class="btn">
-          {data && (
-            <PlayButton
-              isActive={isActive}
-              title={name}
-              tabIndex={-1}
-            />
-          )}
+          {data
+            ? (
+              <PlayButton
+                isActive={isActive}
+                title={name}
+                tabIndex={-1}
+              />
+            )
+            : <div class="play-icon empty" />}
         </div>
         <img class="img" alt={`${name} Image`} src={images?.cover} />
       </div>

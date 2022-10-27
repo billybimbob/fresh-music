@@ -3,7 +3,7 @@ import { useComputed } from "@preact/signals";
 
 import { type ArtistSong, toSize } from "@/utils/types.ts";
 import { useArtistDetails } from "@/utils/client.ts";
-import SongQueue from "@/utils/songQueue.ts";
+import { SongQueue } from "@/utils/songQueue.ts";
 
 import Error from "@/components/Error.tsx";
 import Loader from "@/components/Loader.tsx";
@@ -62,7 +62,7 @@ export default function ArtistDetails({ id }: ArtistDetailsProps) {
       </header>
 
       <section class="songs">
-        <h2 class="header">Related Songs:</h2>
+        <h2 class="header">Related Songs</h2>
         <ol class="list">
           {artist.value.songs.map((song, i) => (
             <ArtistSongRow

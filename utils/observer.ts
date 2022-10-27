@@ -2,15 +2,15 @@ import { type JSX } from "preact";
 import { useMemo } from "preact/hooks";
 import { type ReadonlySignal, type Signal, signal } from "@preact/signals";
 
-export function useWatcher<T>(value: T | JSX.SignalLike<T>): ReadonlySignal<T> {
-  const watcher = useMemo(() => new Watcher(value), []);
+export function useObserver<T>(value: T | JSX.SignalLike<T>) {
+  const observer = useMemo(() => new Observer(value), []);
 
-  watcher.update(value);
+  observer.update(value);
 
-  return watcher.source;
+  return observer.source;
 }
 
-class Watcher<T> {
+class Observer<T> {
   #controlled: boolean;
   #primitive?: Signal<T>;
   readonly #source: Signal<JSX.SignalLike<T>>;

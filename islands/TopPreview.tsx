@@ -3,7 +3,7 @@ import { useComputed } from "@preact/signals";
 
 import type { PreloadData, Track } from "@/utils/types.ts";
 import { FallbackProvider, useCharts } from "@/utils/client.ts";
-import SongQueueContext from "@/utils/songQueue.ts";
+import { SongQueue } from "@/utils/songQueue.ts";
 
 import ArtistCard from "@/components/ArtistCard.tsx";
 import SongRow from "@/components/SongRow.tsx";
@@ -21,7 +21,7 @@ export default function ({ initial = {} }: TopPreviewProps) {
 }
 
 function TopPreview() {
-  const queue = useContext(SongQueueContext);
+  const queue = useContext(SongQueue);
   const response = useCharts();
   const topSongs = useComputed(() => response.data?.slice(0, 5));
 

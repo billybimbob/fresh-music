@@ -7,7 +7,7 @@ export const handler: Handler<never> = async (_req, ctx) => {
   const artist = await fetchArtist(id);
 
   if (artist === null) {
-    return new Response(null, { status: Status.InternalServerError });
+    return new Response(null, { status: Status.NotFound });
   }
 
   return Response.json(artist, {

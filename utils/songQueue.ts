@@ -2,27 +2,7 @@ import { createContext } from "preact";
 import { batch, computed, signal } from "@preact/signals";
 import type { ArtistSong, Song, Track } from "@/utils/types.ts";
 
-export interface SongQueueSignal {
-  readonly current: Song | null;
-  readonly finished: readonly Song[];
-  readonly upcoming: readonly Song[];
-
-  readonly isPlaying: boolean;
-  readonly hasPrevious: boolean;
-  readonly hasNext: boolean;
-
-  seekPrevious(): void;
-  seekNext(): void;
-  toggle(): void;
-
-  add(...songs: readonly Song[]): void;
-  listenTo(...songs: readonly Song[]): void;
-
-  clear(): void;
-  shuffle(): void;
-}
-
-export class SongQueue implements SongQueueSignal {
+export class SongQueueSignal {
   readonly #current = signal<Song | null>(null);
   readonly #finished = signal<readonly Song[]>([]);
   readonly #upcoming = signal<readonly Song[]>([]);
@@ -152,6 +132,4 @@ function isValidSong(song: Song) {
   return Boolean(hasImage && song.data);
 }
 
-const SongQueueContext = createContext<SongQueueSignal>(new SongQueue());
-
-export default SongQueueContext;
+export const SongQueue = createContext(new SongQueueSignal());

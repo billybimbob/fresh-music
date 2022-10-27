@@ -1,7 +1,7 @@
 import { useContext, useEffect } from "preact/hooks";
 import { type Signal } from "@preact/signals";
 import { IS_BROWSER } from "$fresh/runtime.ts";
-import SongQueue from "@/utils/songQueue.ts";
+import { SongQueue } from "@/utils/songQueue.ts";
 
 import Loop from "@/components/player/buttons/Loop.tsx";
 import Next from "@/components/player/buttons/Next.tsx";
@@ -19,12 +19,14 @@ export default function Controls({ loop }: ControlProps) {
   useEffect(() => {
     if (!IS_BROWSER) return;
 
-    const onKeyUp = (event: KeyboardEvent) => {
+    const controlPlayback = (event: KeyboardEvent) => {
+      if (document.activeElement?.id === "search-music") {
+        return;
+      }
+
       const { key, shiftKey } = event;
 
       if (key === " ") {
-        event.stopPropagation();
-        event.preventDefault();
         queue.toggle();
         return;
       }
@@ -44,10 +46,26 @@ export default function Controls({ loop }: ControlProps) {
       }
     };
 
-    addEventListener("keyup", onKeyUp);
+    addEventListener("keyup", controlPlayback);
 
     return () => {
-      removeEventListener("keyup", onKeyUp);
+      removeEventListener("keyup", controlPlayback);
+    };
+  }, [queue]);
+
+  useEffect(() => {
+    if (!IS_BROWSER) return;
+
+    const preventScroll = (event: KeyboardEvent) => {
+      if (document.activeElement?.id === "search-music") return;
+      if (event.key !== " ") return;
+      event.preventDefault();
+    };
+
+    addEventListener("keydown", preventScroll);
+
+    return () => {
+      removeEventListener("keydown", preventScroll);
     };
   }, [queue]);
 

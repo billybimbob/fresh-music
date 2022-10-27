@@ -3,7 +3,7 @@ import { useComputed } from "@preact/signals";
 
 import type { Track } from "@/utils/types.ts";
 import { useRelatedSongs, useSongDetails } from "@/utils/client.ts";
-import SongQueue from "@/utils/songQueue.ts";
+import { SongQueue } from "@/utils/songQueue.ts";
 
 import ArtistLink from "@/components/ArtistLink.tsx";
 import SongRow from "@/components/SongRow.tsx";
@@ -69,7 +69,9 @@ export default function SongDetails({ id }: SongDetailsProps) {
       <section class="lyrics">
         <h2 class="title">Lyrics</h2>
         <div class="body">
-          <p class="text">{track.value.lyrics ?? "No lyrics found"}</p>
+          {track.value.lyrics
+            ? track.value.lyrics.map((l) => <p class="text">{l}</p>)
+            : <p class="text">No Lyrics Found</p>}
         </div>
       </section>
 

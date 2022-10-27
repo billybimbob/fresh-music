@@ -54,7 +54,7 @@ export interface Track {
     readonly cover: string;
   };
   readonly data?: string;
-  readonly lyrics?: string;
+  readonly lyrics?: readonly string[];
 }
 
 export type Song = ArtistSong | Track;

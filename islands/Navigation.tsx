@@ -1,10 +1,10 @@
 import { type ComponentChild, type JSX } from "preact";
-import { useComputed, useSignal } from "@preact/signals";
+import { useComputed, useSignal, useSignalEffect } from "@preact/signals";
 import { asset } from "$fresh/runtime.ts";
 import classes from "classnames";
 
-import { useRouteSignal } from "@/utils/locationSignal.ts";
-import { useWatcher } from "@/utils/signals.ts";
+import { useLocationSignal, useRouteSignal } from "@/utils/location.ts";
+import { useObserver } from "@/utils/observer.ts";
 
 import LocationProvider from "@/components/LocationProvider.tsx";
 
@@ -21,7 +21,9 @@ export default function ({ url }: NavigationProps) {
 }
 
 function Navigation() {
-  const hidden = useSignal(false);
+  const loc = useLocationSignal();
+  const hidden = useSignal(true);
+  const title = useComputed(() => hidden.value ? "Show Nav" : "Close Nav");
 
   const $class = useComputed(() =>
     classes({ "side-nav": true, "hidden": hidden.value })
@@ -32,16 +34,14 @@ function Navigation() {
     return asset(`/icons/${svg}`);
   });
 
-  const title = useComputed(() => hidden.value ? "Show Nav" : "Close Nav");
+  useSignalEffect(() => {
+    if (loc.value && isSmallScreen()) {
+      setTimeout(() => hidden.value = true); // timeout might be hacky
+    }
+  });
 
   const toggle = () => {
     hidden.value = !hidden.value;
-  };
-
-  const onNavClick = () => {
-    if (matchMedia("(max-width: 640px)").matches) {
-      hidden.value = true;
-    }
   };
 
   return (
@@ -59,21 +59,22 @@ function Navigation() {
 
       <ul class="links">
         <li class="item" title="Discover">
-          <NavLink class="link" onClick={onNavClick} href="/">Discover</NavLink>
+          <NavLink class="link" href="/">Discover</NavLink>
         </li>
         <li class="item" title="Top Artists">
-          <NavLink class="link" onClick={onNavClick} href="/top/artists">
-            Top Artists
-          </NavLink>
+          <NavLink class="link" href="/top/artists">Top Artists</NavLink>
         </li>
         <li class="item" title="Top Charts">
-          <NavLink class="link" onClick={onNavClick} href="/top/songs">
-            Top Charts
-          </NavLink>
+          <NavLink class="link" href="/top/songs">Top Charts</NavLink>
         </li>
       </ul>
     </nav>
   );
+}
+
+function isSmallScreen() {
+  // kind of hacky, might want to find a better way to auto hide
+  return matchMedia("(max-width: 768px)").matches;
 }
 
 interface NavLinkProps extends JSX.HTMLAttributes<HTMLAnchorElement> {
@@ -83,8 +84,8 @@ interface NavLinkProps extends JSX.HTMLAttributes<HTMLAnchorElement> {
 function NavLink({ href, children, ...props }: NavLinkProps) {
   const route = useRouteSignal(href ?? "");
 
-  const $class = useWatcher(props.class);
-  const $className = useWatcher(props.className);
+  const $class = useObserver(props.class);
+  const $className = useObserver(props.className);
 
   const $classes = useComputed(() =>
     classes(

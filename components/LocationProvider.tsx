@@ -7,7 +7,7 @@ import staticLocation from "wouter/static-location";
 import {
   createLocationSignal,
   type LocationSignalHook,
-} from "@/utils/locationSignal.ts";
+} from "@/utils/location.ts";
 
 interface LocationProps {
   readonly url?: string;
