@@ -12,6 +12,7 @@ export default function App({ Component }: AppProps) {
           charSet="utf-8"
           href={asset("/app.css")}
         />
+        <link rel="icon" href={asset("/favicon.ico")} type="image/x-icon" />
       </Head>
       <Component />
     </>
