@@ -1,6 +1,6 @@
 import { type ComponentChild, type JSX } from "preact";
 import { useComputed, useSignal, useSignalEffect } from "@preact/signals";
-import { asset } from "$fresh/runtime.ts";
+import { asset, IS_BROWSER } from "$fresh/runtime.ts";
 import classes from "classnames";
 
 import { useLocationSignal, useRouteSignal } from "@/utils/location.ts";
@@ -23,11 +23,12 @@ export default function ({ url }: NavigationProps) {
 function Navigation() {
   const loc = useLocationSignal();
   const hidden = useSignal(true);
-  const title = useComputed(() => hidden.value ? "Show Nav" : "Close Nav");
 
   const $class = useComputed(() =>
     classes({ "side-nav": true, "hidden": hidden.value })
   );
+
+  const title = useComputed(() => hidden.value ? "Show Nav" : "Close Nav");
 
   const icon = useComputed(() => {
     const svg = hidden.value ? "bars.svg#bars" : "close.svg#close";
@@ -74,7 +75,7 @@ function Navigation() {
 
 function isSmallScreen() {
   // kind of hacky, might want to find a better way to auto hide
-  return matchMedia("(max-width: 768px)").matches;
+  return IS_BROWSER && matchMedia("(max-width: 768px)").matches;
 }
 
 interface NavLinkProps extends JSX.HTMLAttributes<HTMLAnchorElement> {

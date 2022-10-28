@@ -33,6 +33,8 @@ export default function SongRow(
     })
   );
 
+  // todo: figure out how to ignore links for mobile
+
   return (
     <li class={$class} onDblClick={data ? onClick : undefined}>
       <div class="body">

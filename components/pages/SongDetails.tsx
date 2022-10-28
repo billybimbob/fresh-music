@@ -47,22 +47,20 @@ export default function SongDetails({ id }: SongDetailsProps) {
 
   return (
     <article class="song-page">
-      <header class="details">
-        <div class="banner">
-          <img
-            class="img"
-            alt={track.value.name}
-            src={track.value.images?.cover}
-          />
-          <div class="title">
-            <h1 class="name">{track.value.name}</h1>
-            <p class="artist">
-              <ArtistLink {...track.value.artist} />
-            </p>
-            <p class="genres">
-              {track.value.genres?.join(" ") ?? ""}
-            </p>
-          </div>
+      <header class="banner">
+        <img
+          class="img"
+          alt={track.value.name}
+          src={track.value.images?.cover}
+        />
+        <div class="title">
+          <h1 class="name">{track.value.name}</h1>
+          <p class="artist">
+            <ArtistLink {...track.value.artist} />
+          </p>
+          <p class="genres">
+            {track.value.genres?.join(" ") ?? ""}
+          </p>
         </div>
       </header>
 

@@ -45,19 +45,17 @@ export default function ArtistDetails({ id }: ArtistDetailsProps) {
 
   return (
     <article class="artist-page">
-      <header class="details">
-        <div class="banner">
-          <img
-            class="img"
-            alt={`${artist.value.name} Profile`}
-            src={image}
-          />
-          <div class="title">
-            <h1 class="name" title={artist.value.name}>
-              {artist.value.name}
-            </h1>
-            <p class="genres">{artist.value.genres.join(" ")}</p>
-          </div>
+      <header class="banner">
+        <img
+          class="img"
+          alt={`${artist.value.name} Profile`}
+          src={image}
+        />
+        <div class="title">
+          <h1 class="name" title={artist.value.name}>
+            {artist.value.name}
+          </h1>
+          <p class="genres">{artist.value.genres.join(" ")}</p>
         </div>
       </header>
 
