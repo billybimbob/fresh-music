@@ -1,8 +1,6 @@
 import type { Track } from "@/utils/types.ts";
 
-type ArtistCardProps = Track;
-
-export default function ArtistCard({ name, images, artist }: ArtistCardProps) {
+export default function ArtistCard({ name, images, artist }: Track) {
   const [artistId] = artist.ids;
   return (
     <li class="artist-card">

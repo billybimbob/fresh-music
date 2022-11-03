@@ -1,6 +1,6 @@
 import { type Handler, Status } from "$fresh/server.ts";
 import { contentType } from "$media_types";
-import { fetchWorldCharts } from "@/utils/shazam/mod.ts";
+import { fetchWorldCharts } from "@shazam";
 
 export const handler: Handler<never> = async (_req, _ctx) => {
   const charts = await fetchWorldCharts();

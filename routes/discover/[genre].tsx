@@ -1,6 +1,6 @@
 import type { Handler, PageProps } from "$fresh/server.ts";
 import type { Track } from "@/utils/types.ts";
-import { fetchGenreCharts, fetchWorldCharts } from "@/utils/shazam/mod.ts";
+import { fetchGenreCharts, fetchWorldCharts } from "@shazam";
 import MusicBrowser from "@/components/MusicBrowser.tsx";
 
 interface DiscoverData {

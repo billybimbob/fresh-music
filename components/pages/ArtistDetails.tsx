@@ -10,7 +10,7 @@ import Loader from "@/components/Loader.tsx";
 import ArtistSongRow from "@/components/ArtistSongRow.tsx";
 
 interface ArtistDetailsProps {
-  readonly id: string;
+  id: string;
 }
 
 export default function ArtistDetails({ id }: ArtistDetailsProps) {

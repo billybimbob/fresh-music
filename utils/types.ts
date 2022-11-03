@@ -1,61 +1,61 @@
-export interface SearchResult {
-  readonly tracks: readonly Track[];
-  readonly artists: readonly ArtistPreview[];
-}
+export type SearchResult = Readonly<{
+  tracks: readonly Track[];
+  artists: readonly ArtistPreview[];
+}>;
 
-export interface Artist {
-  readonly id: string;
-  readonly genres: readonly string[];
-  readonly name: string;
-  readonly artwork: Artwork;
-  readonly topSongs: readonly ArtistSong[];
-  readonly songs: readonly ArtistSong[];
-}
+export type Artist = Readonly<{
+  id: string;
+  genres: readonly string[];
+  name: string;
+  artwork: Artwork;
+  topSongs: readonly ArtistSong[];
+  songs: readonly ArtistSong[];
+}>;
 
-export interface ArtistPreview {
-  readonly id: string;
-  readonly name: string;
-  readonly image?: string;
-}
+export type ArtistPreview = Readonly<{
+  id: string;
+  name: string;
+  image?: string;
+}>;
 
-export interface ArtistDescription {
-  readonly name: string;
-  readonly ids: readonly string[];
-}
+export type ArtistDescription = Readonly<{
+  name: string;
+  ids: readonly string[];
+}>;
 
-export interface Artwork {
-  readonly url: string;
-  readonly colors: {
-    readonly text: readonly string[];
-    readonly background: string;
+export type Artwork = Readonly<{
+  url: string;
+  colors: {
+    text: readonly string[];
+    background: string;
   };
-}
+}>;
 
-export interface ArtistSong {
-  readonly id: string;
-  readonly name: string;
-  readonly artist: ArtistDescription;
-  readonly genres: readonly string[];
-  readonly album: string;
-  readonly releaseDate: string;
-  readonly duration: number;
-  readonly artwork: Artwork;
-  readonly composer: string;
-  readonly data?: string;
-}
+export type ArtistSong = Readonly<{
+  id: string;
+  name: string;
+  artist: ArtistDescription;
+  genres: readonly string[];
+  album: string;
+  releaseDate: string;
+  duration: number;
+  artwork: Artwork;
+  composer: string;
+  data?: string;
+}>;
 
-export interface Track {
-  readonly id: string;
-  readonly name: string;
-  readonly artist: ArtistDescription;
-  readonly genres?: readonly string[];
-  readonly images?: {
-    readonly background: string;
-    readonly cover: string;
+export type Track = Readonly<{
+  id: string;
+  name: string;
+  artist: ArtistDescription;
+  genres?: readonly string[];
+  images?: {
+    background: string;
+    cover: string;
   };
-  readonly data?: string;
-  readonly lyrics?: readonly string[];
-}
+  data?: string;
+  lyrics?: readonly string[];
+}>;
 
 export type Song = ArtistSong | Track;
 

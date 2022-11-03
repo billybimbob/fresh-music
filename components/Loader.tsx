@@ -2,10 +2,10 @@ import { type ComponentChild, isValidElement } from "preact";
 import { asset } from "$fresh/runtime.ts";
 
 interface LoaderProps {
-  readonly children?: ComponentChild;
+  children?: ComponentChild;
 }
 
-export default function Loader({ children = "Loading" }: LoaderProps) {
+export default function Loader({ children = "Loading..." }: LoaderProps) {
   return (
     <article class="loader">
       <img

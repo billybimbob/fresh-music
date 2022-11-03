@@ -11,7 +11,7 @@ import Error from "@/components/Error.tsx";
 import Loader from "@/components/Loader.tsx";
 
 interface SongDetailsProps {
-  readonly id: string;
+  id: string;
 }
 
 export default function SongDetails({ id }: SongDetailsProps) {

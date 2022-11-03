@@ -7,8 +7,8 @@ import { SongQueue } from "@/utils/songQueue.ts";
 import PlayButton from "@/components/PlayButton.tsx";
 
 interface ArtistSongProps extends ArtistSong {
-  readonly spot: number;
-  onClick(): void;
+  spot: number;
+  onClick: () => void;
 }
 
 export default function ArtistSongRow(
@@ -30,15 +30,15 @@ export default function ArtistSongRow(
 
   const image = toSize(artwork.url, 125);
 
+  // artist song id is not a valid track id, disable link for now
+
   return (
     <li class={$class} onDblClick={data ? onClick : undefined}>
       <div class="body">
         <p class="spot">{spot}</p>
         <img class="img" alt={`${name} Artwork`} src={image} />
         <div class="title">
-          <h3 class="name">
-            <a href={`/songs/${id}`} title={name}>{name}</a>
-          </h3>
+          <h3 class="name">{name}</h3>
           <p class="album" title={album}>{album}</p>
         </div>
       </div>

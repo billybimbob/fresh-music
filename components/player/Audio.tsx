@@ -9,11 +9,12 @@ import {
 import { SongQueue } from "@/utils/songQueue.ts";
 
 interface AudioProps {
-  readonly seek: ReadonlySignal<number>;
-  readonly volume: ReadonlySignal<number>;
-  readonly loop: ReadonlySignal<boolean>;
-  onProgress(time: number): void;
-  onDurationFound(duration: number): void;
+  seek: ReadonlySignal<number>;
+  volume: ReadonlySignal<number>;
+  loop: ReadonlySignal<boolean>;
+
+  onProgress: (time: number) => void;
+  onDurationFound: (duration: number) => void;
 }
 
 export default function Audio(

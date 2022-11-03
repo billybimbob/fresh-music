@@ -3,7 +3,7 @@ import { type Signal, useComputed } from "@preact/signals";
 import { asset, IS_BROWSER } from "$fresh/runtime.ts";
 
 interface VolumeProps {
-  readonly volume: Signal<number>;
+  volume: Signal<number>;
 }
 
 const VOLUME_PREF = "volume_preference";

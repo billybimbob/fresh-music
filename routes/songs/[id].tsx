@@ -1,10 +1,6 @@
 import type { Handler, PageProps } from "$fresh/server.ts";
+import { fetchRelatedSongs, fetchSong, fetchWorldCharts } from "@shazam";
 import type { Track } from "@/utils/types.ts";
-import {
-  fetchRelatedSongs,
-  fetchSong,
-  fetchWorldCharts,
-} from "@/utils/shazam/mod.ts";
 import MusicBrowser from "@/components/MusicBrowser.tsx";
 
 interface SongData {
@@ -22,7 +18,7 @@ export const handler: Handler<SongData> = async (_req, ctx) => {
 
   return ctx.render({
     [`/api/songs/${id}`]: details ?? undefined,
-    [`/api/songs/related/${id}`]: related ?? undefined,
+    [`/api/songs/related/${id}`]: related ?? [],
     ["/api/charts"]: charts ?? undefined,
   });
 };

@@ -9,7 +9,7 @@ import ArtistCard from "@/components/ArtistCard.tsx";
 import SongRow from "@/components/SongRow.tsx";
 
 interface TopPreviewProps {
-  readonly initial?: PreloadData;
+  initial?: PreloadData;
 }
 
 export default function ({ initial = {} }: TopPreviewProps) {

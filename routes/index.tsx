@@ -1,8 +1,8 @@
 import type { Handler, PageProps } from "$fresh/server.ts";
-import genres from "@/static/genres.json" assert { type: "json" };
+import { fetchGenreCharts, fetchWorldCharts } from "@shazam";
 
+import genres from "@/static/genres.json" assert { type: "json" };
 import type { Track } from "@/utils/types.ts";
-import { fetchGenreCharts, fetchWorldCharts } from "@/utils/shazam/mod.ts";
 import MusicBrowser from "@/components/MusicBrowser.tsx";
 
 const [{ value: firstGenre }] = genres;

@@ -1,18 +1,18 @@
 import { type ReadonlySignal, useComputed } from "@preact/signals";
 import { asset } from "$fresh/runtime.ts";
-import { useObserver } from "@/utils/observer.ts";
+import { useWatcher } from "@/utils/watcher.ts";
 
 interface PlayButtonProps {
-  readonly isActive: ReadonlySignal<boolean>;
-  readonly title: string;
-  readonly tabIndex?: number;
+  isActive: ReadonlySignal<boolean>;
+  title: string;
+  tabIndex?: number;
   onClick?: () => void;
 }
 
 export default function PlayButton(
   { isActive, title: songTitle, tabIndex, onClick }: PlayButtonProps,
 ) {
-  const $songTitle = useObserver(songTitle);
+  const $songTitle = useWatcher(songTitle);
 
   const $title = useComputed(() =>
     isActive.value ? `Pause ${$songTitle}` : `Play ${$songTitle}`

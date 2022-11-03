@@ -2,7 +2,7 @@
 
 [![Made with Fresh](https://fresh.deno.dev/fresh-badge-dark.svg)](https://fresh.deno.dev)
 
-Fresh music is an online music player modeled after
+Fresh music is music streaming app modeled after
 [Spotify](https://www.spotify.com/), while being deployed on the edge with
 [Deno Deploy](https://deno.com/deploy). The overall design is a modified (and
 improved) version of
@@ -10,13 +10,13 @@ improved) version of
 
 ## Performance
 
-The website utilizes a mix of both server-side rendering (SSR) and also
-single-page app (SPA) design in order to achieve both fast initial load times as
-well as high interactivity.
+The website utilizes a mix of server-side rendering (SSR) and single-page app
+(SPA) design in order to achieve both fast initial load times and high
+interactivity.
 
-Fresh also uses islands architecture, which also leads to faster load times, as
-the JavaScript can be incrementally loaded (hydrated) on top of the base static
-html page.
+Fresh is structured around islands architecture, which also helps contribute to
+the faster load times. Islands architecture enables the JavaScript code to be
+incrementally loaded (hydrated) on top of the base static html.
 
 [Preact signals](https://preactjs.com/blog/introducing-signals) are also
 incorporated to further boost performance. Using signals provides optimizations

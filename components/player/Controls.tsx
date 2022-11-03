@@ -10,7 +10,7 @@ import Previous from "@/components/player/buttons/Previous.tsx";
 import Shuffle from "@/components/player/buttons/Shuffle.tsx";
 
 interface ControlProps {
-  readonly loop: Signal<boolean>;
+  loop: Signal<boolean>;
 }
 
 export default function Controls({ loop }: ControlProps) {

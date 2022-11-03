@@ -10,7 +10,7 @@ import Error from "@/components/Error.tsx";
 import Loader from "@/components/Loader.tsx";
 
 interface SearchProps {
-  readonly query: string;
+  query: string;
 }
 
 export default function Search({ query }: SearchProps) {

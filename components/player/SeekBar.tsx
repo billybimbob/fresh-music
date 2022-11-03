@@ -4,9 +4,9 @@ import { IS_BROWSER } from "$fresh/runtime.ts";
 import { SongQueue } from "@/utils/songQueue.ts";
 
 interface SeekBarProps {
-  readonly progression: ReadonlySignal<number>;
-  readonly duration: ReadonlySignal<number>;
-  onSeek(seek: number): void;
+  progression: ReadonlySignal<number>;
+  duration: ReadonlySignal<number>;
+  onSeek: (seek: number) => void;
 }
 
 export default function SeekBar(

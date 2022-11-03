@@ -11,7 +11,7 @@ import type {
 const [{ value: defaultGenre }] = genres;
 
 export async function fetchGenreCharts(id?: string) {
-  const response = await fetchShazam("charts/genre-world", {
+  const response = await fetchShazam("v1/charts/genre-world", {
     genre_code: id ?? defaultGenre,
   });
 
@@ -26,7 +26,7 @@ export async function fetchGenreCharts(id?: string) {
 }
 
 export async function fetchCountryCharts(id: string) {
-  const response = await fetchShazam("charts/country", {
+  const response = await fetchShazam("v1/charts/country", {
     country_code: id,
   });
 
@@ -41,7 +41,7 @@ export async function fetchCountryCharts(id: string) {
 }
 
 export async function fetchWorldCharts() {
-  const response = await fetchShazam("charts/world");
+  const response = await fetchShazam("v1/charts/world");
 
   if (!response.ok) {
     console.error(await response.text());
@@ -54,7 +54,7 @@ export async function fetchWorldCharts() {
 }
 
 export async function fetchSearch(query: string) {
-  const response = await fetchShazam("search/multi", {
+  const response = await fetchShazam("v1/search/multi", {
     search_type: "SONGS_ARTISTS",
     query,
   });
@@ -78,7 +78,7 @@ export async function fetchSearch(query: string) {
 }
 
 export async function fetchRelatedSongs(id: string) {
-  const response = await fetchShazam("tracks/related", { track_id: id });
+  const response = await fetchShazam("v1/tracks/related", { track_id: id });
 
   if (!response.ok) {
     console.error(await response.text());
@@ -91,7 +91,7 @@ export async function fetchRelatedSongs(id: string) {
 }
 
 export async function fetchSong(id: string) {
-  const response = await fetchShazam("tracks/details", { track_id: id });
+  const response = await fetchShazam("v1/tracks/details", { track_id: id });
 
   if (!response.ok) {
     console.error(await response.text());
@@ -104,7 +104,7 @@ export async function fetchSong(id: string) {
 }
 
 export async function fetchArtist(id: string) {
-  const response = await fetchShazam("artists/details", { artist_id: id });
+  const response = await fetchShazam("v1/artists/details", { artist_id: id });
 
   if (!response.ok) {
     console.error(await response.text());
@@ -116,7 +116,7 @@ export async function fetchArtist(id: string) {
   return convert.toArtist(data);
 }
 
-const baseUrl = "https://shazam-core.p.rapidapi.com/v1/";
+const baseUrl = "https://shazam-core.p.rapidapi.com/";
 
 const shazamKey = Deno.env.get("SHAZAM_KEY");
 
@@ -145,91 +145,7 @@ async function fetchShazam(endpoint: string, params?: Record<string, string>) {
     method: "GET",
     headers: {
       "X-RapidAPI-Key": shazamKey,
+      "X-RapidAPI-Host": "shazam-core.p.rapidapi.com",
     },
   });
 }
-
-// export async function fetchGenreCharts(_id?: string) {
-//   const { default: data } = await import(
-//     "@/utils/shazam/responses/charts-genre.json",
-//     {
-//       assert: { type: "json" },
-//     }
-//   );
-
-//   return data.map(convert.toTrack);
-// }
-
-// export async function fetchCountryCharts(_id: string) {
-//   const { default: data } = await import(
-//     "@/utils/shazam/responses/charts-country.json",
-//     {
-//       assert: { type: "json" },
-//     }
-//   );
-
-//   return data.map(convert.toTrack);
-// }
-
-// export async function fetchWorldCharts() {
-//   const { default: data } = await import(
-//     "@/utils/shazam/responses/charts-world.json",
-//     {
-//       assert: { type: "json" },
-//     }
-//   );
-
-//   return data.map(convert.toTrack);
-// }
-
-// export async function fetchSearch(_query: string) {
-//   const { default: data } = await import(
-//     "@/utils/shazam/responses/multi-search.json",
-//     {
-//       assert: { type: "json" },
-//     }
-//   );
-
-//   return {
-//     tracks: data.tracks.hits
-//       .map(({ track }) => track)
-//       .map(convert.toTrack),
-
-//     artists: data.artists.hits
-//       .map(({ artist }) => artist)
-//       .map(convert.toArtistPreview),
-//   };
-// }
-
-// export async function fetchRelatedSongs(_id: string) {
-//   const { default: data } = await import(
-//     "@/utils/shazam/responses/related-tracks.json",
-//     {
-//       assert: { type: "json" },
-//     }
-//   );
-
-//   return data.map(convert.toTrack);
-// }
-
-// export async function fetchSong(_id: string) {
-//   const { default: data } = await import(
-//     "@/utils/shazam/responses/track.json",
-//     {
-//       assert: { type: "json" },
-//     }
-//   );
-
-//   return convert.toTrack(data);
-// }
-
-// export async function fetchArtist(_id: string) {
-//   const { default: data } = await import(
-//     "@/utils/shazam/responses/artist.json",
-//     {
-//       assert: { type: "json" },
-//     }
-//   );
-
-//   return convert.toArtist(data);
-// }

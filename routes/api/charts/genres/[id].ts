@@ -1,6 +1,6 @@
 import { type Handler, Status } from "$fresh/server.ts";
 import { contentType } from "$media_types";
-import { fetchGenreCharts } from "@/utils/shazam/mod.ts";
+import { fetchGenreCharts } from "@shazam";
 
 export const handler: Handler<never> = async (_req, ctx) => {
   const { id } = ctx.params;

@@ -3,22 +3,22 @@ import { useComputed } from "@preact/signals";
 import classes from "classnames";
 
 import type { Track } from "@/utils/types.ts";
-import { useObserver } from "@/utils/observer.ts";
+import { useWatcher } from "@/utils/watcher.ts";
 import { SongQueue } from "@/utils/songQueue.ts";
 
 import ArtistLink from "@/components/ArtistLink.tsx";
 import PlayButton from "@/components/PlayButton.tsx";
 
 interface SongRowProps extends Track {
-  readonly spot: number;
-  onClick(): void;
+  spot: number;
+  onClick: () => void;
 }
 
 export default function SongRow(
   { id, spot, name, artist, data, images, onClick }: SongRowProps,
 ) {
-  const $id = useObserver(id);
-  const $data = useObserver(data);
+  const $id = useWatcher(id);
+  const $data = useWatcher(data);
   const queue = useContext(SongQueue);
 
   const isActive = useComputed(() =>

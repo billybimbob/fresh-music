@@ -1,10 +1,10 @@
 import { useContext } from "preact/hooks";
+import { route } from "preact-router";
 import { useComputed } from "@preact/signals";
 import genres from "@/static/genres.json" assert { type: "json" };
 
 import type { Track } from "@/utils/types.ts";
 import { useGenreCharts } from "@/utils/client.ts";
-import { useLocationSignal } from "@/utils/location.ts";
 import { SongQueue } from "@/utils/songQueue.ts";
 
 import SongCard from "@/components/SongCard.tsx";
@@ -14,13 +14,11 @@ import Loader from "@/components/Loader.tsx";
 const [{ title: defaultTitle, value: defaultGenre }] = genres;
 
 interface DiscoverProps {
-  readonly genre?: string;
+  genre?: string;
 }
 
 export default function Discover({ genre = defaultGenre }: DiscoverProps) {
-  const loc = useLocationSignal();
   const queue = useContext(SongQueue);
-
   const response = useGenreCharts(genre);
   const tracks = useComputed(() => response.data);
 
@@ -28,7 +26,7 @@ export default function Discover({ genre = defaultGenre }: DiscoverProps) {
     const { value = undefined } = event.target as HTMLSelectElement;
 
     if (genres.some((g) => g.value === value)) {
-      loc.value = `/discover/${value}`;
+      route(`/discover/${value}`);
     }
   };
 

@@ -3,21 +3,21 @@ import { useComputed } from "@preact/signals";
 import classes from "classnames";
 
 import type { Track } from "@/utils/types.ts";
-import { useObserver } from "@/utils/observer.ts";
+import { useWatcher } from "@/utils/watcher.ts";
 import { SongQueue } from "@/utils/songQueue.ts";
 
 import ArtistLink from "@/components/ArtistLink.tsx";
 import PlayButton from "@/components/PlayButton.tsx";
 
 interface SongCardProps extends Track {
-  onClick(): void;
+  onClick: () => void;
 }
 
 export default function SongCard(
   { id, name, data, images, artist, onClick }: SongCardProps,
 ) {
-  const $id = useObserver(id);
-  const $data = useObserver(data);
+  const $id = useWatcher(id);
+  const $data = useWatcher(data);
   const queue = useContext(SongQueue);
 
   const isActive = useComputed(() =>

@@ -1,80 +1,80 @@
 export interface ShazamTrack {
-  readonly key: string;
-  readonly title: string;
-  readonly subtitle: string;
-  readonly hub: {
-    readonly actions?: readonly {
-      readonly type: string;
-      readonly id?: string;
-      readonly uri?: string;
+  key: string;
+  title: string;
+  subtitle: string;
+  hub: {
+    actions?: {
+      type: string;
+      id?: string;
+      uri?: string;
     }[];
   };
-  readonly images?: {
-    readonly background: string;
-    readonly coverart: string;
+  images?: {
+    background: string;
+    coverart: string;
   };
-  readonly artists?: readonly { readonly adamid: string }[];
-  readonly genres?: { [key: string]: string };
-  readonly sections?: readonly {
-    readonly type: string;
-    readonly text?: readonly string[];
+  artists?: { adamid: string }[];
+  genres?: { [key: string]: string };
+  sections?: {
+    type: string;
+    text?: string[];
   }[];
 }
 
 export interface ShazamArtistPreview {
-  readonly avatar?: string;
-  readonly name: string;
-  readonly verified: boolean;
-  readonly adamid: string;
+  avatar?: string;
+  name: string;
+  verified: boolean;
+  adamid: string;
 }
 
 export interface ShazamSearch {
-  readonly tracks: {
-    readonly hits: readonly { track: ShazamTrack }[];
+  tracks: {
+    hits: { track: ShazamTrack }[];
   };
-  readonly artists: {
-    readonly hits: readonly { artist: ShazamArtistPreview }[];
+  artists: {
+    hits: { artist: ShazamArtistPreview }[];
   };
 }
 
 export interface ShazamArtwork {
-  readonly url: string;
-  readonly textColor1: string;
-  readonly textColor2: string;
-  readonly textColor3: string;
-  readonly textColor4: string;
-  readonly bgColor: string;
+  url: string;
+  textColor1: string;
+  textColor2: string;
+  textColor3: string;
+  textColor4: string;
+  bgColor: string;
 }
 
 export interface ShazamArtist {
-  readonly artists: {
-    readonly [id: string]: {
-      readonly id: string;
-      readonly attributes: {
-        readonly genreNames: readonly string[];
-        readonly name: string;
-        readonly artwork: ShazamArtwork;
+  artists: {
+    [id: string]: {
+      id: string;
+      attributes: {
+        genreNames: string[];
+        name: string;
+        artwork: ShazamArtwork;
       };
-      readonly views: {
-        readonly "top-songs": {
-          readonly data: readonly { id: string }[];
+      views: {
+        "top-songs": {
+          data: { id: string }[];
         };
       };
     };
   };
-  readonly songs: {
-    readonly [id: string]: {
-      readonly id: string;
-      readonly attributes: {
-        readonly albumName: string;
-        readonly genreNames: readonly string[];
-        readonly releaseDate: string;
-        readonly durationInMillis: number;
-        readonly artwork: ShazamArtwork;
-        readonly composerName: string;
-        readonly artistName: string;
-        readonly name: string;
-        readonly previews: readonly { readonly url: string }[];
+  songs: {
+    [id: string]: {
+      id: string;
+      attributes: {
+        albumName: string;
+        genreNames: string[];
+        releaseDate: string;
+        durationInMillis: number;
+        artwork: ShazamArtwork;
+        composerName: string;
+        artistName: string;
+        name: string;
+        previews: { url: string }[];
       };
     };
   };

@@ -1,22 +1,8 @@
 import { batch, useComputed, useSignal } from "@preact/signals";
+import { route } from "preact-router";
 import { asset } from "$fresh/runtime.ts";
-import { useLocationSignal } from "@/utils/location.ts";
-import LocationProvider from "@/components/LocationProvider.tsx";
 
-interface SearchBarProps {
-  readonly url?: string;
-}
-
-export default function ({ url }: SearchBarProps) {
-  return (
-    <LocationProvider url={url}>
-      <SearchBar />
-    </LocationProvider>
-  );
-}
-
-function SearchBar() {
-  const loc = useLocationSignal();
+export default function SearchBar() {
   const search = useSignal("");
   const isEmpty = useComputed(() => search.value === "");
 
@@ -25,7 +11,7 @@ function SearchBar() {
     if (isEmpty.value) return;
 
     batch(() => {
-      loc.value = `/search/${search}`;
+      route(`/search/${search}`);
       search.value = "";
     });
   };
@@ -38,7 +24,6 @@ function SearchBar() {
   };
 
   return (
-    // <article class="search-music">
     <form class="search-bar" onSubmit={onSubmit}>
       <button
         title="Search Music"
@@ -64,6 +49,5 @@ function SearchBar() {
         onInput={onInput}
       />
     </form>
-    // </article>
   );
 }

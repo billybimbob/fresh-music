@@ -27,6 +27,19 @@
   font: inherit;
   line-height: 1.25rem;
   vertical-align: baseline;
+
+  /* remove click highlight */
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  user-select: none;
+}
+
+@supports (-webkit-tap-highlight-color: transparent) {
+  * {
+    -webkit-tap-highlight-color: transparent;
+  }
 }
 
 html,
@@ -43,6 +56,7 @@ a {
 
 a:hover,
 a:focus {
+  outline: none;
   text-decoration: underline;
 }
 
@@ -1018,6 +1032,13 @@ input[type="search"]::-webkit-search-results-decoration {
   height: 20rem;
   width: 20rem;
   object-fit: contain;
+}
+
+@media (max-width: 376px) {
+  .loader .icon {
+    height: auto;
+    width: 100%;
+  }
 }
 
 .loader .title {

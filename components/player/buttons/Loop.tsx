@@ -5,7 +5,7 @@ import classes from "classnames";
 import { SongQueue } from "@/utils/songQueue.ts";
 
 interface LoopProps {
-  readonly value: Signal<boolean>;
+  value: Signal<boolean>;
 }
 
 export default function Loop({ value: loop }: LoopProps) {
