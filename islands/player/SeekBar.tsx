@@ -1,7 +1,7 @@
 import { useEffect } from "preact/hooks";
 import { type ReadonlySignal, useComputed } from "@preact/signals";
 import { IS_BROWSER } from "$fresh/runtime.ts";
-import { useSongQueue } from "@/utils/playback/mod.ts";
+import { useSongQueue } from "@/utils/songQueue.ts";
 
 interface SeekBarProps {
   progression: ReadonlySignal<number>;

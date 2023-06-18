@@ -2,7 +2,7 @@ import { useComputed } from "@preact/signals";
 
 import type { Track } from "@/utils/types.ts";
 import { useCharts } from "@/utils/client.ts";
-import { useSongQueue } from "@/utils/playback/mod.ts";
+import { useSongQueue } from "@/utils/songQueue.ts";
 
 import SongCard from "@/components/SongCard.tsx";
 import Error from "@/components/Error.tsx";
@@ -14,7 +14,6 @@ export default function TopSongs() {
   const tracks = useComputed(() => response.data);
 
   const onSongClick = (track: Track, index: number) => {
-    console.log("clicked song", track.name);
     if (tracks.value === undefined) {
       return;
     }

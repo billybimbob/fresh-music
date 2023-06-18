@@ -1,6 +1,6 @@
 import { useComputed } from "@preact/signals";
 import { asset } from "$fresh/runtime.ts";
-import { useSongQueue } from "@/utils/playback/mod.ts";
+import { useSongQueue } from "@/utils/songQueue.ts";
 
 export default function Playback() {
   const queue = useSongQueue();

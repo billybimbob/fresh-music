@@ -1,7 +1,7 @@
 import { type Signal, useComputed } from "@preact/signals";
 import { asset } from "$fresh/runtime.ts";
 import classes from "classnames";
-import { useSongQueue } from "@/utils/playback/mod.ts";
+import { useSongQueue } from "@/utils/songQueue.ts";
 
 interface LoopProps {
   value: Signal<boolean>;

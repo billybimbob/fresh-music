@@ -2,27 +2,20 @@ import { useComputed } from "@preact/signals";
 
 import type { PreloadData, Track } from "@/utils/types.ts";
 import { FallbackProvider, useCharts } from "@/utils/client.ts";
-import {
-  SongQueueProvider,
-  type SongQueueSource,
-  useSongQueue,
-} from "@/utils/playback/mod.ts";
+import { useSongQueue } from "@/utils/songQueue.ts";
 
 import ArtistCard from "@/components/ArtistCard.tsx";
 import SongRow from "@/components/SongRow.tsx";
 
 interface TopPreviewProps {
   initial?: PreloadData;
-  source: SongQueueSource;
 }
 
-export default function ({ initial = {}, source }: TopPreviewProps) {
+export default function ({ initial = {} }: TopPreviewProps) {
   return (
-    <SongQueueProvider source={source}>
-      <FallbackProvider value={initial}>
-        <TopPreview />
-      </FallbackProvider>
-    </SongQueueProvider>
+    <FallbackProvider value={initial}>
+      <TopPreview />
+    </FallbackProvider>
   );
 }
 

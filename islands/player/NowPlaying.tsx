@@ -4,7 +4,7 @@ import classes from "classnames";
 import ArtistLink from "@/components/ArtistLink.tsx";
 
 import { type ArtistSong, toSize, type Track } from "@/utils/types.ts";
-import { useSongQueue } from "@/utils/playback/mod.ts";
+import { useSongQueue } from "@/utils/songQueue.ts";
 
 export default function NowPlaying() {
   return (

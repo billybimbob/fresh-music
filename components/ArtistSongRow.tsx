@@ -2,7 +2,7 @@ import { useComputed } from "@preact/signals";
 import classes from "classnames";
 
 import { type ArtistSong, toSize } from "@/utils/types.ts";
-import { useSongQueue } from "@/utils/playback/mod.ts";
+import { useSongQueue } from "@/utils/songQueue.ts";
 
 import PlayButton from "@/components/PlayButton.tsx";
 

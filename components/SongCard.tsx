@@ -1,10 +1,9 @@
-import { useContext } from "preact/hooks";
 import { useComputed } from "@preact/signals";
 import classes from "classnames";
 
 import type { Track } from "@/utils/types.ts";
 import { useWatcher } from "@/utils/watcher.ts";
-import { useSongQueue } from "@/utils/playback/mod.ts";
+import { useSongQueue } from "@/utils/songQueue.ts";
 
 import ArtistLink from "@/components/ArtistLink.tsx";
 import PlayButton from "@/components/PlayButton.tsx";

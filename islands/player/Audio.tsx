@@ -6,7 +6,7 @@ import {
   useSignal,
   useSignalEffect,
 } from "@preact/signals";
-import { useSongQueue } from "@/utils/playback/mod.ts";
+import { useSongQueue } from "@/utils/songQueue.ts";
 
 interface AudioProps {
   seek: ReadonlySignal<number>;

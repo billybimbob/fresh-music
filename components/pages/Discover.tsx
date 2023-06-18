@@ -4,23 +4,20 @@ import genres from "@/static/genres.json" assert { type: "json" };
 
 import type { Track } from "@/utils/types.ts";
 import { useGenreCharts } from "@/utils/client.ts";
-import { useSongQueue } from "@/utils/playback/mod.ts";
+import { useSongQueue } from "@/utils/songQueue.ts";
 
 import SongCard from "@/components/SongCard.tsx";
 import Error from "@/components/Error.tsx";
 import Loader from "@/components/Loader.tsx";
-import { SongQueueSignal } from "../../utils/playback/songQueueSignal.ts";
 
 const [{ title: defaultTitle, value: defaultGenre }] = genres;
 
 interface DiscoverProps {
   genre?: string;
-  queue: SongQueueSignal;
 }
 
-export default function Discover(
-  { genre = defaultGenre, queue }: DiscoverProps,
-) {
+export default function Discover({ genre = defaultGenre }: DiscoverProps) {
+  const queue = useSongQueue();
   const response = useGenreCharts(genre);
   const tracks = useComputed(() => response.data);
 
@@ -33,10 +30,6 @@ export default function Discover(
   };
 
   const onSongClick = (song: Track, index: number) => {
-    console.log("picked song", song.name);
-    console.log("queue", typeof queue, queue);
-    const curr = queue.current;
-    console.log("current", typeof curr, curr);
     if (tracks.value === undefined) {
       return;
     }
@@ -49,7 +42,6 @@ export default function Discover(
     const songSlice = tracks.value.slice(index);
 
     queue.listenTo(...songSlice);
-    console.log("new current", queue.current?.name);
   };
 
   if (response.error) {

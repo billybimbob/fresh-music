@@ -1,5 +1,5 @@
 import { useEffect } from "preact/hooks";
-import { type Signal, useSignalEffect } from "@preact/signals";
+import { type Signal } from "@preact/signals";
 import { IS_BROWSER } from "$fresh/runtime.ts";
 
 import Loop from "@/islands/player/buttons/Loop.tsx";
@@ -8,7 +8,7 @@ import Playback from "@/islands/player/buttons/Playback.tsx";
 import Previous from "@/islands/player/buttons/Previous.tsx";
 import Shuffle from "@/islands/player/buttons/Shuffle.tsx";
 
-import { useSongQueue } from "@/utils/playback/mod.ts";
+import { useSongQueue } from "@/utils/songQueue.ts";
 
 interface ControlProps {
   loop: Signal<boolean>;
