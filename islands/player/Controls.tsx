@@ -1,5 +1,4 @@
-import { useEffect } from "preact/hooks";
-import { type Signal } from "@preact/signals";
+import { type Signal, useSignalEffect } from "@preact/signals";
 import { IS_BROWSER } from "$fresh/runtime.ts";
 
 import Loop from "@/islands/player/buttons/Loop.tsx";
@@ -17,7 +16,7 @@ interface ControlProps {
 export default function Controls({ loop }: ControlProps) {
   const queue = useSongQueue();
 
-  useEffect(() => {
+  useSignalEffect(() => {
     if (!IS_BROWSER) return;
 
     const controlPlayback = (event: KeyboardEvent) => {
@@ -52,9 +51,9 @@ export default function Controls({ loop }: ControlProps) {
     return () => {
       removeEventListener("keyup", controlPlayback);
     };
-  }, [queue]);
+  });
 
-  useEffect(() => {
+  useSignalEffect(() => {
     if (!IS_BROWSER) return;
 
     const preventScroll = (event: KeyboardEvent) => {
@@ -68,7 +67,7 @@ export default function Controls({ loop }: ControlProps) {
     return () => {
       removeEventListener("keydown", preventScroll);
     };
-  }, [queue]);
+  });
 
   return (
     <div class="controls">

@@ -1,5 +1,8 @@
-import { useEffect } from "preact/hooks";
-import { type ReadonlySignal, useComputed } from "@preact/signals";
+import {
+  type ReadonlySignal,
+  useComputed,
+  useSignalEffect,
+} from "@preact/signals";
 import { IS_BROWSER } from "$fresh/runtime.ts";
 import { useSongQueue } from "@/utils/songQueue.ts";
 
@@ -12,7 +15,7 @@ interface SeekBarProps {
 export default function ({ progression, duration, onSeek }: SeekBarProps) {
   const queue = useSongQueue();
 
-  useEffect(() => {
+  useSignalEffect(() => {
     if (!IS_BROWSER) return;
 
     const onKeyUp = (event: KeyboardEvent) => {
@@ -38,7 +41,7 @@ export default function ({ progression, duration, onSeek }: SeekBarProps) {
     return () => {
       removeEventListener("keyup", onKeyUp);
     };
-  }, [queue, progression, duration, onSeek]);
+  });
 
   return (
     <SeekBarButtons

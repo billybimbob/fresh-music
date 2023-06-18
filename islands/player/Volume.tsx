@@ -1,5 +1,4 @@
-import { useEffect } from "preact/hooks";
-import { type Signal, useComputed } from "@preact/signals";
+import { type Signal, useComputed, useSignalEffect } from "@preact/signals";
 import { asset, IS_BROWSER } from "$fresh/runtime.ts";
 
 interface VolumeProps {
@@ -9,17 +8,18 @@ interface VolumeProps {
 const VOLUME_PREF = "volume_preference";
 
 export default function Volume({ volume }: VolumeProps) {
-  useEffect(() => {
+  useSignalEffect(() => {
     if (!IS_BROWSER) return;
 
-    const perf = parseFloat(localStorage.getItem(VOLUME_PREF) ?? "");
+    const storedPreference = localStorage.getItem(VOLUME_PREF) ?? "";
+    const perf = parseFloat(storedPreference);
 
     if (isFinite(perf)) {
       volume.value = perf;
     }
-  }, [volume]);
+  });
 
-  useEffect(() => {
+  useSignalEffect(() => {
     if (!IS_BROWSER) return;
 
     const saveVolume = () => {
@@ -31,7 +31,7 @@ export default function Volume({ volume }: VolumeProps) {
     return () => {
       removeEventListener("beforeunload", saveVolume);
     };
-  }, [volume]);
+  });
 
   const onChange = (event: Event) => {
     const { valueAsNumber = undefined } = event.target as HTMLInputElement;
@@ -64,11 +64,9 @@ function VolumeButton({ volume }: VolumeProps) {
   );
 
   const href = useComputed(() => {
-    const svg = (
-      volume.value === 0 && "volume/mute.svg#mute" ||
+    const svg = volume.value === 0 && "volume/mute.svg#mute" ||
       volume.value <= 0.5 && "volume/low.svg#low" ||
-      "volume/high.svg#high"
-    );
+      "volume/high.svg#high";
 
     return asset(`/icons/${svg}`);
   });
