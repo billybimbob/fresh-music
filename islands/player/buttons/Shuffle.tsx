@@ -1,31 +1,10 @@
-import { useContext } from "preact/hooks";
-import {
-  batch,
-  useComputed,
-  useSignal,
-  useSignalEffect,
-} from "@preact/signals";
+import { useComputed } from "@preact/signals";
 import { asset } from "$fresh/runtime.ts";
-import { SongQueue } from "@/utils/songQueue.ts";
+import { useSongQueue } from "@/utils/playback/mod.ts";
 
 export default function Shuffle() {
-  const isShuffled = useSignal(false);
-  const queue = useContext(SongQueue);
-
-  const disabled = useComputed(() =>
-    isShuffled.value || queue.current === null
-  );
-
-  useSignalEffect(() => {
-    isShuffled.value = queue.finished.length > 0 && isShuffled.peek();
-  });
-
-  const shuffle = () => {
-    batch(() => {
-      queue.shuffle();
-      isShuffled.value = true;
-    });
-  };
+  const queue = useSongQueue();
+  const disabled = useComputed(() => queue.current === null || !queue.hasNext);
 
   return (
     <button
@@ -33,7 +12,7 @@ export default function Shuffle() {
       type="button"
       class="btn-icon shuffle"
       disabled={disabled}
-      onClick={shuffle}
+      onClick={queue.shuffle}
     >
       <svg class="shuffle-icon">
         <title>Shuffle</title>

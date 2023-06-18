@@ -1,7 +1,7 @@
-import { useContext, useEffect } from "preact/hooks";
+import { useEffect } from "preact/hooks";
 import { type ReadonlySignal, useComputed } from "@preact/signals";
 import { IS_BROWSER } from "$fresh/runtime.ts";
-import { SongQueue } from "@/utils/songQueue.ts";
+import { useSongQueue } from "@/utils/playback/mod.ts";
 
 interface SeekBarProps {
   progression: ReadonlySignal<number>;
@@ -9,10 +9,8 @@ interface SeekBarProps {
   onSeek: (seek: number) => void;
 }
 
-export default function SeekBar(
-  { progression, duration, onSeek }: SeekBarProps,
-) {
-  const queue = useContext(SongQueue);
+export default function ({ progression, duration, onSeek }: SeekBarProps) {
+  const queue = useSongQueue();
 
   useEffect(() => {
     if (!IS_BROWSER) return;
@@ -52,7 +50,7 @@ export default function SeekBar(
 }
 
 function SeekBarButtons({ progression, duration, onSeek }: SeekBarProps) {
-  const queue = useContext(SongQueue);
+  const queue = useSongQueue();
 
   const title = useComputed(() => `Seek ${queue.current?.name ?? "Song"}`);
   const disabled = useComputed(() => queue.current === null);

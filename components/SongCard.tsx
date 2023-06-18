@@ -4,7 +4,7 @@ import classes from "classnames";
 
 import type { Track } from "@/utils/types.ts";
 import { useWatcher } from "@/utils/watcher.ts";
-import { SongQueue } from "@/utils/songQueue.ts";
+import { useSongQueue } from "@/utils/playback/mod.ts";
 
 import ArtistLink from "@/components/ArtistLink.tsx";
 import PlayButton from "@/components/PlayButton.tsx";
@@ -18,7 +18,7 @@ export default function SongCard(
 ) {
   const $id = useWatcher(id);
   const $data = useWatcher(data);
-  const queue = useContext(SongQueue);
+  const queue = useSongQueue();
 
   const isActive = useComputed(() =>
     queue.isPlaying && queue.current?.id === $id.value

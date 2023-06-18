@@ -1,10 +1,10 @@
-import { useContext } from "preact/hooks";
 import { useComputed } from "@preact/signals";
 import classes from "classnames";
 
-import { type ArtistSong, toSize, type Track } from "@/utils/types.ts";
-import { SongQueue } from "@/utils/songQueue.ts";
 import ArtistLink from "@/components/ArtistLink.tsx";
+
+import { type ArtistSong, toSize, type Track } from "@/utils/types.ts";
+import { useSongQueue } from "@/utils/playback/mod.ts";
 
 export default function NowPlaying() {
   return (
@@ -16,7 +16,7 @@ export default function NowPlaying() {
 }
 
 function NowPlayingImage() {
-  const queue = useContext(SongQueue);
+  const queue = useSongQueue();
 
   const src = useComputed(() => {
     if (queue.current === null) return "";
@@ -54,7 +54,7 @@ function NowPlayingImage() {
 }
 
 function NowPlayingText() {
-  const queue = useContext(SongQueue);
+  const queue = useSongQueue();
 
   if (queue.current === null) {
     return (

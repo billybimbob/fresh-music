@@ -1,7 +1,6 @@
-import { useContext, useEffect } from "preact/hooks";
-import { type Signal } from "@preact/signals";
+import { useEffect } from "preact/hooks";
+import { type Signal, useSignalEffect } from "@preact/signals";
 import { IS_BROWSER } from "$fresh/runtime.ts";
-import { SongQueue } from "@/utils/songQueue.ts";
 
 import Loop from "@/islands/player/buttons/Loop.tsx";
 import Next from "@/islands/player/buttons/Next.tsx";
@@ -9,12 +8,14 @@ import Playback from "@/islands/player/buttons/Playback.tsx";
 import Previous from "@/islands/player/buttons/Previous.tsx";
 import Shuffle from "@/islands/player/buttons/Shuffle.tsx";
 
+import { useSongQueue } from "@/utils/playback/mod.ts";
+
 interface ControlProps {
   loop: Signal<boolean>;
 }
 
 export default function Controls({ loop }: ControlProps) {
-  const queue = useContext(SongQueue);
+  const queue = useSongQueue();
 
   useEffect(() => {
     if (!IS_BROWSER) return;

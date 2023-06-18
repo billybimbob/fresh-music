@@ -1,4 +1,4 @@
-import { useContext, useRef } from "preact/hooks";
+import { useRef } from "preact/hooks";
 import {
   batch,
   type ReadonlySignal,
@@ -6,13 +6,12 @@ import {
   useSignal,
   useSignalEffect,
 } from "@preact/signals";
-import { SongQueue } from "@/utils/songQueue.ts";
+import { useSongQueue } from "@/utils/playback/mod.ts";
 
 interface AudioProps {
   seek: ReadonlySignal<number>;
   volume: ReadonlySignal<number>;
   loop: ReadonlySignal<boolean>;
-
   onProgress: (time: number) => void;
   onDurationFound: (duration: number) => void;
 }
@@ -23,7 +22,7 @@ export default function Audio(
   const audio = useRef<HTMLAudioElement>(null);
   const isLoading = useSignal(true);
 
-  const queue = useContext(SongQueue);
+  const queue = useSongQueue();
   const src = useComputed(() => queue.current?.data ?? "");
 
   useSignalEffect(() => {

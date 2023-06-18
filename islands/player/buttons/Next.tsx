@@ -1,10 +1,9 @@
-import { useContext } from "preact/hooks";
 import { useComputed } from "@preact/signals";
 import { asset } from "$fresh/runtime.ts";
-import { SongQueue } from "@/utils/songQueue.ts";
+import { useSongQueue } from "@/utils/playback/mod.ts";
 
 export default function Next() {
-  const queue = useContext(SongQueue);
+  const queue = useSongQueue();
   const title = useComputed(() => `To ${queue.upcoming.at(0)?.name ?? "Next"}`);
   const disabled = useComputed(() => !queue.hasNext);
 
@@ -14,7 +13,7 @@ export default function Next() {
       type="button"
       class="btn-icon"
       disabled={disabled}
-      onClick={queue.seekNext.bind(queue)}
+      onClick={queue.seekNext}
     >
       <svg class="next-icon">
         <title>{title}</title>

@@ -1,9 +1,8 @@
-import { useContext } from "preact/hooks";
 import { useComputed } from "@preact/signals";
 
 import type { Track } from "@/utils/types.ts";
 import { useRelatedSongs, useSongDetails } from "@/utils/client.ts";
-import { SongQueue } from "@/utils/songQueue.ts";
+import { useSongQueue } from "@/utils/playback/mod.ts";
 
 import ArtistLink from "@/components/ArtistLink.tsx";
 import SongRow from "@/components/SongRow.tsx";
@@ -17,7 +16,7 @@ interface SongDetailsProps {
 export default function SongDetails({ id }: SongDetailsProps) {
   const details = useSongDetails(id);
   const related = useRelatedSongs(id);
-  const queue = useContext(SongQueue);
+  const queue = useSongQueue();
 
   const track = useComputed(() => details.data);
   const songs = useComputed(() => related.data);

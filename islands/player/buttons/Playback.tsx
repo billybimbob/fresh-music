@@ -1,10 +1,9 @@
-import { useContext } from "preact/hooks";
 import { useComputed } from "@preact/signals";
 import { asset } from "$fresh/runtime.ts";
-import { SongQueue } from "@/utils/songQueue.ts";
+import { useSongQueue } from "@/utils/playback/mod.ts";
 
 export default function Playback() {
-  const queue = useContext(SongQueue);
+  const queue = useSongQueue();
   const disabled = useComputed(() => queue.current === null);
 
   const title = useComputed(() =>
@@ -22,7 +21,7 @@ export default function Playback() {
       type="button"
       class="btn-icon"
       disabled={disabled}
-      onClick={queue.toggle.bind(queue)}
+      onClick={queue.toggle}
     >
       <svg class="play-icon">
         <title>{title}</title>
