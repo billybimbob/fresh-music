@@ -40,6 +40,10 @@
     "value": "COUNTRY"
   },
   {
+    "title": "Afro Beat",
+    "value": "AFRO_BEATS"
+  },
+  {
     "title": "Worldwide",
     "value": "WORLDWIDE"
   },
@@ -54,5 +58,17 @@
   {
     "title": "K-Pop",
     "value": "K_POP"
+  },
+  {
+    "title": "French Pop",
+    "value": "FRENCH_POP"
+  },
+  {
+    "title": "Singer Songwriter",
+    "value": "SINGER_SONGWRITER"
+  },
+  {
+    "title": "Regional Mexican",
+    "value": "REG_MEXICO"
   }
 ]
