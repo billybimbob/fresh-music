@@ -10,7 +10,7 @@
   },
   "imports": {
     "@/": "./",
-    "@shazam": "./utils/shazam/responses/mod.ts",
+    "@shazam": "./utils/shazam/mod.ts",
     "$dotenv/": "https://deno.land/std@0.192.0/dotenv/",
     "$fresh/": "https://deno.land/x/fresh@1.2.0/",
     "$media_types": "https://deno.land/std@0.192.0/media_types/mod.ts",
