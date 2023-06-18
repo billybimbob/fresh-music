@@ -29,7 +29,7 @@ export default function Loop({ value: loop }: LoopProps) {
       type="button"
       class="btn-icon loop"
       disabled={disabled}
-      onClick={toggle}
+      onClick={() => toggle()}
     >
       <svg class={icon}>
         <title>{title}</title>

@@ -15,7 +15,7 @@ export default function Previous() {
       type="button"
       class="btn-icon"
       disabled={disabled}
-      onClick={queue.seekPrevious}
+      onClick={() => queue.seekPrevious()}
     >
       <svg class="prev-icon">
         <title>{title}</title>

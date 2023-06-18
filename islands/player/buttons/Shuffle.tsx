@@ -4,7 +4,7 @@ import { useSongQueue } from "@/utils/songQueue.ts";
 
 export default function Shuffle() {
   const queue = useSongQueue();
-  const disabled = useComputed(() => queue.current === null || !queue.hasNext);
+  const disabled = useComputed(() => !queue.current || !queue.hasNext);
 
   return (
     <button
@@ -12,7 +12,7 @@ export default function Shuffle() {
       type="button"
       class="btn-icon shuffle"
       disabled={disabled}
-      onClick={queue.shuffle}
+      onClick={() => queue.shuffle()}
     >
       <svg class="shuffle-icon">
         <title>Shuffle</title>

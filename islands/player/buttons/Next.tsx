@@ -13,7 +13,7 @@ export default function Next() {
       type="button"
       class="btn-icon"
       disabled={disabled}
-      onClick={queue.seekNext}
+      onClick={() => queue.seekNext()}
     >
       <svg class="next-icon">
         <title>{title}</title>
