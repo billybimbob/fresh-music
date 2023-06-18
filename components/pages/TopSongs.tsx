@@ -15,6 +15,7 @@ export default function TopSongs() {
   const tracks = useComputed(() => response.data);
 
   const onSongClick = (track: Track, index: number) => {
+    console.log("clicked song", track.name);
     if (tracks.value === undefined) {
       return;
     }

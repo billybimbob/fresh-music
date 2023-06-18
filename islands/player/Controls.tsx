@@ -3,11 +3,11 @@ import { type Signal } from "@preact/signals";
 import { IS_BROWSER } from "$fresh/runtime.ts";
 import { SongQueue } from "@/utils/songQueue.ts";
 
-import Loop from "@/components/player/buttons/Loop.tsx";
-import Next from "@/components/player/buttons/Next.tsx";
-import Playback from "@/components/player/buttons/Playback.tsx";
-import Previous from "@/components/player/buttons/Previous.tsx";
-import Shuffle from "@/components/player/buttons/Shuffle.tsx";
+import Loop from "@/islands/player/buttons/Loop.tsx";
+import Next from "@/islands/player/buttons/Next.tsx";
+import Playback from "@/islands/player/buttons/Playback.tsx";
+import Previous from "@/islands/player/buttons/Previous.tsx";
+import Shuffle from "@/islands/player/buttons/Shuffle.tsx";
 
 interface ControlProps {
   loop: Signal<boolean>;

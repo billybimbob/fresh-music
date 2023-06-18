@@ -1,10 +1,10 @@
 import { useSignal } from "@preact/signals";
 
-import Audio from "@/components/player/Audio.tsx";
-import Controls from "@/components/player/Controls.tsx";
-import NowPlaying from "@/components/player/NowPlaying.tsx";
-import SeekBar from "@/components/player/SeekBar.tsx";
-import Volume from "@/components/player/Volume.tsx";
+import Audio from "@/islands/player/Audio.tsx";
+import Controls from "@/islands/player/Controls.tsx";
+import NowPlaying from "@/islands/player/NowPlaying.tsx";
+import SeekBar from "@/islands/player/SeekBar.tsx";
+import Volume from "@/islands/player/Volume.tsx";
 
 export default function SongPlayer() {
   const progression = useSignal(0);

@@ -3,7 +3,7 @@ import type { PreloadData } from "@/utils/types.ts";
 import MusicRoutes from "@/islands/MusicRoutes.tsx";
 import Navigation from "@/islands/Navigation.tsx";
 import SearchBar from "@/islands/SearchBar.tsx";
-import SongPlayer from "@/islands/SongPlayer.tsx";
+import SongPlayer from "@/islands/player/SongPlayer.tsx";
 import TopPreview from "@/islands/TopPreview.tsx";
 
 interface MusicBrowserProps {

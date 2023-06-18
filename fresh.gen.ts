@@ -20,8 +20,18 @@ import * as $14 from "./routes/top/songs.tsx";
 import * as $$0 from "./islands/MusicRoutes.tsx";
 import * as $$1 from "./islands/Navigation.tsx";
 import * as $$2 from "./islands/SearchBar.tsx";
-import * as $$3 from "./islands/SongPlayer.tsx";
-import * as $$4 from "./islands/TopPreview.tsx";
+import * as $$3 from "./islands/TopPreview.tsx";
+import * as $$4 from "./islands/player/Audio.tsx";
+import * as $$5 from "./islands/player/Controls.tsx";
+import * as $$6 from "./islands/player/NowPlaying.tsx";
+import * as $$7 from "./islands/player/SeekBar.tsx";
+import * as $$8 from "./islands/player/SongPlayer.tsx";
+import * as $$9 from "./islands/player/Volume.tsx";
+import * as $$10 from "./islands/player/buttons/Loop.tsx";
+import * as $$11 from "./islands/player/buttons/Next.tsx";
+import * as $$12 from "./islands/player/buttons/Playback.tsx";
+import * as $$13 from "./islands/player/buttons/Previous.tsx";
+import * as $$14 from "./islands/player/buttons/Shuffle.tsx";
 
 const manifest = {
   routes: {
@@ -45,8 +55,18 @@ const manifest = {
     "./islands/MusicRoutes.tsx": $$0,
     "./islands/Navigation.tsx": $$1,
     "./islands/SearchBar.tsx": $$2,
-    "./islands/SongPlayer.tsx": $$3,
-    "./islands/TopPreview.tsx": $$4,
+    "./islands/TopPreview.tsx": $$3,
+    "./islands/player/Audio.tsx": $$4,
+    "./islands/player/Controls.tsx": $$5,
+    "./islands/player/NowPlaying.tsx": $$6,
+    "./islands/player/SeekBar.tsx": $$7,
+    "./islands/player/SongPlayer.tsx": $$8,
+    "./islands/player/Volume.tsx": $$9,
+    "./islands/player/buttons/Loop.tsx": $$10,
+    "./islands/player/buttons/Next.tsx": $$11,
+    "./islands/player/buttons/Playback.tsx": $$12,
+    "./islands/player/buttons/Previous.tsx": $$13,
+    "./islands/player/buttons/Shuffle.tsx": $$14,
   },
   baseUrl: import.meta.url,
 };

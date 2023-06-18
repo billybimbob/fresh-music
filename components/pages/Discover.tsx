@@ -31,6 +31,7 @@ export default function Discover({ genre = defaultGenre }: DiscoverProps) {
   };
 
   const onSongClick = (song: Track, index: number) => {
+    console.log("picked song", song.name);
     if (tracks.value === undefined) {
       return;
     }
